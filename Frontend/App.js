@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
+import { Video, ResizeMode } from 'expo-av';
 
 export default function App() {
+
+  const video = React.useRef(null);
+  const [status, setStatus] = React.useState({});
+
   const [{ x, y, z }, setData] = useState({
     x: 0,
     y: 0,
@@ -17,7 +23,7 @@ export default function App() {
   const _fast = () => Accelerometer.setUpdateInterval(16);
 
   const _subscribe = () => {
-    setSubscription(  
+    setSubscription(
       Accelerometer.addListener(setData)
     );
   };
@@ -29,24 +35,25 @@ export default function App() {
 
   useEffect(() => {
     _subscribe();
-    updateMovement(); 
+    updateMovement();
     return () => _unsubscribe();
   }, [x]);
 
   const updateMovement = () => {
-    if(x >= 1){
+    if (x >= 1) {
       setXMove(true);
     }
-    if(xMove === true && (x <= -1)){
+    if (xMove === true && (x <= -1)) {
       setXCounter(xCounter + 1);
       setXMove(false);
-      console.log("X count - ",xCounter);
+      console.log("X count - ", xCounter);
     }
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Accelerometer: (in gs where 1g = 9.81 m/s^2)</Text>
+      <Text style={styles.text}>X movement : {xCounter}</Text>
       {/* <Text style={styles.text}>x: {x}</Text>{console.log("x - ",x)} */}
       {/* <Text style={styles.text}>y: {y}</Text>{console.log("y - ",y)} */}
       {/* <Text style={styles.text}>z: {z}</Text>{console.log("z - ",z)} */}
@@ -61,6 +68,28 @@ export default function App() {
           <Text>Fast</Text>
         </TouchableOpacity>
       </View>
+      <Video
+        ref={video}
+        style={styles.video}
+        source={
+          //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+          //require("../AnimTest/assets/sampleVideos/cheer.mp4")
+          require("./assets/sampleVideos/cheer.mp4")
+        }
+        useNativeControls={false}
+        resizeMode={ResizeMode.CONTAIN}
+        isLooping
+        onPlaybackStatusUpdate={status => setStatus(() => status)}
+      />
+      <View style={styles.buttons}>
+        <Button
+          title={status.isPlaying ? 'Pause' : 'Play'}
+          onPress={() =>
+            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
+          }
+        />
+      </View>
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -91,6 +120,12 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderColor: '#ccc',
   },
+  video: {
+    alignSelf: 'center',
+    width: 320,
+    height: 200,
+  },
 });
 
 //Accelerometer code used from - https://docs.expo.dev/versions/latest/sdk/accelerometer/
+//VideoPlayback code used from - https://docs.expo.dev/versions/latest/sdk/video/
