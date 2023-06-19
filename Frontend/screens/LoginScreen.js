@@ -19,15 +19,52 @@ const LoginScreen = () => {
     return unsubscribe
   }, [])
 
+  // const handleSignUp = () => {
+  //   auth
+  //     .createUserWithEmailAndPassword(email, password)
+  //     .then(userCredentials => {
+  //       const user = userCredentials.user;
+  //       console.log('Registered with:', user.email);
+  //     })
+  //     .catch(error => alert(error.message))
+  // }
+
   const handleSignUp = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
+      .then(async (userCredentials) => {
         const user = userCredentials.user;
         console.log('Registered with:', user.email);
+  
+        // Save user data to MongoDB
+        await saveUserDataToMongoDB(user.email, user.uid);
+        console.log('User data saved to MongoDB');
       })
-      .catch(error => alert(error.message))
-  }
+      .catch((error) => alert(error.message));
+  };
+  
+  const saveUserDataToMongoDB = async (email, uid) => {
+    try {
+      // Make HTTP POST request to your API endpoint
+      const response = await fetch('http://localhost:8080/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid,
+          email,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to save user data to MongoDB');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
 
   const handleLogin = () => {
     auth
