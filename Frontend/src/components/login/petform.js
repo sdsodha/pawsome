@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Picker, Image, StyleSheet, TouchableOpacity,Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core'
-import { auth } from '../firebase';
+import { auth } from '../../config/firebase';
 
 const PetForm = () => {
     const navigation = useNavigation()
@@ -151,36 +151,36 @@ const PetForm = () => {
       <Text style={styles.label}>Pictures:</Text>
       <View style={styles.pictureContainer}>
         <View style={styles.pictureItem}>
-          <Image
-            source={require('../assets/picture1.jpg')}
+          <Image 
+            source={require('../../../../assets/picture1.jpg')}
             style={styles.picture}
           />
           <Text style={styles.pictureLabel}>Picture 1</Text>
         </View>
         <View style={styles.pictureItem}>
           <Image
-            source={require('../assets/picture2.jpg')}
+            source={require('../../../../assets/picture2.jpg')}
             style={styles.picture}
           />
           <Text style={styles.pictureLabel}>Picture 2</Text>
         </View>
         <View style={styles.pictureItem}>
           <Image
-            source={require('../assets/picture3.jpg')}
+            source={require('../../../../assets/picture3.jpg')}
             style={styles.picture}
           />
           <Text style={styles.pictureLabel}>Picture 3</Text>
         </View>
         <View style={styles.pictureItem}>
           <Image
-            source={require('../assets/picture4.jpg')}
+            source={require('../../../../assets/picture4.jpg')}
             style={styles.picture}
           />
           <Text style={styles.pictureLabel}>Picture 4</Text>
         </View>
         <View style={styles.pictureItem}>
           <Image
-            source={require('../assets/picture5.jpg')}
+            source={require('../../../../assets/picture5.jpg')}
             style={styles.picture}
           />
           <Text style={styles.pictureLabel}>Picture 5</Text>
