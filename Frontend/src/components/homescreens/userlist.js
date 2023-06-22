@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { auth } from '../firebase';
+import { auth } from '../../config/firebase';
 import axios from 'axios';
 
 const UserListComponent = () => {
@@ -151,20 +151,20 @@ const [error, setError] = useState(null);
       <Text>Registered Users of this user</Text>
    
 
-      <div>
-      <h1>User Lists</h1>
+      <View>
+      <Text>User Lists</Text>
       {userLists.length > 0 ? (
         <ul>
           {userLists.map((user) => (
             <li key={user._id}>
-              <p>Email: {user.email}</p>
+              <Text>Email: {user.email}</Text>
             </li>
           ))}
         </ul>
       ) : (
-        <p>No user lists found</p>
+        <Text>No user lists found</Text>
       )}
-    </div>
+    </View>
     </View>
   );
 };
