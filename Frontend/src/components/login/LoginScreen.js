@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { auth } from '../../config/firebase'
+// import TwoTabsComponent from '../homescreens/leaderboard'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('amberslim@gmail.com')
@@ -12,7 +13,7 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("PetSelect")
+        navigation.replace("Leaderboard")
       }
     })
 
