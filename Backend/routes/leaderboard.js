@@ -3,114 +3,8 @@ const router = express.Router();
 const UserList = require('../models/leaderboard');
 const User = require('../models/users'); // Assuming you have a User model
 
-// POST route to add users for the current logged-in user
-// router.post('/user-lists/:loggedInUserId', async (req, res) => {
-//   try {
-//     const { loggedInUserId } = req.params;
-//     const { registeredUserIds } = req.body;
-
-//     // Check if the registered users exist
-//     const registeredUsers = await User.find({ _id: { $in: registeredUserIds } });
-//     const existingUserIds = registeredUsers.map(user => user._id.toString());
-//     const missingUserIds = registeredUserIds.filter(id => !existingUserIds.includes(id));
-//     if (missingUserIds.length > 0) {
-//       return res.status(404).json({ message: `Registered users not found: ${missingUserIds.join(', ')}` });
-//     }
-
-//     // Create a new user list
-//     const userList = new UserList({
-//       user: loggedInUserId,
-//       registeredUsers: registeredUserIds
-//     });
-
-//     // Save the user list
-//     await userList.save();
-
-//     res.status(201).json({ message: 'Registered users added to the user list successfully' });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
-// router.post('/user-lists', async (req, res) => {
-//     try {
-  
-//       const { registeredUsers, user  } = req.body;
-  
-//       // Create a new user list
-//       const userList = new UserList({
-//         user,
-//         registeredUsers
-//       });
-  
-//       // Save the user list
-//       await userList.save();
-  
-//       res.status(201).json({ message: 'Registered users added to the user list successfully' });
-//     } catch (error) {
-//       res.status(500).json({ error: error.message });
-//     }
-//   });
-
-// router.post('/user-lists', async (req, res) => {
-//   try {
-//     const { registeredUsers, user } = req.body;
-
-//     // Check if the user list already exists for the user
-//     const existingUserList = await UserList.findOne({ user });
-
-//     if (existingUserList) {
-//       // If the user list exists, update the registered users
-//       existingUserList.registeredUsers = registeredUsers;
-//       await existingUserList.save();
-//       res.status(200).json({ message: 'Registered users updated successfully' });
-//     } else {
-//       // If the user list doesn't exist, create a new user list
-//       const userList = new UserList({
-//         user,
-//         registeredUsers,
-//       });
-
-//       // Save the user list
-//       await userList.save();
-//       res.status(201).json({ message: 'User list created successfully' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
 
 
-
-// router.post('/user-lists', async (req, res) => {
-//   try {
-//     const { registeredUsers, user } = req.body;
-
-//     // Check if the user list already exists for the user
-//     const existingUserList = await UserList.findOne({ user });
-
-//     if (existingUserList) {
-//       // If the user list exists, update the registered users
-//       existingUserList.registeredUsers = registeredUsers.filter(
-//         (registeredUser) => registeredUser !== user
-//       );
-//       await existingUserList.save();
-//       res.status(200).json({ message: 'Registered users updated successfully' });
-//     } else {
-//       // If the user list doesn't exist, create a new user list
-//       const userList = new UserList({
-//         user,
-//         registeredUsers: registeredUsers.filter((registeredUser) => registeredUser !== user),
-//       });
-
-//       // Save the user list
-//       await userList.save();
-//       res.status(201).json({ message: 'User list created successfully' });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
 
 router.post('/user-lists', async (req, res) => {
   try {
@@ -120,8 +14,12 @@ router.post('/user-lists', async (req, res) => {
     const existingUserList = await UserList.findOne({ user });
 
     if (existingUserList) {
-      // If the user list exists, add the new user to the registered users
-      existingUserList.registeredUsers.push(...registeredUsers.filter(registeredUser => !existingUserList.registeredUsers.includes(registeredUser)));
+      // Remove the requested user from the registered users array if they exist
+      existingUserList.registeredUsers = existingUserList.registeredUsers.filter(registeredUser => registeredUser !== user);
+
+      // Add the new users to the registered users array
+      existingUserList.registeredUsers.push(...registeredUsers);
+
       await existingUserList.save();
       res.status(200).json({ message: 'Registered users updated successfully' });
     } else {
@@ -131,7 +29,6 @@ router.post('/user-lists', async (req, res) => {
         registeredUsers,
       });
 
-      // Save the user list
       await userList.save();
       res.status(201).json({ message: 'User list created successfully' });
     }
@@ -140,34 +37,6 @@ router.post('/user-lists', async (req, res) => {
   }
 });
 
-
-router.put('/user-lists/:loggedInUserId', async (req, res) => {
-  try {
-    const { loggedInUserId } = req.params;
-    const { registeredUsers, userId } = req.body;
-
-    // Update the user list with the new registered users array
-    const updatedUserList = await UserList.findOneAndUpdate(
-      { user: userId },
-      { registeredUsers },
-      { new: true }
-    );
-
-    if (updatedUserList) {
-      res.status(200).json({ message: 'Registered users updated successfully' });
-    } else {
-      res.status(404).json({ message: 'User list not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
-
-
-
-  
 
 // GET route to retrieve the registered user list of a specific user
 router.get('/user-lists/:loggedInUserId', async (req, res) => {
@@ -187,8 +56,32 @@ router.get('/user-lists/:loggedInUserId', async (req, res) => {
   }
 });
 
-module.exports = router;
+router.delete('/userlist/:userListId/registeredUsers/:registeredUserId', async (req, res) => {
+  try {
+    const userListId = req.params.userListId;
+    const registeredUserId = req.params.registeredUserId;
 
- 
+    const userList = await UserList.findOne({ user: userListId });
+
+    if (!userList) {
+      return res.status(404).json({ message: 'User list not found' });
+    }
+
+    const registeredUserIndex = userList.registeredUsers.findIndex(user => user.toString() === registeredUserId);
+
+    if (registeredUserIndex === -1) {
+      return res.status(404).json({ message: 'Registered user not found' });
+    }
+
+    userList.registeredUsers.splice(registeredUserIndex, 1);
+    await userList.save();
+
+    res.json({ message: 'Registered user removed successfully' });
+  } catch (error) {
+    console.error('Error removing registered user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation } from '@react-navigation/core';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   StyleSheet,
   FlatList,
   Button,
-  Alert
+  Alert,
 } from 'react-native';
 import { auth } from '../../config/firebase';
 import axios from 'axios';
@@ -32,32 +32,31 @@ const Leaderboard = () => {
 
   //----------------------Get logged in user ID-----------------------//
 
-const [currentUserId, setCurrentUserId] = useState('');
+  const [currentUserId, setCurrentUserId] = useState('');
 
-  
-useEffect(() => {
-  fetchCurrentUserId();
-}, []);
+  useEffect(() => {
+    fetchCurrentUserId();
+  }, []);
 
-const fetchCurrentUserId = async () => {
-  try {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      const response = await fetch('http://localhost:8080/users');
-      const data = await response.json();
-      const foundUser = data.find((user) => user.uid === currentUser.uid);
-      if (foundUser) {
-        setCurrentUserId(foundUser._id);
+  const fetchCurrentUserId = async () => {
+    try {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const response = await fetch('http://localhost:8080/users');
+        const data = await response.json();
+        const foundUser = data.find((user) => user.uid === currentUser.uid);
+        if (foundUser) {
+          setCurrentUserId(foundUser._id);
+        } else {
+          console.log('User not found in the server data');
+        }
       } else {
-        console.log('User not found in the server data');
+        console.log('User is not logged in');
       }
-    } else {
-      console.log('User is not logged in');
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
   // --------------------Fetch all users from the backend
   const [users, setUsers] = useState([]);
@@ -75,7 +74,7 @@ const fetchCurrentUserId = async () => {
       console.error(error);
     }
   };
-//--------------------------------------------------
+  //--------------------------------------------------
 
   const renderUserItem = ({ item, index }) => {
     const handleUserPress = () => {
@@ -86,13 +85,16 @@ const fetchCurrentUserId = async () => {
       <View style={styles.listItem}>
         <Text style={styles.number}>{index + 1}</Text>
         <Text style={styles.userName}>{item.email}</Text>
-        <Button title={"View Details"} onPress={handleUserPress} />
+        <Button title={'View Details'} onPress={handleUserPress} />
       </View>
     );
   };
 
+  const handleUserPress = (user) => {
+    setSelectedUser(user);
+  };
+
   //-----------------------------------------------------
-  
 
   const handleAddFriend = async (selectedUser) => {
     try {
@@ -106,13 +108,12 @@ const fetchCurrentUserId = async () => {
           user: currentUserId,
         }),
       });
-  
+
       if (response.ok) {
         // alert('User added as a friend successfully');
-        Alert('User added as a friend successfully')
+        Alert('User added as a friend successfully');
         console.log('User added as a friend successfully');
-       
-        
+
         // Optionally, you can update the user list on the client-side as well
       } else {
         console.error('Failed to add user as a friend');
@@ -121,28 +122,58 @@ const fetchCurrentUserId = async () => {
       console.error('An error occurred while adding user as a friend:', error);
     }
   };
+
+  //-------------------Display the registered users--------------------------------------
+  const [registeredUsers, setRegisteredUsers] = useState([]);
+
+  const fetchUserList = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/user-lists/${currentUserId}`,
+      );
+      const data = await response.json();
+      const { userList } = data;
+      if (userList) {
+        setRegisteredUsers(userList.registeredUsers);
+      }
+    } catch (error) {
+      console.error('An error occurred while fetching the user list:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserList(currentUserId);
+  }, [currentUserId]);
+  //------------------------------------------------------------------------------------
+
+  //-----------------------Remove friend from the friend list for single user-------------------------------
+  
+    const handleRemoveFriend = async (selectedUser) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:8080/userlist/${currentUserId}/registeredUsers/${selectedUser._id}`,
+        );
+  
+        if (response.status === 200) {
+          console.log('User removed as a friend successfully');
+          setSelectedUser(null);
+        } else {
+          console.error('Failed to remove user as a friend');
+        }
+      } catch (error) {
+        console.error(
+          'An error occurred while removing user as a friend:',
+          error,
+        );
+      }
+    };
+  
   
 
-//-------------------Display the registered users--------------------------------------
-const [registeredUsers, setRegisteredUsers] = useState([]);
+  
 
-const fetchUserList = async () => {
-  try {
-    const response = await fetch(`http://localhost:8080/user-lists/${currentUserId}`);
-    const data = await response.json();
-    const { userList } = data;
-    if (userList) {
-      setRegisteredUsers(userList.registeredUsers);
-    }
-  } catch (error) {
-    console.error('An error occurred while fetching the user list:', error);
-  }
-};
+  //-------------------------------------------------------------------------OUTPUT----------------------------------------------------------
 
-useEffect(() => {
-  fetchUserList(currentUserId);
-}, [currentUserId]);
-//------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <View style={styles.tabContainer}>
@@ -153,7 +184,7 @@ useEffect(() => {
           <Text
             style={[styles.tabText, activeTab === 1 && styles.activeTabText]}
           >
-            Tab 1
+            Public
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -163,7 +194,7 @@ useEffect(() => {
           <Text
             style={[styles.tabText, activeTab === 2 && styles.activeTabText]}
           >
-            Tab 2
+            Friends
           </Text>
         </TouchableOpacity>
       </View>
@@ -172,35 +203,54 @@ useEffect(() => {
           <View>
             <Text>All users</Text>
             <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-        <Text style={styles.buttonText}>Sign out</Text>
-      </TouchableOpacity>
+              <Text style={styles.buttonText}>Sign out</Text>
+            </TouchableOpacity>
             <FlatList
               data={users}
               renderItem={renderUserItem}
               keyExtractor={(item) => item._id}
               contentContainerStyle={styles.listContainer}
             />
-            
+
             {selectedUser && (
               <View style={styles.userDetailsContainer}>
                 <Text style={styles.userDetails}>{selectedUser.email}</Text>
                 <Text style={styles.userDetails}>{selectedUser._id}</Text>
-                
-                <Button title="Add Friend" onPress={() => handleAddFriend(selectedUser)} />
-              
+
+                <Button
+                  title="Add Friend"
+                  onPress={() => handleAddFriend(selectedUser)}
+                />
               </View>
             )}
           </View>
         )}
+
         {activeTab === 2 && (
           <View>
-            <Text>Content of Tab 2</Text>
+            <Text>My Friends</Text>
             <View>
-    <Text>Registered Users:</Text>
-    {registeredUsers.map((user) => (
-      <Text style={styles.userDetails} key={user._id}>{user.email}</Text>
-    ))}
-  </View>
+              
+              {registeredUsers.map((user) => (
+                <View style={styles.listItem} key={user._id}>
+                  <Text style={styles.number}>{user.email}</Text>
+                  <Button
+                    title={'View Details'}
+                    onPress={() => handleUserPress(user)}
+                  />
+                </View>
+              ))}
+            </View>
+            {selectedUser && (
+              <View style={styles.userDetailsContainer}>
+                <Text style={styles.userDetails}>{selectedUser.email}</Text>
+                <Text style={styles.userDetails}>{selectedUser._id}</Text>
+                <Button
+                  title="Remove Friend"
+                  onPress={() => handleRemoveFriend(selectedUser)}
+                />
+              </View>
+            )}
           </View>
         )}
       </View>
