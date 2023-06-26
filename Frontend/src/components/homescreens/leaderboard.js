@@ -28,10 +28,12 @@ const Leaderboard = () => {
     setSearchQuery(query);
   };
 
-  
+  //----------------------------------------------------------------
 
+  //--------------------tab 2 search--------------------------------
+  const [searchQuery2, setSearchQuery2] = useState('');
 
- //----------------------------------------------------------------
+  //---------------------------------------------------------------
 
   const [apiSuccess, setApiSuccess] = useState(false);
 
@@ -177,7 +179,6 @@ const Leaderboard = () => {
         const { userList } = data;
         if (userList) {
           setRegisteredUsers(userList.registeredUsers);
-          // setSearchResults(userList.registeredUsers);
         }
       } catch (error) {
         console.error('An error occurred while fetching the user list:', error);
@@ -240,19 +241,14 @@ const Leaderboard = () => {
       <View style={styles.contentContainer}>
         {activeTab === 1 && (
           <View>
-            <View style={styles.searchContainer}>
+            <View>
               <TextInput
                 style={styles.searchInput}
-                placeholder="Search by email..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChangeText={handleSearchQueryChange}
               />
-              <TouchableOpacity
-                style={styles.searchButton}
-                onPress={handleSearch}
-              >
-                <Text style={styles.searchButtonText}>Search</Text>
-              </TouchableOpacity>
+            
             </View>
             <TouchableOpacity onPress={handleSignOut} style={styles.button}>
               <Text style={styles.buttonText}>Sign out</Text>
@@ -284,25 +280,29 @@ const Leaderboard = () => {
 
         {activeTab === 2 && (
           <View>
-            
-
-          
-
-            {registeredUsers.map((user, index) => (
-              <View style={styles.listItem} key={user._id}>
-              <Text style={styles.number}>{index + 1}.</Text>
-                <Image
-                  source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                  style={styles.profileImage}
-                />
-                <Text> </Text>
-                <Text style={styles.number}>{user.email}</Text>
-                <Button
-                  title={'View Details'}
-                  onPress={() => handleUserPress(user)}
-                />
-              </View>
-            ))}
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Search..."
+              value={searchQuery2}
+              onChangeText={(text) => setSearchQuery2(text)}
+            />
+            {registeredUsers
+              .filter((user) => user.email.includes(searchQuery2))
+              .map((user, index) => (
+                <View style={styles.listItem} key={user._id}>
+                  <Text style={styles.number}>{index + 1}.</Text>
+                  <Image
+                    source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
+                    style={styles.profileImage}
+                  />
+                  <Text> </Text>
+                  <Text style={styles.number}>{user.email}</Text>
+                  <Button
+                    title={'View Details'}
+                    onPress={() => handleUserPress(user)}
+                  />
+                </View>
+              ))}
             {selectedUser && (
               <View style={styles.userDetailsContainer}>
                 <Text style={styles.userDetails}>{selectedUser.email}</Text>
@@ -395,15 +395,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  searchInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    marginRight: 10,
-  },
+  
   searchButton: {
     backgroundColor: '#333',
     paddingVertical: 8,
@@ -414,6 +406,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  searchInput: {
+    marginBottom: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5,
   },
 });
 
