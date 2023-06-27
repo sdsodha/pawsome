@@ -16,10 +16,12 @@ import axios from 'axios';
 
 const Leaderboard = () => {
   const navigation = useNavigation();
+
+  //-----------Variable for switch between 2 tabs---------------------
   const [activeTab, setActiveTab] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  //-------------------tab 1 search-------------------
+  //--------------Tab 1 Search Functionality-------------------
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -28,14 +30,14 @@ const Leaderboard = () => {
     setSearchQuery(query);
   };
 
-  //----------------------------------------------------------------
-
-  //--------------------tab 2 search--------------------------------
+  //--------------------Tab 2 Search Functionality--------------------------------
   const [searchQuery2, setSearchQuery2] = useState('');
 
   //---------------------------------------------------------------
 
   const [apiSuccess, setApiSuccess] = useState(false);
+
+  //--------------------Sign Out Functionality--------------------------------
 
   const handleSignOut = () => {
     auth
@@ -50,7 +52,7 @@ const Leaderboard = () => {
     setActiveTab(tabIndex);
   };
 
-  //----------------------Get logged in user ID-----------------------//
+  //----------------------Get object user ID of logged in user-----------------------//
 
   const [currentUserId, setCurrentUserId] = useState('');
 
@@ -78,7 +80,7 @@ const Leaderboard = () => {
     }
   };
 
-  // --------------------Fetch all users from the backend
+  // --------------------Fetch all users from the backend----------------------//
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -95,19 +97,17 @@ const Leaderboard = () => {
       console.error(error);
     }
   };
-  //--------------------------------------------------
+  //---------------------------------Display all users in Public section-----------------
 
   const renderUserItem = ({ item, index }) => {
     const handleUserPress = () => {
       setSelectedUser(item);
     };
 
-    // Check if the search query matches the user email
     const isEmailMatch = item.email
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
 
-    // Render the user item only if it matches the search query
     if (!isEmailMatch) {
       return null;
     }
@@ -116,11 +116,15 @@ const Leaderboard = () => {
       <View style={styles.listItem}>
         <Text style={styles.number}>{index + 1}.</Text>
         <Image
-          source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
+          source={{ uri: 'https://picsum.photos/536/354' }}
           style={styles.profileImage}
         />
-        <Text> </Text>
-        <Text style={styles.userName}>{item.email} </Text>
+       
+        <View style={styles.userInfoContainer}>
+       
+        <Text style={styles.userName}>{item.email}</Text>
+        <Text style={styles.score}>Scores - 20 {item.score}</Text>
+      </View>
         <Button title={'View Details'} onPress={handleUserPress} />
       </View>
     );
@@ -137,7 +141,7 @@ const Leaderboard = () => {
     setSelectedUser(user);
   };
 
-  //-----------------------------------------------------
+  //------------------------------------Add friend functionality---------------------------------
 
   const handleAddFriend = async (selectedUser) => {
     try {
@@ -156,8 +160,6 @@ const Leaderboard = () => {
         alert('User added as a friend successfully');
         Alert('User added as a friend successfully');
         console.log('User added as a friend successfully');
-
-        // Optionally, you can update the user list on the client-side as well
       } else {
         console.error('Failed to add user as a friend');
       }
@@ -166,7 +168,7 @@ const Leaderboard = () => {
     }
   };
 
-  //-------------------Display the freinds--------------------------------------
+  //-------------------Display the freinds in friends section--------------------------------------
   const [registeredUsers, setRegisteredUsers] = useState([]);
 
   useEffect(() => {
@@ -187,7 +189,6 @@ const Leaderboard = () => {
 
     fetchUserList(currentUserId);
   }, [currentUserId, apiSuccess]);
-  //------------------------------------------------------------------------------------
 
   //-----------------------Remove friend from the friend list for single user-------------------------------
 
@@ -212,7 +213,7 @@ const Leaderboard = () => {
     }
   };
 
-  //-------------------------------------------------------------------------OUTPUT----------------------------------------------------------
+  //----------------------------------------------OUTPUT OF BOTH TABS----------------------------------------------------------
 
   return (
     <View style={styles.container}>
@@ -248,7 +249,6 @@ const Leaderboard = () => {
                 value={searchQuery}
                 onChangeText={handleSearchQueryChange}
               />
-            
             </View>
             <TouchableOpacity onPress={handleSignOut} style={styles.button}>
               <Text style={styles.buttonText}>Sign out</Text>
@@ -264,6 +264,7 @@ const Leaderboard = () => {
               <View style={styles.userDetailsContainer}>
                 <Text style={styles.userDetails}>{selectedUser.email}</Text>
                 <Text style={styles.userDetails}>{selectedUser._id}</Text>
+                <Text style={styles.userDetails}>Scores - 20 {selectedUser.score}</Text>
                 <Image
                   source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
                   style={styles.profileBigImage}
@@ -295,8 +296,12 @@ const Leaderboard = () => {
                     source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
                     style={styles.profileImage}
                   />
-                  <Text> </Text>
-                  <Text style={styles.number}>{user.email}</Text>
+                 
+                  <View style={styles.userInfoContainer}>
+       
+                  <Text style={styles.userName}>{user.email}</Text>
+                  <Text style={styles.score}>Scores - 20 {user.score}</Text>
+                </View>
                   <Button
                     title={'View Details'}
                     onPress={() => handleUserPress(user)}
@@ -307,6 +312,7 @@ const Leaderboard = () => {
               <View style={styles.userDetailsContainer}>
                 <Text style={styles.userDetails}>{selectedUser.email}</Text>
                 <Text style={styles.userDetails}>{selectedUser._id}</Text>
+                <Text style={styles.userDetails}>Scores - 20 {selectedUser.score}</Text>
                 <Image
                   source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
                   style={styles.profileBigImage}
@@ -324,6 +330,8 @@ const Leaderboard = () => {
     </View>
   );
 };
+
+//--------------------------Design---------------------------------
 
 const styles = StyleSheet.create({
   container: {
@@ -395,7 +403,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  
+
   searchButton: {
     backgroundColor: '#333',
     paddingVertical: 8,
@@ -413,6 +421,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
+  },
+  userInfoContainer: {
+    marginHorizontal: 10, 
   },
 });
 
