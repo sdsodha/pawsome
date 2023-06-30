@@ -107,13 +107,13 @@ const ActivityProgress = ({ route, navigation }) => {
 
         switch (item) {
             case "F":
-                param = { food: counter, water: 0, treat: 0 };
+                param = { food: parseInt(itemGoal), water: 0, treat: 0 };
                 break;
             case "W":
-                param = { food: 0, water: counter, treat: 0 };
+                param = { food: 0, water: parseInt(itemGoal), treat: 0 };
                 break;
             case "T":
-                param = { food: 0, water: 0, treat: counter };
+                param = { food: 0, water: 0, treat: parseInt(itemGoal) };
                 break;
         }
 
