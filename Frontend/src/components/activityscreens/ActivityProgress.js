@@ -6,9 +6,9 @@ import ProgressBar from 'react-native-progress/Bar';
 
 const ActivityProgress = ({ route, navigation }) => {
 
-    const { activity, item } = route.params;
+    const { activity, item , activityDifficulty, itemGoal, activityGoal } = route.params;
 
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = useState(3);
 
     const [{ x, y, z }, setData] = useState({
         x: 0,
@@ -129,13 +129,17 @@ const ActivityProgress = ({ route, navigation }) => {
             <Text>{activity} --- {item}</Text>
 
             <Text>Movement:</Text>
-            <ProgressBar progress={counter / 10} width={200} height={20} />
+            <ProgressBar progress={counter / parseInt(activityGoal)} width={200} height={20} />
 
             <Text>Item:</Text>
-            <ProgressBar progress={counter / 10} width={200} height={20} />
+            <ProgressBar progress={(counter / parseInt(activityGoal))} width={200} height={20} />
 
             <Button
-                title="Start"
+                title="Pause"
+                onPress={onActivityDone} />
+
+            <Button
+                title="End Activity"
                 onPress={onActivityDone} />
         </View>
     )
