@@ -19,13 +19,13 @@ import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
 
 
-const PetComponent = ({route,navigation}) => {
+const PetComponent = ({ route, navigation }) => {
 
   //Anim vars
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-  const {food,water,treat} = route.params;
+  const { food, water, treat } = route.params;
 
   useEffect(() => {
     if (route.params?.food) {
@@ -53,7 +53,7 @@ const PetComponent = ({route,navigation}) => {
   const [foodCount, setFood] = useState(food);
   const [waterCount, setWater] = useState(water);
   const [treatCount, setTreat] = useState(treat);
-  
+
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
     console.log("Mood", moodProgress);
@@ -101,12 +101,15 @@ const PetComponent = ({route,navigation}) => {
       }
     };
     if (currentUserId) {
-      fetchPetFormData(currentUserId);
+//      fetchPetFormData(currentUserId);
     }
   }, [currentUserId]);
 
   const onFoodPress = () => {
-    if (foodCount <= 0) return;
+    if (foodCount <= 0) {
+      setModalVisible(!modalVisible);
+      return;
+    }
 
     setFood(foodCount - 1);
     video.current.loadAsync(require("../../../assets/sampleVideos/love.mp4"))
@@ -119,7 +122,10 @@ const PetComponent = ({route,navigation}) => {
   }
 
   const onWaterPress = () => {
-    if (waterCount <= 0) return;
+    if (waterCount <= 0) {
+      setModalVisible(!modalVisible);
+      return;
+    }
 
     setWater(waterCount - 1);
     video.current.loadAsync(require("../../../assets/sampleVideos/cheers.mp4"))
@@ -132,7 +138,10 @@ const PetComponent = ({route,navigation}) => {
   }
 
   const onTreatPress = () => {
-    if (treatCount <= 0) return;
+    if (treatCount <= 0) {
+      setModalVisible(!modalVisible);
+      return;
+    }
 
     setTreat(treatCount - 1);
     video.current.loadAsync(require("../../../assets/sampleVideos/angry.mp4"))
@@ -214,15 +223,20 @@ const PetComponent = ({route,navigation}) => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Image 
-              style={styles.image}
-              source={require("../../../assets/picture1.jpg")}
-               ></Image>
-              <Text style={styles.modalText}>You dont have enough food!</Text>
+              <Image
+                style={styles.image}
+                source={require("../../../assets/picture1.jpg")}
+              ></Image>
+              <Text style={styles.modalText}>You dont have enough</Text>
               <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
-              
+
               <View style={styles.button}>
-                <Button title='Start' />
+                <Button title='Start'
+                  onPress={() => {
+                    setModalVisible(!modalVisible)
+                    navigation.navigate("ActivitySelectionScreen")
+                  }
+                  } />
                 <Button title='Cancel'
                   onPress={() => setModalVisible(!modalVisible)} />
               </View>

@@ -8,7 +8,7 @@ const ActivityProgress = ({ route, navigation }) => {
 
     const { activity, item , activityDifficulty, itemGoal, activityGoal } = route.params;
 
-    const [counter, setCounter] = useState(3);
+    const [counter, setCounter] = useState(0);
 
     const [{ x, y, z }, setData] = useState({
         x: 0,
