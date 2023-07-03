@@ -37,7 +37,7 @@ const PetSelectScreen = () => {
 
     useEffect(() => {
 
-        fetchCurrentUserId();
+//        fetchCurrentUserId();
     }, []);
 
     const fetchCurrentUserId = async () => {
@@ -75,22 +75,23 @@ const PetSelectScreen = () => {
 
         console.log(formData);
 
-        fetch(`http://localhost:8080/users/pet-form`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                // Handle the response data
-                console.log(data);
-            })
-            .catch((error) => {
-                // Handle any error that occurred during the request
-                console.error(error);
-            });
+        // fetch(`http://localhost:8080/users/pet-form`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(formData),
+        // })
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         // Handle the response data
+        //         console.log(data);
+        //     })
+        //     .catch((error) => {
+        //         // Handle any error that occurred during the request
+        //         console.error(error);
+        //     });
+
         // Clear the form fields after submission
         Alert.alert('Form Saved', 'The form has been successfully saved.');
         setDifficulty('');

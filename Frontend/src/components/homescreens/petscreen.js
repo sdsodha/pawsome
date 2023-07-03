@@ -6,10 +6,12 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Modal,
+  Pressable,
+  Alert,
   Button,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
-// import { ProgressBarAndroid } from '@react-native-community/progress-bar-android';
+//import { useNavigation } from '@react-navigation/core';
 import ProgressBar from 'react-native-progress/Bar';
 import { auth } from '../../config/firebase';
 import axios from 'axios';
@@ -17,31 +19,26 @@ import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
 
 
-const PetComponent = () => {
+const PetComponent = ({ route, navigation }) => {
 
   //Anim vars
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-  //Sensor vars
-  const [{ x, y, z }, setData] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
-  const [subscription, setSubscription] = useState(null);
+  const { food, water, treat } = route.params;
 
-  const [xCounter, setXCounter] = useState(5);
-  const [xMove, setXMove] = useState(false);
+  useEffect(() => {
+    if (route.params?.food) {
+      setFood(foodCount + food);
+    }
+    if (route.params?.water) {
+      setWater(waterCount + water);
+    }
+    if (route.params?.treat) {
+      setTreat(treatCount + treat);
+    }
+  }, [route.params?.food, route.params?.water, route.params?.treat]);
 
-  const [yCounter, setYCounter] = useState(5);
-  const [yMove, setYMove] = useState(false);
-
-  const [zCounter, setZCounter] = useState(5);
-  const [zMove, setZMove] = useState(false);
-
-  //Form vars
-  const navigation = useNavigation();
   const [mood, setMood] = useState(20);
   const [health, setHealth] = useState(20);
   const [textInputValue, setTextInputValue] = useState('');
@@ -51,55 +48,11 @@ const PetComponent = () => {
   const [moodProgress, setMoodProgress] = useState(0.5);
   const [healthProgress, setHealthProgress] = useState(0.5);
 
-  //Sensor code
-  const _slow = () => Accelerometer.setUpdateInterval(500);
-  const _fast = () => Accelerometer.setUpdateInterval(16);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const _subscribe = () => {
-    setSubscription(
-      Accelerometer.addListener(setData)
-    );
-  };
-
-  const _unsubscribe = () => {
-    subscription && subscription.remove();
-    setSubscription(null);
-  };
-
-  useEffect(() => {
-    _subscribe();
-    updateMovement();
-    return () => _unsubscribe();
-  }, [x, y, z]);
-
-  const updateMovement = () => {
-    if (x >= 1) {
-      setXMove(true);
-    }
-    if (xMove === true && (x <= -1)) {
-      setXCounter(xCounter + 1);
-      setXMove(false);
-      console.log("X count - ", xCounter);
-    }
-
-    if (y >= 1) {
-      setYMove(true);
-    }
-    if (yMove === true && (y <= -1)) {
-      setYCounter(yCounter + 1);
-      setYMove(false);
-      console.log("Y count - ", yCounter);
-    }
-
-    if (z >= 1) {
-      setZMove(true);
-    }
-    if (zMove === true && (z <= -1)) {
-      setZCounter(zCounter + 1);
-      setZMove(false);
-      console.log("Z count - ", zCounter);
-    }
-  }
+  const [foodCount, setFood] = useState(food);
+  const [waterCount, setWater] = useState(water);
+  const [treatCount, setTreat] = useState(treat);
 
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
@@ -148,14 +101,17 @@ const PetComponent = () => {
       }
     };
     if (currentUserId) {
-      fetchPetFormData(currentUserId);
+//      fetchPetFormData(currentUserId);
     }
   }, [currentUserId]);
 
   const onFoodPress = () => {
-    if (xCounter <= 0) return;
+    if (foodCount <= 0) {
+      setModalVisible(!modalVisible);
+      return;
+    }
 
-    setXCounter(xCounter - 1);
+    setFood(foodCount - 1);
     video.current.loadAsync(require("../../../assets/sampleVideos/love.mp4"))
       .then(() => {
         video.current.playAsync();
@@ -166,9 +122,12 @@ const PetComponent = () => {
   }
 
   const onWaterPress = () => {
-    if (yCounter <= 0) return;
+    if (waterCount <= 0) {
+      setModalVisible(!modalVisible);
+      return;
+    }
 
-    setYCounter(yCounter - 1);
+    setWater(waterCount - 1);
     video.current.loadAsync(require("../../../assets/sampleVideos/cheers.mp4"))
       .then(() => {
         video.current.playAsync();
@@ -179,9 +138,12 @@ const PetComponent = () => {
   }
 
   const onTreatPress = () => {
-    if (zCounter <= 0) return;
+    if (treatCount <= 0) {
+      setModalVisible(!modalVisible);
+      return;
+    }
 
-    setZCounter(zCounter - 1);
+    setTreat(treatCount - 1);
     video.current.loadAsync(require("../../../assets/sampleVideos/angry.mp4"))
       .then(() => {
         video.current.playAsync();
@@ -193,7 +155,6 @@ const PetComponent = () => {
 
   return (
     <View style={styles.container}>
-      
       {/* 
       <Text>X movement : {xCounter}</Text>
       <Text>Y movement : {yCounter}</Text>
@@ -226,15 +187,15 @@ const PetComponent = () => {
 
       <View style={styles.button}>
         <Button
-          title={"Food - " + xCounter}
+          title={"Food - " + foodCount}
           onPress={onFoodPress}
         />
         <Button
-          title={"Water - " + yCounter}
+          title={"Water - " + waterCount}
           onPress={onWaterPress}
         />
         <Button
-          title={"Treat - " + zCounter}
+          title={"Treat - " + treatCount}
           onPress={onTreatPress}
         />
       </View>
@@ -245,49 +206,52 @@ const PetComponent = () => {
       <Text style={styles.label}>Health:</Text>
       <ProgressBar progress={healthProgress} width={200} height={20} />
 
-      {/* 
-      <Text>Welcome to the Pet Screen</Text>
-      <Button
-        title="Go to Pet Form"
-        onPress={() => navigation.navigate('PetForm')}
-      />
-      <Button
-        title="Go to Home Screen"
-        onPress={() => navigation.navigate('Home')}
-      />
-      <Button
-        title="Go to Leaderboard"
-        onPress={() => navigation.navigate('UserListComponent')}
-      />
+      <View style={{ marginTop: 50 }}>
+        <Button
+          title="Start Activity"
+          onPress={() => { navigation.navigate("ActivitySelectionScreen") }} />
+      </View>
 
-      <Text style={styles.title}>Your Personal Preferences</Text>
-      <Text>Selected Picture: {petFormData?.selectedPicture}</Text>
-      <Text>Your current User ID: {currentUserId}</Text>
-      <Image source={require('../../../assets/picture3.jpg')} style={styles.image} />
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Image
+                style={styles.image}
+                source={require("../../../assets/picture1.jpg")}
+              ></Image>
+              <Text style={styles.modalText}>You dont have enough</Text>
+              <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
 
-      <Text>Difficulty Level: {petFormData?.difficulty}</Text>
-      <Text>Name: {petFormData?.name}</Text>
-      <Text>Breed: {petFormData?.breed}</Text>
-      <Text>Sex: {petFormData?.sex}</Text>
+              <View style={styles.button}>
+                <Button title='Start'
+                  onPress={() => {
+                    setModalVisible(!modalVisible)
+                    navigation.navigate("ActivitySelectionScreen")
+                  }
+                  } />
+                <Button title='Cancel'
+                  onPress={() => setModalVisible(!modalVisible)} />
+              </View>
+              {/* <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable> */}
+            </View>
+          </View>
+        </Modal>
+      </View>
 
-      <Text style={styles.label}>Mood:</Text>
-      <ProgressBar progress={progress} width={200} height={20} />
-      <Button onPress={handleIncreasePress} title="Increase progress" />
-      <Button onPress={handleDecreasePress} title="Decrease progress" />
-      <Text>Progress: {(progress * 100).toFixed(0)}%</Text>
+      <Text> Params - {food} {water} {treat}</Text>
 
-      <Text style={styles.label}>Health:</Text>
-      <ProgressBar progress={0.5} width={200} height={20} />
-
-      <Text style={styles.label}>Food:</Text>
-      <ProgressBar progress={0.5} width={200} height={20} />
-
-      <Text style={styles.label}>Water:</Text>
-      <ProgressBar progress={0.5} width={200} height={20} />
-
-      <Text style={styles.label}>Treat:</Text>
-      <ProgressBar progress={0.5} width={200} height={20} />
-       */}
     </View>
   );
 };
@@ -326,6 +290,43 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 320,
     height: 200,
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 
