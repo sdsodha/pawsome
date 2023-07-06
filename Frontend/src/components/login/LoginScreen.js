@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, Alert,Image,TouchableOpacity, View } from 'react-native'
 import { auth } from '../../config/firebase'
+import styles from '../style'
 // import TwoTabsComponent from '../homescreens/leaderboard'
 
 const LoginScreen = () => {
@@ -13,7 +14,7 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("Home")
+        navigation.navigate("PetSelect")
       }
     })
 
@@ -78,17 +79,60 @@ const LoginScreen = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-    >
+    // <KeyboardAvoidingView
+    //   style={styles.container}
+    //   behavior="padding"
+    // >
+    //   <View style={styles.inputContainer}>
+    //     <TextInput
+    //       placeholder="Email"
+    //       value={email}
+    //       onChangeText={text => setEmail(text)}
+    //       style={styles.input}
+    //     />
+    //     <TextInput
+    //       placeholder="Password"
+    //       value={password}
+    //       onChangeText={text => setPassword(text)}
+    //       style={styles.input}
+    //       secureTextEntry
+    //     />
+    //   </View>
+
+    //   <View style={styles.buttonContainer}>
+    //     <TouchableOpacity
+    //       onPress={handleLogin}
+    //       style={styles.button}
+    //     >
+    //       <Text style={styles.buttonText}>Login</Text>
+    //     </TouchableOpacity>
+    //     <TouchableOpacity
+    //       onPress={handleSignUp}
+    //       style={[styles.button, styles.buttonOutline]}
+    //     >
+    //       <Text style={styles.buttonOutlineText}>Register</Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // </KeyboardAvoidingView>
+
+    <KeyboardAvoidingView>
+      
+      <Image  style={styles.logo} source={require('../../../assets/logo.png')} />
+    
       <View style={styles.inputContainer}>
+
+      
+      <Text>Welcome</Text>
+      </View>
+      <View style={styles.inputContainer}>
+        <Text>E-mail</Text>
         <TextInput
           placeholder="Email"
           value={email}
           onChangeText={text => setEmail(text)}
           style={styles.input}
         />
+        <Text>Password</Text>
         <TextInput
           placeholder="Password"
           value={password}
@@ -96,6 +140,11 @@ const LoginScreen = () => {
           style={styles.input}
           secureTextEntry
         />
+        <TouchableOpacity
+         onPress={() => navigation.navigate("ForgotPassword")} >
+       
+          <Text>Forgot Your Password?</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -105,19 +154,29 @@ const LoginScreen = () => {
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
+        <Text>Or</Text>
         <TouchableOpacity
-          onPress={handleSignUp}
-          style={[styles.button, styles.buttonOutline]}
+      
+          style={styles.button}
         >
-          <Text style={styles.buttonOutlineText}>Register</Text>
+          <Text style={styles.buttonText}>Login With Google</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+         // onPress={handleSignUp}
+         onPress={() => navigation.navigate("CreateAccount")} >
+          
+        
+          <Text>New to Pawsome? Sign Up!</Text>
         </TouchableOpacity>
       </View>
+
+      
     </KeyboardAvoidingView>
   )
 }
 
 export default LoginScreen
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -163,4 +222,4 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 16,
   },
-})
+})*/

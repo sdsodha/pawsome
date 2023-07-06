@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet, Dimensions, Alert } from 'react-native';
+import { View, Text,StatusBar, KeyboardAvoidingView,TextInput, Button, Image,TouchableOpacity,Pressable, StyleSheet,SafeAreaView,ScrollView,FlatList, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core'
 import { auth } from '../../config/firebase';
 import Carousel from 'react-native-reanimated-carousel';
 import { Select } from 'native-base';
+import styles from '../style';
+import { SliderBox } from 'react-native-image-slider-box';
+const Separator = () => <View style={styles.separator} />;
 
 
 const PetSelectScreen = () => {
@@ -24,6 +27,14 @@ const PetSelectScreen = () => {
     picList.push('../../../assets/picture4.jpg');
     picList.push('../../../assets/picture5.jpg');
 
+
+    const [images, setImages] = React.useState([
+        require('../../../assets/happy_cat.png'),
+        require('../../../assets/happy_owl.png'),
+        require('../../../assets/happy_pig.png')
+   
+        
+    ]);
     const data = [
         { color: 'red' },
         { color: 'purple' },
@@ -37,7 +48,7 @@ const PetSelectScreen = () => {
 
     useEffect(() => {
 
-//        fetchCurrentUserId();
+        fetchCurrentUserId();
     }, []);
 
     const fetchCurrentUserId = async () => {
@@ -75,23 +86,22 @@ const PetSelectScreen = () => {
 
         console.log(formData);
 
-        // fetch(`http://localhost:8080/users/pet-form`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(formData),
-        // })
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         // Handle the response data
-        //         console.log(data);
-        //     })
-        //     .catch((error) => {
-        //         // Handle any error that occurred during the request
-        //         console.error(error);
-        //     });
-
+        fetch(`http://localhost:8080/users/pet-form`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Handle the response data
+                console.log(data);
+            })
+            .catch((error) => {
+                // Handle any error that occurred during the request
+                console.error(error);
+            });
         // Clear the form fields after submission
         Alert.alert('Form Saved', 'The form has been successfully saved.');
         setDifficulty('');
@@ -104,6 +114,9 @@ const PetSelectScreen = () => {
 
 
     return (
+        <ScrollView>
+        <KeyboardAvoidingView>
+        
         <View style={styles.container}>
             {/* 
     <Text>Welcome to the Pet Form</Text>
@@ -122,108 +135,54 @@ const PetSelectScreen = () => {
     */}
 
 
-            <Text style={styles.title}>Select Your Pet</Text>
-
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Difficulty Level:</Text>
-                <View style={styles.picker}>
-                    <Select
-                        selectedValue={difficulty}
-                        onValueChange={(value) => setDifficulty(value)}
-                    >
-                        <Select.Item label="Select Difficulty" value="" />
-                        <Select.Item label="Easy" value="easy" />
-                        <Select.Item label="Medium" value="medium" />
-                        <Select.Item label="Hard" value="hard" />
-                    </Select>
+            
+            <Separator/>
+           
+            
+            <View style={styles.buttonContainer}>
+                    <Text style={styles.label}>Difficulty Level</Text>
+                <View style={styles.fixToText}>
+                    <Button style={styles.button} title="Easy" onPress={() => handleSubmit(currentUserId)} />
+                    <Button style={styles.button} title="Medium" onPress={() => handleSubmit(currentUserId)} />
+                    <Button style={styles.button} title="Hard" onPress={() => handleSubmit(currentUserId)} />
                 </View>
             </View>
-
-            <Text style={styles.label}>Pictures:</Text>
-            <View style={styles.pictureContainer}>
-                <View style={styles.pictureItem}>
-                    <Image
-                        source={require('../../../assets/picture1.jpg')}
-                        style={styles.picture}
-                    />
-                    <Text style={styles.pictureLabel}>Picture 1</Text>
-                </View>
-                <View style={styles.pictureItem}>
-                    <Image
-                        source={require('../../../assets/picture2.jpg')}
-                        style={styles.picture}
-                    />
-                    <Text style={styles.pictureLabel}>Picture 2</Text>
-                </View>
-                <View style={styles.pictureItem}>
-                    <Image
-                        source={require('../../../assets/picture3.jpg')}
-                        style={styles.picture}
-                    />
-                    <Text style={styles.pictureLabel}>Picture 3</Text>
-                </View>
-                <View style={styles.pictureItem}>
-                    <Image
-                        source={require('../../../assets/picture4.jpg')}
-                        style={styles.picture}
-                    />
-                    <Text style={styles.pictureLabel}>Picture 4</Text>
-                </View>
-                <View style={styles.pictureItem}>
-                    <Image
-                        source={require('../../../assets/picture5.jpg')}
-                        style={styles.picture}
-                    />
-                    <Text style={styles.pictureLabel}>Picture 5</Text>
-                </View>
+            
+            
+            <Text style={styles.label}>Choose Pet</Text>
+            <Separator/>
+            <View style={styles.container}>
+            <SliderBox 
+                images={images}
+                sliderBoxHeight={300}
+                dotColor={styles.primaryColor}
+                inactiveDotColor="#ff0000"  
+                onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
+                paginationBoxVerticalPadding={15}
+               
+                autoplayInterval={3000}
+                resizeMode='stretch'
+                circleLoop
+            />
+            
+            <View style={styles.inputContainer}>
+                <Button title="Select" style={styles.button} onPress={() => handleSubmit(currentUserId)} />
             </View>
+            
+        </View>
+        <Separator/>
+          
 
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Picture:</Text>
-                <View style={styles.picker}>
-                    <Select
-                        selectedValue={selectedPicture}
-                        onValueChange={(value) => setSelectedPicture(value)}
-                    >
-                        <Select.Item label="Select Picture" value="" />
-                        <Select.Item label="Picture 1" value="picture1" />
-                        <Select.Item label="Picture 2" value="picture2" />
-                        <Select.Item label="Picture 3" value="picture3" />
-                        <Select.Item label="Picture 4" value="picture4" />
-                        <Select.Item label="Picture 5" value="picture5" />
-                    </Select>
-                </View>
-            </View>
+           
 
-            {/* 
-      <View style={{ flex: 1 }}>
-        <Carousel
-          width={width}
-          height={width / 2}
-          data={picList}
-          scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log('current index:', index)}
-          renderItem={({ index }) => (
-            <View
-              style={{
-                flex: 1,
-                borderWidth: 1,
-                justifyContent: 'center',
-              }}
-            >
-              <Text style={{ textAlign: 'center', fontSize: 30 }}>
-                {index}
-              </Text>
-            </View>
-          )}
-        />
-      </View>
- */}
+      
+
             <View style={styles.fieldContainer}>
                 <Text style={styles.label}>Name:</Text>
                 <TextInput style={styles.input} value={name} onChangeText={(text) => setName(text)} />
             </View>
+            
+
 
             <View style={styles.fieldContainer}>
                 <Text style={styles.label}>Breed:</Text>
@@ -243,71 +202,13 @@ const PetSelectScreen = () => {
                     </Select>
                 </View>
             </View>
-
-
-            <Button title="Submit" onPress={() => handleSubmit(currentUserId)} />
+        <Button title="Submit" onPress={() => handleSubmit(currentUserId)} />
         </View>
+       
+        </KeyboardAvoidingView>
+        </ScrollView>
+     
+       
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 16,
-    },
-    fieldContainer: {
-        marginBottom: 16,
-    },
-    label: {
-        fontSize: 16,
-        marginBottom: 8,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-    },
-    picker: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-    },
-    pictureContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-    },
-    pictureItem: {
-        width: '20%',
-        marginBottom: 16,
-        alignItems: 'center',
-    },
-    picture: {
-        width: 100,
-        height: 100,
-    },
-    pictureLabel: {
-        marginTop: 8,
-    },
-    button: {
-        backgroundColor: '#0782F9',
-        width: '60%',
-        padding: 15,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginTop: 40,
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: '700',
-        fontSize: 16,
-    },
-});
-
 export default PetSelectScreen;

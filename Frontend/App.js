@@ -3,10 +3,33 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NativeBaseProvider } from 'native-base'
 import AppStack from './src/components/stacks/AppStack';
+import {useCallback,useEffect,useState} from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 
-
-
+//SplashScreen.preventAutoHideAsync();
 export default function App() {
+  /*const [appIsReady,setAppIsReady] = useState(false);
+  useEffect( () => {
+    async function show_splash_screen(){
+    try{
+        // our api calls will be here.
+        new Promise(resolve => setTimeout(resolve,5000)); // wait for 5 secs
+    }catch(e){
+        console.warn(e);
+    }finally{
+        setAppIsReady(true); // application to render.
+    }
+    }
+    show_splash_screen();
+});*/
+/*
+const onLayoutRootView = useCallback(async () => {
+  if(appIsReady){
+  // hide the splash screen.
+  await SplashScreen.hideAsync();
+  }
+},[appIsReady]);
+*/
   return (
     <NativeBaseProvider>
       <AppStack />

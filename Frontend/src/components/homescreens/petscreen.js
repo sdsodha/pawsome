@@ -17,6 +17,7 @@ import { auth } from '../../config/firebase';
 import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const PetComponent = ({ route, navigation }) => {
@@ -154,7 +155,9 @@ const PetComponent = ({ route, navigation }) => {
   }
 
   return (
+    <ScrollView>
     <View style={styles.container}>
+      
       {/* 
       <Text>X movement : {xCounter}</Text>
       <Text>Y movement : {yCounter}</Text>
@@ -253,6 +256,7 @@ const PetComponent = ({ route, navigation }) => {
       <Text> Params - {food} {water} {treat}</Text>
 
     </View>
+    </ScrollView>
   );
 };
 
