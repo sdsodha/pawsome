@@ -5,12 +5,12 @@ import { useNavigation } from '@react-navigation/core'
 
 const ActivitySelection = () => {
 
-    const [selectedActivity, setSelectedActivity] = useState('');
-    const [selectedItem, setSelectedItem] = useState('');
+    const [selectedActivity, setSelectedActivity] = useState('A');
+    const [selectedItem, setSelectedItem] = useState('F');
     const [selectedDifficulty, setSelectedDifficulty] = useState('');
 
-    const [itemGoal, onItemNumberChange] = useState('');
-    const [activityGoal, onActivityNumberChange] = useState('');
+    const [itemGoal, onItemNumberChange] = useState('0');
+    const [activityGoal, onActivityNumberChange] = useState('0');
 
 
     const navigation = useNavigation()
@@ -70,8 +70,8 @@ const ActivitySelection = () => {
                         activity: selectedActivity,
                         item: selectedItem,
                         activityDifficulty: selectedDifficulty,
-                        itemGoal: itemGoal,
-                        activityGoal: activityGoal
+                        itemGoal: parseInt(itemGoal) === 0 ? 1 : parseInt(itemGoal),
+                        activityGoal: parseInt(activityGoal) === 0 ? 1 : parseInt(activityGoal)
                     })
                 }} />
 

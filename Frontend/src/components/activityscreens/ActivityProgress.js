@@ -1,12 +1,13 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet, Image, Modal } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
-import ProgressBar from 'react-native-progress/Bar';
+import { Video, ResizeMode } from 'expo-av';
 
+import * as Progress from 'react-native-progress';
 
 const ActivityProgress = ({ route, navigation }) => {
 
-    const { activity, item , activityDifficulty, itemGoal, activityGoal } = route.params;
+    const { activity, item, activityDifficulty, itemGoal, activityGoal } = route.params;
 
     const [counter, setCounter] = useState(0);
 
@@ -29,6 +30,12 @@ const ActivityProgress = ({ route, navigation }) => {
     const [activityProgress, setMoodProgress] = useState(0);
     const [itemProgress, setHealthProgress] = useState(0);
 
+    const [modalVisible, setModalVisible] = useState(false);
+
+    //Anim vars
+    const video2 = React.useRef(null);
+    const [status, setStatus] = React.useState({});
+
     const updateCount = () => {
         switch (activity) {
             case "A": {
@@ -45,6 +52,32 @@ const ActivityProgress = ({ route, navigation }) => {
             }
         }
         console.log("Activity Count - ", counter);
+    }
+
+    const setInstruction = () => {
+        switch (activity) {
+            case "A": {
+                video2.current.loadAsync(require("../../../assets/sampleVideos/cheers.mp4"))
+                    .then(() => {
+                        video2.current.playAsync();
+                    });
+                break;
+            }
+            case "S": {
+                video2.current.loadAsync(require("../../../assets/sampleVideos/angry.mp4"))
+                    .then(() => {
+                        video2.current.playAsync();
+                    });
+                break;
+            }
+            case "P": {
+                video2.current.loadAsync(require("../../../assets/sampleVideos/love.mp4"))
+                    .then(() => {
+                        video2.current.playAsync();
+                    });
+                break;
+            }
+        }
     }
 
     //Sensor code
@@ -124,15 +157,36 @@ const ActivityProgress = ({ route, navigation }) => {
         })
     }
 
+    const onViewInstructions = () => {
+        console.log("afa");
+
+        switch (activity) {
+            case "A": {
+
+                break;
+            }
+            case "S": {
+
+                break;
+            }
+            case "P": {
+
+                break;
+            }
+        }
+
+        setModalVisible(!modalVisible);
+        //setInstruction();
+    }
+
     return (
         <View>
-            <Text>{activity} --- {item}</Text>
+            <Button
+                title={"View Instructions"}
+                onPress={onViewInstructions}
+            />
 
-            <Text>Movement:</Text>
-            <ProgressBar progress={counter / parseInt(activityGoal)} width={200} height={20} />
-
-            <Text>Item:</Text>
-            <ProgressBar progress={(counter / parseInt(activityGoal))} width={200} height={20} />
+            <Progress.Circle progress={counter / parseInt(activityGoal)} size={300} showsText={true} />
 
             <Button
                 title="Pause"
@@ -141,8 +195,172 @@ const ActivityProgress = ({ route, navigation }) => {
             <Button
                 title="End Activity"
                 onPress={onActivityDone} />
+
+            <Text>Movement:</Text>
+            <Progress.Bar progress={counter / parseInt(activityGoal)} width={200} height={20} />
+
+            <Text>Item:</Text>
+            <Progress.Bar progress={(counter / parseInt(activityGoal))} width={200} height={20} />
+
+
+            
+
+
+            <View style={styles.centeredView}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+
+                            {activity === "A" &&
+                            <Text style={styles.modalText}>Arm Crossover</Text>
+                            &&
+                                <Video
+                                    ref={video2}
+                                    style={styles.video}
+                                    source={
+                                        require("../../../assets/instructionVideos/ArmCrossover.mp4")
+                                    }
+                                    useNativeControls={false}
+                                    resizeMode={ResizeMode.CONTAIN}
+                                    isLooping
+                                    useNativeControls
+                                    shouldPlay={true}
+                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
+                                />
+                            }
+
+                            {activity === "S" &&
+                                <Video
+                                    ref={video2}
+                                    style={styles.video}
+                                    source={
+                                        require("../../../assets/instructionVideos/ShoulderExt.mp4")
+                                    }
+                                    useNativeControls={false}
+                                    resizeMode={ResizeMode.CONTAIN}
+                                    isLooping
+                                    useNativeControls
+                                    shouldPlay={true}
+                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
+                                />
+                            }
+
+                            {activity === "P" &&
+                                <Video
+                                    ref={video2}
+                                    style={styles.video}
+                                    source={
+                                        require("../../../assets/instructionVideos/AirPunch.mp4")
+                                    }
+                                    useNativeControls={false}
+                                    resizeMode={ResizeMode.CONTAIN}
+                                    isLooping
+                                    useNativeControls
+                                    shouldPlay={true}
+                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
+                                />
+                            }
+
+
+                            <View style={styles.button}>
+                                <Button title='Close'
+                                    onPress={() => setModalVisible(!modalVisible)} />
+                            </View>
+                            {/* <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable> */}
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+
         </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 16,
+    },
+    image: {
+        width: 100,
+        height: 100,
+        marginBottom: 8,
+        marginTop: 8,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 8,
+    },
+    textInput: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        marginBottom: 16,
+    },
+    button: {
+        flex: 0,
+        flexDirection: 'row',
+        gap: 40,
+        padding: 10
+    },
+    video: {
+        alignSelf: 'center',
+        width: 320,
+        height: 200,
+    },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+});
+
 
 export default ActivityProgress
