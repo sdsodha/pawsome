@@ -113,7 +113,7 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setFood(foodCount - 1);
-    video.current.loadAsync(require("../../../assets/sampleVideos/love.mp4"))
+    video.current.loadAsync(require("../../../assets/pigVideos/pig-happy.mp4"))
       .then(() => {
         video.current.playAsync();
 
@@ -129,7 +129,7 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setWater(waterCount - 1);
-    video.current.loadAsync(require("../../../assets/sampleVideos/cheers.mp4"))
+    video.current.loadAsync(require("../../../assets/pigVideos/pig-ok.mp4"))
       .then(() => {
         video.current.playAsync();
 
@@ -145,7 +145,7 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setTreat(treatCount - 1);
-    video.current.loadAsync(require("../../../assets/sampleVideos/angry.mp4"))
+    video.current.loadAsync(require("../../../assets/pigVideos/pig-sad.mp4"))
       .then(() => {
         video.current.playAsync();
 
@@ -169,7 +169,7 @@ const PetComponent = ({ route, navigation }) => {
         style={styles.video}
         source={
           //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-          require("../../../assets/sampleVideos/cheers.mp4")
+          require("../../../assets/pigVideos/pig-ok.mp4")
         }
         useNativeControls={false}
         resizeMode={ResizeMode.CONTAIN}
