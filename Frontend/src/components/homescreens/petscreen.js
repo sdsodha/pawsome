@@ -252,8 +252,8 @@ const PetComponent = ({ route, navigation }) => {
           </View>
         </Modal>
       </View>
-
-      <Text> Params - {food} {water} {treat}</Text>
+{/* 
+      <Text> Params - {food} {water} {treat}</Text> */}
 
     </View>
     </ScrollView>

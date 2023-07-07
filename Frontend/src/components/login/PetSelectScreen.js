@@ -142,9 +142,9 @@ const PetSelectScreen = () => {
             <View style={styles.buttonContainer}>
                     <Text style={styles.label}>Difficulty Level</Text>
                 <View style={styles.fixToText}>
-                    <Button style={styles.button} title="Easy" onPress={() => handleSubmit(currentUserId)} />
-                    <Button style={styles.button} title="Medium" onPress={() => handleSubmit(currentUserId)} />
-                    <Button style={styles.button} title="Hard" onPress={() => handleSubmit(currentUserId)} />
+                    <Button style={styles.button} title="Easy" onPress={() => {}} />
+                    <Button style={styles.button} title="Medium" onPress={() => {}} />
+                    <Button style={styles.button} title="Hard" onPress={() => {}} />
                 </View>
             </View>
             
@@ -165,9 +165,9 @@ const PetSelectScreen = () => {
                 circleLoop
             />
             
-            <View style={styles.inputContainer}>
+            {/* <View style={styles.inputContainer}>
                 <Button title="Select" style={styles.button} onPress={() => handleSubmit(currentUserId)} />
-            </View>
+            </View> */}
             
         </View>
         <Separator/>
@@ -189,7 +189,7 @@ const PetSelectScreen = () => {
                 <TextInput style={styles.input} value={breed} onChangeText={(text) => setBreed(text)} />
             </View>
 
-            <View style={styles.fieldContainer}>
+            {/* <View style={styles.fieldContainer}>
                 <Text style={styles.label}>Sex:</Text>
                 <View style={styles.picker}>
                     <Select
@@ -201,7 +201,7 @@ const PetSelectScreen = () => {
                         <Select.Item label="Female" value="female" />
                     </Select>
                 </View>
-            </View>
+            </View> */}
         <Button title="Submit" onPress={() => handleSubmit(currentUserId)} />
         </View>
        
