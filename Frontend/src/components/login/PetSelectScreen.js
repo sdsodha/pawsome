@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar, KeyboardAvoidingView, TextInput, Button, Image, TouchableOpacity, Pressable, StyleSheet, SafeAreaView, ScrollView, FlatList, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core'
 import { auth } from '../../config/firebase';
-import Carousel from 'react-native-reanimated-carousel';
-import { Select } from 'native-base';
 import styles from '../style';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Pets } from '../../data/PetObject';
+import { ButtonGroup } from "react-native-elements";
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -17,6 +16,7 @@ const PetSelectScreen = () => {
     const [breed, setBreed] = useState('');
     const [sex, setSex] = useState('');
     const [selectedPet, setSelectedPet] = useState(0);
+    const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(0);
 
     const [currentUserId, setCurrentUserId] = useState('');
 
@@ -104,11 +104,19 @@ const PetSelectScreen = () => {
 
                     <View style={styles.buttonContainer}>
                         <Text style={styles.label}>Difficulty Level</Text>
-                        <View style={styles.fixToText}>
+                        <ButtonGroup
+                            buttons={['Easy', 'Medium', 'Hard']}
+                            selectedIndex={selectedDifficultyIndex}
+                            onPress={(value) => {
+                                setSelectedDifficultyIndex(value);
+                            }}
+                            containerStyle={{ marginBottom: 20 }}
+                        />
+                        {/* <View style={styles.fixToText}>
                             <Button style={styles.button} title="Easy" onPress={() => { }} />
                             <Button style={styles.button} title="Medium" onPress={() => { }} />
                             <Button style={styles.button} title="Hard" onPress={() => { }} />
-                        </View>
+                        </View> */}
                     </View>
 
 
