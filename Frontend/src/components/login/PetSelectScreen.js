@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text,StatusBar, KeyboardAvoidingView,TextInput, Button, Image,TouchableOpacity,Pressable, StyleSheet,SafeAreaView,ScrollView,FlatList, Dimensions, Alert } from 'react-native';
+import { View, Text, StatusBar, KeyboardAvoidingView, TextInput, Button, Image, TouchableOpacity, Pressable, StyleSheet, SafeAreaView, ScrollView, FlatList, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core'
 import { auth } from '../../config/firebase';
 import Carousel from 'react-native-reanimated-carousel';
 import { Select } from 'native-base';
 import styles from '../style';
 import { SliderBox } from 'react-native-image-slider-box';
-const Separator = () => <View style={styles.separator} />;
+import { Pets } from '../../data/PetObject';
 
+const Separator = () => <View style={styles.separator} />;
 
 const PetSelectScreen = () => {
     const navigation = useNavigation()
@@ -15,36 +16,17 @@ const PetSelectScreen = () => {
     const [name, setName] = useState('');
     const [breed, setBreed] = useState('');
     const [sex, setSex] = useState('');
-    const [selectedPicture, setSelectedPicture] = useState('');
+    const [selectedPet, setSelectedPet] = useState(0);
 
     const [currentUserId, setCurrentUserId] = useState('');
 
     const width = Dimensions.get('window').width;
-    const picList = [];
-    picList.push('../../../assets/picture1.jpg');
-    picList.push('../../../assets/picture2.jpg');
-    picList.push('../../../assets/picture3.jpg');
-    picList.push('../../../assets/picture4.jpg');
-    picList.push('../../../assets/picture5.jpg');
-
 
     const [images, setImages] = React.useState([
-        require('../../../assets/happy_cat.png'),
-        require('../../../assets/happy_owl.png'),
-        require('../../../assets/happy_pig.png')
-   
-        
+        Pets[0].imageSrc,
+        Pets[1].imageSrc,
+        Pets[2].imageSrc
     ]);
-    const data = [
-        { color: 'red' },
-        { color: 'purple' },
-        { color: 'blue' },
-        { color: 'yellow' },
-        { color: 'green' },
-        { color: 'pink' },
-        { color: 'white' },
-    ];
-
 
     useEffect(() => {
 
@@ -81,7 +63,7 @@ const PetSelectScreen = () => {
             name: name,
             breed: breed,
             sex: sex,
-            selectedPicture: selectedPicture,
+            selectedPicture: selectedPet,
         };
 
         console.log(formData);
@@ -108,107 +90,59 @@ const PetSelectScreen = () => {
         setName('');
         setBreed('');
         setSex('');
-        setSelectedPicture('');
-        navigation.navigate("Home")
+        setSelectedPet('');
+        navigation.navigate("Home", { selectedPet: selectedPet })
     };
 
 
     return (
         <ScrollView>
-        <KeyboardAvoidingView>
-        
-        <View style={styles.container}>
-            {/* 
-    <Text>Welcome to the Pet Form</Text>
-      <Button
-        title="Go to Pet Screen"
-        onPress={() => navigation.navigate('PetComponent')}
-      />
-      <Button
-        title="Go to Home Screen"
-        onPress={() => navigation.navigate('Home')}
-      />
-      <Button
-      title="Go to Leaderboard"
-      onPress={() => navigation.navigate('UserListComponent')}
-    /> 
-    */}
+            <KeyboardAvoidingView>
+
+                <View style={styles.container}>
+                    <Separator />
+
+                    <View style={styles.buttonContainer}>
+                        <Text style={styles.label}>Difficulty Level</Text>
+                        <View style={styles.fixToText}>
+                            <Button style={styles.button} title="Easy" onPress={() => { }} />
+                            <Button style={styles.button} title="Medium" onPress={() => { }} />
+                            <Button style={styles.button} title="Hard" onPress={() => { }} />
+                        </View>
+                    </View>
 
 
-            
-            <Separator/>
-           
-            
-            <View style={styles.buttonContainer}>
-                    <Text style={styles.label}>Difficulty Level</Text>
-                <View style={styles.fixToText}>
-                    <Button style={styles.button} title="Easy" onPress={() => {}} />
-                    <Button style={styles.button} title="Medium" onPress={() => {}} />
-                    <Button style={styles.button} title="Hard" onPress={() => {}} />
+                    <Text style={styles.label}>Choose Pet</Text>
+                    <Separator />
+                    <View style={styles.container}>
+                        <SliderBox
+                            images={images}
+                            sliderBoxHeight={300}
+                            sliderBoxWidth={200}
+                            dotColor={styles.primaryColor}
+                            inactiveDotColor="#ff0000"
+                            paginationBoxVerticalPadding={-100}
+                            currentImageEmitter={index => {
+                                console.log(`current pos is: ${index}`)
+                                setSelectedPet(index)
+                            }}
+                            resizeMode='fit'
+                        />
+
+                    </View>
+                    <Separator />
+
+                    <View style={styles.fieldContainer}>
+                        <Text style={styles.label}>Name:</Text>
+                        <TextInput style={styles.input} value={name} onChangeText={(text) => setName(text)} />
+                    </View>
+
+                    <Button title="Submit" onPress={() => handleSubmit(currentUserId)} />
                 </View>
-            </View>
-            
-            
-            <Text style={styles.label}>Choose Pet</Text>
-            <Separator/>
-            <View style={styles.container}>
-            <SliderBox 
-                images={images}
-                sliderBoxHeight={300}
-                dotColor={styles.primaryColor}
-                inactiveDotColor="#ff0000"  
-                onCurrentImagePressed={index => console.warn(`image ${index} pressed`)}
-                paginationBoxVerticalPadding={15}
-               
-                autoplayInterval={3000}
-                resizeMode='stretch'
-                circleLoop
-            />
-            
-            {/* <View style={styles.inputContainer}>
-                <Button title="Select" style={styles.button} onPress={() => handleSubmit(currentUserId)} />
-            </View> */}
-            
-        </View>
-        <Separator/>
-          
 
-           
-
-      
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Name:</Text>
-                <TextInput style={styles.input} value={name} onChangeText={(text) => setName(text)} />
-            </View>
-            
-
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Breed:</Text>
-                <TextInput style={styles.input} value={breed} onChangeText={(text) => setBreed(text)} />
-            </View>
-
-            {/* <View style={styles.fieldContainer}>
-                <Text style={styles.label}>Sex:</Text>
-                <View style={styles.picker}>
-                    <Select
-                        selectedValue={sex}
-                        onValueChange={(value) => setSex(value)}
-                    >
-                        <Select.Item label="Select value" value="" />
-                        <Select.Item label="Male" value="male" />
-                        <Select.Item label="Female" value="female" />
-                    </Select>
-                </View>
-            </View> */}
-        <Button title="Submit" onPress={() => handleSubmit(currentUserId)} />
-        </View>
-       
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
         </ScrollView>
-     
-       
+
     );
 };
 export default PetSelectScreen;

@@ -5,10 +5,14 @@ import ActivityProgress from '../activityscreens/ActivityProgress';
 
 const Stack = createNativeStackNavigator();
 
-const PetActivityStack = () => {
+
+const PetActivityStack = ({route, navigation}) => {
+
+    const { selectedPet } = route.params;
+
     return (
             <Stack.Navigator>
-                <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerShown: false }} initialParams={{ food: 0, water:0, treat:0 }}/>
+                <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerShown: false }} initialParams={{ food: 0, water:0, treat:0 ,selectedPet: selectedPet}}/>
                 <Stack.Screen name="ActivitySelectionScreen" component={ActivitySelection} />
                 <Stack.Screen name="ActivityProgressScreen" component={ActivityProgress} />
             </Stack.Navigator>

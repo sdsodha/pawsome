@@ -18,7 +18,7 @@ import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import {Pets} from '../../data/PetObject';
 
 const PetComponent = ({ route, navigation }) => {
 
@@ -26,19 +26,19 @@ const PetComponent = ({ route, navigation }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-  const { food, water, treat } = route.params;
+  const { food, water, treat, selectedPet } = route.params;
 
   useEffect(() => {
-    if (route.params?.food) {
+    if (route.params ?.food) {
       setFood(foodCount + food);
     }
-    if (route.params?.water) {
+    if (route.params ?.water) {
       setWater(waterCount + water);
     }
-    if (route.params?.treat) {
+    if (route.params ?.treat) {
       setTreat(treatCount + treat);
     }
-  }, [route.params?.food, route.params?.water, route.params?.treat]);
+  }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
 
   const [mood, setMood] = useState(20);
   const [health, setHealth] = useState(20);
@@ -54,6 +54,8 @@ const PetComponent = ({ route, navigation }) => {
   const [foodCount, setFood] = useState(food);
   const [waterCount, setWater] = useState(water);
   const [treatCount, setTreat] = useState(treat);
+
+  const [pet, setPet] = useState(selectedPet);
 
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
@@ -102,7 +104,7 @@ const PetComponent = ({ route, navigation }) => {
       }
     };
     if (currentUserId) {
-//      fetchPetFormData(currentUserId);
+      //      fetchPetFormData(currentUserId);
     }
   }, [currentUserId]);
 
@@ -113,7 +115,7 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setFood(foodCount - 1);
-    video.current.loadAsync(require("../../../assets/pigVideos/pig-happy.mp4"))
+    video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
       .then(() => {
         video.current.playAsync();
 
@@ -129,7 +131,7 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setWater(waterCount - 1);
-    video.current.loadAsync(require("../../../assets/pigVideos/pig-ok.mp4"))
+    video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
       .then(() => {
         video.current.playAsync();
 
@@ -145,7 +147,7 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setTreat(treatCount - 1);
-    video.current.loadAsync(require("../../../assets/pigVideos/pig-sad.mp4"))
+    video.current.loadAsync(Pets[selectedPet].animSrc.sadAnim)
       .then(() => {
         video.current.playAsync();
 
@@ -156,28 +158,27 @@ const PetComponent = ({ route, navigation }) => {
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      
-      {/* 
+      <View style={styles.container}>
+
+        {/* 
       <Text>X movement : {xCounter}</Text>
       <Text>Y movement : {yCounter}</Text>
       <Text>Z movement : {zCounter}</Text>
        */}
 
-      <Video
-        ref={video}
-        style={styles.video}
-        source={
-          //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-          require("../../../assets/pigVideos/pig-ok.mp4")
-        }
-        useNativeControls={false}
-        resizeMode={ResizeMode.CONTAIN}
-        isLooping
-        onPlaybackStatusUpdate={status => setStatus(() => status)}
-      />
+        <Video
+          ref={video}
+          style={styles.video}
+          source={
+            //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+            Pets[selectedPet].animSrc.okAnim
+          }
+          useNativeControls={false}
+          resizeMode={ResizeMode.CONTAIN}
+          onPlaybackStatusUpdate={status => setStatus(() => status)}
+        />
 
-      {/* 
+        {/* 
       <View style={styles.button}>
         <Button
           title={status.isPlaying ? 'Pause' : 'Play'}
@@ -188,74 +189,74 @@ const PetComponent = ({ route, navigation }) => {
       </View> 
       */}
 
-      <View style={styles.button}>
-        <Button
-          title={"Food - " + foodCount}
-          onPress={onFoodPress}
-        />
-        <Button
-          title={"Water - " + waterCount}
-          onPress={onWaterPress}
-        />
-        <Button
-          title={"Treat - " + treatCount}
-          onPress={onTreatPress}
-        />
-      </View>
+        <View style={styles.button}>
+          <Button
+            title={"Food - " + foodCount}
+            onPress={onFoodPress}
+          />
+          <Button
+            title={"Water - " + waterCount}
+            onPress={onWaterPress}
+          />
+          <Button
+            title={"Treat - " + treatCount}
+            onPress={onTreatPress}
+          />
+        </View>
 
-      <Text style={styles.label}>Mood:</Text>
-      <ProgressBar progress={moodProgress} width={200} height={20} />
+        <Text style={styles.label}>Mood:</Text>
+        <ProgressBar progress={moodProgress} width={200} height={20} />
 
-      <Text style={styles.label}>Health:</Text>
-      <ProgressBar progress={healthProgress} width={200} height={20} />
+        <Text style={styles.label}>Health:</Text>
+        <ProgressBar progress={healthProgress} width={200} height={20} />
 
-      <View style={{ marginTop: 50 }}>
-        <Button
-          title="Start Activity"
-          onPress={() => { navigation.navigate("ActivitySelectionScreen") }} />
-      </View>
+        <View style={{ marginTop: 50 }}>
+          <Button
+            title="Start Activity"
+            onPress={() => { navigation.navigate("ActivitySelectionScreen") }} />
+        </View>
 
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Image
-                style={styles.image}
-                source={require("../../../assets/picture1.jpg")}
-              ></Image>
-              <Text style={styles.modalText}>You dont have enough</Text>
-              <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert('Modal has been closed.');
+              setModalVisible(!modalVisible);
+            }}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Image
+                  style={styles.image}
+                  source={require("../../../assets/picture1.jpg")}
+                ></Image>
+                <Text style={styles.modalText}>You dont have enough</Text>
+                <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
 
-              <View style={styles.button}>
-                <Button title='Start'
-                  onPress={() => {
-                    setModalVisible(!modalVisible)
-                    navigation.navigate("ActivitySelectionScreen")
-                  }
-                  } />
-                <Button title='Cancel'
-                  onPress={() => setModalVisible(!modalVisible)} />
-              </View>
-              {/* <Pressable
+                <View style={styles.button}>
+                  <Button title='Start'
+                    onPress={() => {
+                      setModalVisible(!modalVisible)
+                      navigation.navigate("ActivitySelectionScreen")
+                    }
+                    } />
+                  <Button title='Cancel'
+                    onPress={() => setModalVisible(!modalVisible)} />
+                </View>
+                {/* <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}>
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable> */}
+              </View>
             </View>
-          </View>
-        </Modal>
-      </View>
-{/* 
+          </Modal>
+        </View>
+        {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
-    </View>
+      </View>
     </ScrollView>
   );
 };
