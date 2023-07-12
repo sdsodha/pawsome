@@ -2,8 +2,8 @@ import { View, Text, Button, StyleSheet, Image, Modal } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
 import { Video, ResizeMode } from 'expo-av';
-
 import * as Progress from 'react-native-progress';
+import { Activity } from '../../data/ActivityObject';
 
 const ActivityProgress = ({ route, navigation }) => {
 
@@ -38,46 +38,20 @@ const ActivityProgress = ({ route, navigation }) => {
 
     const updateCount = () => {
         switch (activity) {
-            case "A": {
+            case 0: {
                 setCounter(xCounter);
                 break;
             }
-            case "S": {
+            case 1: {
                 setCounter(yCounter);
                 break;
             }
-            case "P": {
+            case 2: {
                 setCounter(zCounter);
                 break;
             }
         }
         console.log("Activity Count - ", counter);
-    }
-
-    const setInstruction = () => {
-        switch (activity) {
-            case "A": {
-                video2.current.loadAsync(require("../../../assets/sampleVideos/cheers.mp4"))
-                    .then(() => {
-                        video2.current.playAsync();
-                    });
-                break;
-            }
-            case "S": {
-                video2.current.loadAsync(require("../../../assets/sampleVideos/angry.mp4"))
-                    .then(() => {
-                        video2.current.playAsync();
-                    });
-                break;
-            }
-            case "P": {
-                video2.current.loadAsync(require("../../../assets/sampleVideos/love.mp4"))
-                    .then(() => {
-                        video2.current.playAsync();
-                    });
-                break;
-            }
-        }
     }
 
     //Sensor code
@@ -139,13 +113,13 @@ const ActivityProgress = ({ route, navigation }) => {
         let param;
 
         switch (item) {
-            case "F":
+            case 0:
                 param = { food: parseInt(itemGoal), water: 0, treat: 0 };
                 break;
-            case "W":
+            case 2:
                 param = { food: 0, water: parseInt(itemGoal), treat: 0 };
                 break;
-            case "T":
+            case 1:
                 param = { food: 0, water: 0, treat: parseInt(itemGoal) };
                 break;
         }
@@ -158,25 +132,7 @@ const ActivityProgress = ({ route, navigation }) => {
     }
 
     const onViewInstructions = () => {
-        console.log("afa");
-
-        switch (activity) {
-            case "A": {
-
-                break;
-            }
-            case "S": {
-
-                break;
-            }
-            case "P": {
-
-                break;
-            }
-        }
-
         setModalVisible(!modalVisible);
-        //setInstruction();
     }
 
     return (
@@ -202,10 +158,6 @@ const ActivityProgress = ({ route, navigation }) => {
             <Text>Item:</Text>
             <Progress.Bar progress={(counter / parseInt(activityGoal))} width={200} height={20} />
 
-
-            
-
-
             <View style={styles.centeredView}>
                 <Modal
                     animationType="slide"
@@ -218,15 +170,12 @@ const ActivityProgress = ({ route, navigation }) => {
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
 
-                            {activity === "A" &&
-                            <Text style={styles.modalText}>Arm Crossover</Text>
-                            &&
+                            <Text style={styles.modalText}>{Activity[activity].type}</Text>
+                            
                                 <Video
                                     ref={video2}
                                     style={styles.video}
-                                    source={
-                                        require("../../../assets/instructionVideos/ArmCrossover.mp4")
-                                    }
+                                    source={Activity[activity].trainingVideoSrc}
                                     useNativeControls={false}
                                     resizeMode={ResizeMode.CONTAIN}
                                     isLooping
@@ -234,40 +183,7 @@ const ActivityProgress = ({ route, navigation }) => {
                                     shouldPlay={true}
                                     onPlaybackStatusUpdate={status => setStatus(() => status)}
                                 />
-                            }
-
-                            {activity === "S" &&
-                                <Video
-                                    ref={video2}
-                                    style={styles.video}
-                                    source={
-                                        require("../../../assets/instructionVideos/ShoulderExt.mp4")
-                                    }
-                                    useNativeControls={false}
-                                    resizeMode={ResizeMode.CONTAIN}
-                                    isLooping
-                                    useNativeControls
-                                    shouldPlay={true}
-                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
-                                />
-                            }
-
-                            {activity === "P" &&
-                                <Video
-                                    ref={video2}
-                                    style={styles.video}
-                                    source={
-                                        require("../../../assets/instructionVideos/AirPunch.mp4")
-                                    }
-                                    useNativeControls={false}
-                                    resizeMode={ResizeMode.CONTAIN}
-                                    isLooping
-                                    useNativeControls
-                                    shouldPlay={true}
-                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
-                                />
-                            }
-
+                            
 
                             <View style={styles.button}>
                                 <Button title='Close'
@@ -286,7 +202,6 @@ const ActivityProgress = ({ route, navigation }) => {
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
     container: {
