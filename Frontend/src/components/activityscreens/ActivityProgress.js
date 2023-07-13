@@ -184,6 +184,8 @@ const ActivityProgress = ({ route, navigation }) => {
                                     onPlaybackStatusUpdate={status => setStatus(() => status)}
                                 />
                             
+                            <Text>Instructions: </Text>
+                            <Text>{Activity[activity].instructionText} </Text>
 
                             <View style={styles.button}>
                                 <Button title='Close'

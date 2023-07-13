@@ -18,7 +18,7 @@ import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Pets } from '../../data/PetObject';
+import { Pets, PetPrompts } from '../../data/PetObject';
 
 const PetComponent = ({ route, navigation }) => {
 
@@ -116,21 +116,21 @@ const PetComponent = ({ route, navigation }) => {
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt("Pet Saddddddd");
+      setPrompt(PetPrompts.sadStateText);
     }
     else if ((mood >= 25 && mood <= 50) && (health >= 25 && health <= 50)) {
       video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt("Pet is hungry");
+      setPrompt(PetPrompts.okStateText);
     }
     else if (mood > 50 && health > 50) {
       video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt("Pet is HappYYYY");
+      setPrompt(PetPrompts.happyStateText);
     }
 
     if( mood <= 0 && health <=0 ){
@@ -138,7 +138,7 @@ const PetComponent = ({ route, navigation }) => {
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt("Pet Left");
+      setPrompt(PetPrompts.petLeftText);
     }
 
     setMoodProgress(mood / 100);
