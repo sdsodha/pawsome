@@ -125,16 +125,16 @@ const PetSelectScreen = () => {
                     <View style={styles.container}>
                         <SliderBox
                             images={images}
-                            sliderBoxHeight={300}
+                            sliderBoxHeight={200}
                             sliderBoxWidth={200}
                             dotColor={styles.primaryColor}
                             inactiveDotColor="#ff0000"
-                            paginationBoxVerticalPadding={-100}
+                            paginationBoxVerticalPadding={10}
                             currentImageEmitter={index => {
                                 console.log(`current pos is: ${index}`)
                                 setSelectedPet(index)
                             }}
-                            resizeMode='fit'
+                            resizeMode='center'
                         />
 
                     </View>

@@ -18,7 +18,7 @@ import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
 import { ScrollView } from 'react-native-gesture-handler';
-import {Pets} from '../../data/PetObject';
+import { Pets } from '../../data/PetObject';
 
 const PetComponent = ({ route, navigation }) => {
 
@@ -190,18 +190,30 @@ const PetComponent = ({ route, navigation }) => {
       */}
 
         <View style={styles.button}>
-          <Button
-            title={"Food - " + foodCount}
+          <TouchableOpacity
             onPress={onFoodPress}
-          />
-          <Button
-            title={"Water - " + waterCount}
-            onPress={onWaterPress}
-          />
-          <Button
-            title={"Treat - " + treatCount}
+          >
+            <Image
+              style={styles.buttonIcon}
+              source={require("../../../assets/activityIcons/Food.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
             onPress={onTreatPress}
-          />
+          >
+            <Image
+              style={styles.buttonIcon}
+              source={require("../../../assets/activityIcons/Treat.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onWaterPress}
+          >
+            <Image
+              style={styles.buttonIcon}
+              source={require("../../../assets/activityIcons/Water.png")}
+            />
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.label}>Mood:</Text>
@@ -229,7 +241,7 @@ const PetComponent = ({ route, navigation }) => {
               <View style={styles.modalView}>
                 <Image
                   style={styles.image}
-                  source={require("../../../assets/picture1.jpg")}
+                  source={require("../../../assets/activityIcons/Food.png")}
                 ></Image>
                 <Text style={styles.modalText}>You dont have enough</Text>
                 <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
@@ -256,6 +268,27 @@ const PetComponent = ({ route, navigation }) => {
         {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
+        <View>
+          <Text>Bucket</Text>
+
+          <View>
+            <View style={styles.button}>
+              <Text>Food   </Text>
+              <Text>{foodCount}</Text>
+            </View>
+
+            <View style={styles.button}>
+              <Text>Treat   </Text>
+              <Text>{treatCount}</Text>
+            </View>
+
+            <View style={styles.button}>
+              <Text>Water  </Text>
+              <Text>{waterCount}</Text>
+            </View>
+          </View>
+
+        </View>
       </View>
     </ScrollView>
   );
@@ -274,6 +307,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginTop: 8,
   },
+  buttonIcon: {
+    width: 50,
+    height: 50,
+    marginBottom: 8,
+    marginTop: 8,
+  },
   label: {
     fontSize: 16,
     marginBottom: 8,
@@ -288,7 +327,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 0,
     flexDirection: 'row',
-    gap: 40,
+    gap: 60,
     padding: 10
   },
   video: {

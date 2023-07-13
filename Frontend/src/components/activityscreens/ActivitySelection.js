@@ -80,7 +80,7 @@ const ActivitySelection = () => {
                     navigation.navigate("ActivityProgressScreen", {
                         activity: selectedActivity,
                         item: selectedItemIndex,
-                        activityDifficulty: setSelectedDifficultyIndex,
+                        activityDifficulty: selectedDifficultyIndex,
                         itemGoal: parseInt(itemGoal) === 0 ? 1 : parseInt(itemGoal),
                         activityGoal: parseInt(activityGoal) === 0 ? 1 : parseInt(activityGoal)
                     })
