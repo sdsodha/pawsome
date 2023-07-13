@@ -3,9 +3,9 @@ import { View, Text, StatusBar, KeyboardAvoidingView, TextInput, Button, Image, 
 import { useNavigation } from '@react-navigation/core'
 import { auth } from '../../config/firebase';
 import styles from '../style';
-import { SliderBox } from 'react-native-image-slider-box';
 import { Pets } from '../../data/PetObject';
 import { ButtonGroup } from "react-native-elements";
+import Carousel from "react-native-reanimated-carousel";
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -21,12 +21,20 @@ const PetSelectScreen = () => {
     const [currentUserId, setCurrentUserId] = useState('');
 
     const width = Dimensions.get('window').width;
+    
+    const ref = React.useRef(null);
 
     const [images, setImages] = React.useState([
         Pets[0].imageSrc,
         Pets[1].imageSrc,
         Pets[2].imageSrc
     ]);
+
+    const imageData = [
+        Pets[0].imageSrc,
+        Pets[1].imageSrc,
+        Pets[2].imageSrc
+    ]
 
     useEffect(() => {
 
@@ -122,7 +130,8 @@ const PetSelectScreen = () => {
 
                     <Text style={styles.label}>Choose Pet</Text>
                     <Separator />
-                    <View style={styles.container}>
+
+                    {/* <View style={styles.container}>
                         <SliderBox
                             images={images}
                             sliderBoxHeight={200}
@@ -131,13 +140,40 @@ const PetSelectScreen = () => {
                             inactiveDotColor="#ff0000"
                             paginationBoxVerticalPadding={10}
                             currentImageEmitter={index => {
-                                console.log(`current pos is: ${index}`)
                                 setSelectedPet(index)
                             }}
                             resizeMode='center'
                         />
+                    </View> */}
 
+                    <View>
+                        <Carousel
+                            loop
+                            width={width * .8}
+                            height={width * .8}
+                            data={images}
+                            pagingEnabled={true}
+                            ref={ref}
+                            scrollAnimationDuration={1000}
+                            onSnapToItem={(index) => setSelectedPet(index)}
+                            renderItem={({ item, index }) => (
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        justifyContent: 'center',
+                                        width: 100,
+                                        height: 100
+                                    }}
+                                >
+                                    <Image
+                                        source={item}
+                                    />
+                                </View>
+                                    
+                            )}
+                    />
                     </View>
+
                     <Separator />
 
                     <View style={styles.fieldContainer}>
@@ -154,3 +190,16 @@ const PetSelectScreen = () => {
     );
 };
 export default PetSelectScreen;
+
+/* <Button
+                                        title="<"
+                                        onPress={() => {
+                                            ref.current ?.scrollTo({ count: -1, animated: true });
+                                        }}
+                                    />
+                                    <Button
+                                        title=">"
+                                        onPress={() => {
+                                            ref.current ?.scrollTo({ count: 1, animated: true });
+                                        }}
+                                    /> */
