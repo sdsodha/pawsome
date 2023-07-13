@@ -40,8 +40,8 @@ const PetComponent = ({ route, navigation }) => {
     }
   }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
 
-  const [mood, setMood] = useState(20);
-  const [health, setHealth] = useState(20);
+  const [mood, setMood] = useState(40);
+  const [health, setHealth] = useState(40);
   const [textInputValue, setTextInputValue] = useState('');
   const [currentUserId, setCurrentUserId] = useState('');
   const [petFormData, setPetFormData] = useState(null);
@@ -56,6 +56,7 @@ const PetComponent = ({ route, navigation }) => {
   const [treatCount, setTreat] = useState(treat);
 
   const [pet, setPet] = useState(selectedPet);
+  const [prompt, setPrompt] = useState('');
 
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
@@ -108,6 +109,42 @@ const PetComponent = ({ route, navigation }) => {
     }
   }, [currentUserId]);
 
+  // Pet States //////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (mood < 25 && health < 25) {
+      video.current.loadAsync(Pets[selectedPet].animSrc.sadAnim)
+        .then(() => {
+          video.current.playAsync();
+        })
+      setPrompt("Pet Saddddddd");
+    }
+    else if ((mood >= 25 && mood <= 50) && (health >= 25 && health <= 50)) {
+      video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
+        .then(() => {
+          video.current.playAsync();
+        })
+      setPrompt("Pet is hungry");
+    }
+    else if (mood > 50 && health > 50) {
+      video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
+        .then(() => {
+          video.current.playAsync();
+        })
+      setPrompt("Pet is HappYYYY");
+    }
+    else if( mood <= 0 && health <=0 ){
+      video.current.loadAsync(require("../../../assets/gif1.gif"))
+        .then(() => {
+          video.current.playAsync();
+        })
+      setPrompt("Pet Left");
+    }
+
+    setMoodProgress(mood / 100);
+    setHealthProgress(health / 100);
+
+  }, [mood, health]);
+
   const onFoodPress = () => {
     if (foodCount <= 0) {
       setModalVisible(!modalVisible);
@@ -115,13 +152,8 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setFood(foodCount - 1);
-    video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
-      .then(() => {
-        video.current.playAsync();
-
-        handleHealthProgress(1, 0, 0);
-        handleMoodProgress(1, 0, 0);
-      })
+    setHealth(health + 5);
+    setMood(mood + 1);
   }
 
   const onWaterPress = () => {
@@ -131,13 +163,8 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setWater(waterCount - 1);
-    video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
-      .then(() => {
-        video.current.playAsync();
-
-        handleHealthProgress(0, 1, 0);
-        handleMoodProgress(0, 1, 0);
-      })
+    setHealth(health + 3);
+    setMood(mood + 1);
   }
 
   const onTreatPress = () => {
@@ -147,13 +174,18 @@ const PetComponent = ({ route, navigation }) => {
     }
 
     setTreat(treatCount - 1);
-    video.current.loadAsync(Pets[selectedPet].animSrc.sadAnim)
-      .then(() => {
-        video.current.playAsync();
+    setHealth(health + 1);
+    setMood(mood + 5);
+  }
 
-        handleHealthProgress(0, 0, 1);
-        handleMoodProgress(0, 0, 1);
-      })
+  const onOneDayButtonPressed = () => {
+    setHealth(20);
+    setMood(20);
+  }
+
+  const onTwoDayButtonPressed = () => {
+    setHealth(0);
+    setMood(0);
   }
 
   return (
@@ -178,16 +210,7 @@ const PetComponent = ({ route, navigation }) => {
           onPlaybackStatusUpdate={status => setStatus(() => status)}
         />
 
-        {/* 
-      <View style={styles.button}>
-        <Button
-          title={status.isPlaying ? 'Pause' : 'Play'}
-          onPress={() =>
-            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-          }
-        />
-      </View> 
-      */}
+        <Text>{prompt}</Text>
 
         <View style={styles.button}>
           <TouchableOpacity
@@ -216,13 +239,13 @@ const PetComponent = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.label}>Mood:</Text>
+        <Text style={styles.label}>Mood: {mood}</Text>
         <ProgressBar progress={moodProgress} width={200} height={20} />
 
-        <Text style={styles.label}>Health:</Text>
+        <Text style={styles.label}>Health: {health}</Text>
         <ProgressBar progress={healthProgress} width={200} height={20} />
 
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: 10 }}>
           <Button
             title="Start Activity"
             onPress={() => { navigation.navigate("ActivitySelectionScreen") }} />
@@ -289,6 +312,9 @@ const PetComponent = ({ route, navigation }) => {
           </View>
 
         </View>
+        <Button title="1 Day Gone" onPress={onOneDayButtonPressed} />
+        <Button title="2 Days Gone" onPress={onTwoDayButtonPressed} />
+
       </View>
     </ScrollView>
   );
