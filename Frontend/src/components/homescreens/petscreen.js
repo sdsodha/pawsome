@@ -132,7 +132,8 @@ const PetComponent = ({ route, navigation }) => {
         })
       setPrompt("Pet is HappYYYY");
     }
-    else if( mood <= 0 && health <=0 ){
+
+    if( mood <= 0 && health <=0 ){
       video.current.loadAsync(require("../../../assets/gif1.gif"))
         .then(() => {
           video.current.playAsync();
