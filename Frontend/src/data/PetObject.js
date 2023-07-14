@@ -33,7 +33,7 @@ const PetPrompts = {
     sadStateText: "NAME is feeling hungry and thirsty and was missing you, feed to improve NAME’s mood and increase health",
     okStateText: "NAME is feeling fine, feed to make NAME happy",
     happyStateText: "NAME is feeling good, keep up the good work",
-    petLeftText: "Your Pet has left you, but you can bring it back by doing any activity 50 times 7 days in a row"
+    petLeftText: "Your Pet has left you, but you can bring it back by doing any activity 50 times 3 days in a row"
 } 
 
 export {Pets, PetPrompts};

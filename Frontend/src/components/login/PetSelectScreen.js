@@ -38,7 +38,7 @@ const PetSelectScreen = () => {
 
     useEffect(() => {
 
-        fetchCurrentUserId();
+        //fetchCurrentUserId();
     }, []);
 
     const fetchCurrentUserId = async () => {
@@ -74,6 +74,7 @@ const PetSelectScreen = () => {
             selectedPicture: selectedPet,
         };
 
+        /*
         console.log(formData);
 
         fetch(`http://localhost:8080/users/pet-form`, {
@@ -99,7 +100,9 @@ const PetSelectScreen = () => {
         setBreed('');
         setSex('');
         setSelectedPet('');
-        navigation.navigate("Home", { selectedPet: selectedPet })
+        */
+
+        navigation.navigate("Home", { selectedPet: selectedPet, petName: name });
     };
 
 

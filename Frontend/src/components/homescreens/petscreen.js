@@ -26,7 +26,7 @@ const PetComponent = ({ route, navigation }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-  const { food, water, treat, selectedPet } = route.params;
+  const { food, water, treat, selectedPet, petName } = route.params;
 
   useEffect(() => {
     if (route.params ?.food) {
@@ -116,21 +116,21 @@ const PetComponent = ({ route, navigation }) => {
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.sadStateText);
+      setPrompt(PetPrompts.sadStateText.replaceAll("NAME",petName));
     }
     else if ((mood >= 25 && mood <= 50) && (health >= 25 && health <= 50)) {
       video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.okStateText);
+      setPrompt(PetPrompts.okStateText.replaceAll("NAME",petName));
     }
     else if (mood > 50 && health > 50) {
       video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.happyStateText);
+      setPrompt(PetPrompts.happyStateText.replaceAll("NAME",petName));
     }
 
     if( mood <= 0 && health <=0 ){
@@ -138,7 +138,7 @@ const PetComponent = ({ route, navigation }) => {
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.petLeftText);
+      setPrompt(PetPrompts.petLeftText.replaceAll("NAME",petName));
     }
 
     setMoodProgress(mood / 100);

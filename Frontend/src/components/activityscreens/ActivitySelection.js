@@ -11,8 +11,8 @@ const Separator = () => <View style={styles.separator} />;
 const ActivitySelection = () => {
 
     const [selectedActivity, setSelectedActivity] = useState(0);
-    const [itemGoal, onItemNumberChange] = useState('0');
-    const [activityGoal, onActivityNumberChange] = useState('0');
+    const [itemGoal, onItemNumberChange] = useState('5');
+    const [activityGoal, onActivityNumberChange] = useState('5');
     const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(1);
     const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
@@ -85,9 +85,9 @@ const ActivitySelection = () => {
                         activityGoal: parseInt(activityGoal) === 0 ? 1 : parseInt(activityGoal)
                     })
                 }} />
-
+{/* 
             <Text>{selectedActivity} + " --- " + {selectedItemIndex}</Text>
-             
+              */}
         </View>
     )
 }
