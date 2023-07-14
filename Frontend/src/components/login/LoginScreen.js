@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, Alert,Image,TouchableOpacity, View } from 'react-native'
 import { auth } from '../../config/firebase'
 import styles from '../style'
+import PetSelectScreen from '../login/PetSelectScreen';
 // import TwoTabsComponent from '../homescreens/leaderboard'
 
 const LoginScreen = () => {
@@ -74,6 +75,7 @@ const LoginScreen = () => {
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Logged in with:', user.email);
+        navigation.navigate("PetSelect")
       })
       .catch(error => alert(error.message))
   }

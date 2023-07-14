@@ -18,6 +18,7 @@ import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
 import { Accelerometer } from 'expo-sensors';
 import { ScrollView } from 'react-native-gesture-handler';
+import styles from '../style'
 
 
 const PetComponent = ({ route, navigation }) => {
@@ -259,7 +260,7 @@ const PetComponent = ({ route, navigation }) => {
     </ScrollView>
   );
 };
-
+/*
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -333,7 +334,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
+*/
 export default PetComponent;
 
 // <ProgressBarAndroid

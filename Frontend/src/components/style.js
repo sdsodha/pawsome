@@ -12,7 +12,14 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:20
+        overflow:'hidden',
+        backgroundColor:'silver',
+        width:'95%',
+        margin:10,
+      
+      
+        
+        
         
       },
       fixToText: {
