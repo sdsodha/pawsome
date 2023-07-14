@@ -40,37 +40,89 @@ const styles = StyleSheet.create({
           borderRadius: 10,
           marginTop: 5,
         },
+        // input:hover{
+        //   border:solid blue 1px,
+        // },
+
         heading: {
             fontSize:20,
             marginBottom:10
+
+        },
+        welc:{
+          fontSize:30,
+          
+          justifyContent:'center',
+          textAlign:'center'
 
         },
         label: {
             margin:5,
             justifyContent: 'center',
             alignItems: 'center',
-            // color:'white',
-            // backgroundColor:'red',
+        //  color:'white',
+        //     backgroundColor:primaryColor,   
+            fontSize:20,
+            
             padding:10
         }, 
         buttonContainer: {
+          display:'flex',
+         
             width: '95%',
-            justifyContent: 'left',
+            justifyContent: 'center',
             alignItems: 'center',
+            color:'white'
             // borderWidth:5,
             // borderColor:'red',
-            marginRight:50,
-            marginLeft:50,
+            // marginRight:50,
+            // marginLeft:50,
 
            
             
           },
+          loginbutton:{
+            margin:5,
+            justifyContent: 'center',
+            alignItems: 'center',
+         color:'white',
+            backgroundColor:primaryColor,   
+            fontSize:20,
+            width:100,
+            border: '#9c92da 1px',
+            borderRadius:5,
+            padding:10,
+            shadowColor:primaryColor,
+            shadowOpacity:2
+
+          },
+          googlebutton:{
+            margin:5,
+            justifyContent: 'center',
+            alignItems: 'center',
+         color:'white',
+            backgroundColor:primaryColor,   
+            fontSize:20,
+            width:300,
+            border: '#9c92da 1px',
+            borderRadius:5,
+            padding:10,
+            shadowColor:primaryColor,
+            shadowOpacity:2
+
+          },
+
           button: {
             
-            backgroundColor: primaryColor,
-            color: 'white',
-            padding: 16,
-            borderRadius: 5,
+        
+            margin:5,
+            justifyContent: 'center',
+            alignItems: 'center',
+            color:'white',
+            backgroundColor:primaryColor,
+            
+            
+            padding:10
           },
           buttonActive: {
             backgroundColor: primaryColor,
@@ -85,16 +137,23 @@ const styles = StyleSheet.create({
             marginTop: 5,
             borderColor: '#0782F9',
             borderWidth: 2,
+            
           },
           buttonText: {
+            display:'flex',
             color: 'white',
+            textAlign:'center',
+            justifyContent:'center',
+            marginLeft:500,
+            
+            
             
             fontSize: 10,
           },
         inputContainer: {
             width: '90%',
-            marginLeft:20,
-            marginRight:20
+            margin:20,
+   
           },
         mainLogo: {
             width:'50%',
@@ -106,9 +165,11 @@ const styles = StyleSheet.create({
             
             width:'50%',
             resizeMode: 'contain',
-            justifyContent: 'center',
-            alignItems:'center'
+            alignSelf: 'center',
+            marginBottom:-50
           },
+          
+
         buttonOutlineText: {
             color: '#0782F9',
             fontWeight: '700',
