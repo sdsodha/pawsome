@@ -122,7 +122,8 @@ const LoginScreen = () => {
       <View style={styles.inputContainer}>
 
       
-      <Text>Welcome</Text>
+      <Text style={styles.welc}>Welcome!</Text>
+      
       </View>
       <View style={styles.inputContainer}>
         <Text>E-mail</Text>
@@ -150,14 +151,14 @@ const LoginScreen = () => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={handleLogin}
-          style={styles.button}
+          style={styles.loginbutton}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text>Or</Text>
         <TouchableOpacity
       
-          style={styles.button}
+          style={styles.googlebutton}
         >
           <Text style={styles.buttonText}>Login With Google</Text>
         </TouchableOpacity>
