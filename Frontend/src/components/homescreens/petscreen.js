@@ -15,9 +15,9 @@ import ProgressBar from 'react-native-progress/Bar';
 import { auth } from '../../config/firebase';
 import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
-import { Accelerometer } from 'expo-sensors';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Pets, PetPrompts } from '../../data/PetObject';
+import Collapsible from 'react-native-collapsible';
 
 const PetComponent = ({ route, navigation }) => {
 
@@ -55,6 +55,8 @@ const PetComponent = ({ route, navigation }) => {
 
   const [pet, setPet] = useState(selectedPet);
   const [prompt, setPrompt] = useState('');
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
@@ -246,13 +248,6 @@ const PetComponent = ({ route, navigation }) => {
           <ProgressBar progress={healthProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
         </View>
 
-        <View style={styles.startActivityButtonContainer}>
-          <TouchableOpacity style={styles.startActivityButton}
-            onPress={() => { navigation.navigate("ActivitySelectionScreen") }}>
-            <Text style={{ color: 'white' }}>Start Activity</Text>
-          </TouchableOpacity>
-        </View>
-
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
@@ -293,26 +288,39 @@ const PetComponent = ({ route, navigation }) => {
         {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
-        <View>
-          <Text>Bucket</Text>
+        <View style={styles.inventoryContainer}>
 
-          <View>
-            <View style={styles.button}>
-              <Text>Food   </Text>
-              <Text>{foodCount}</Text>
+          <TouchableOpacity style={styles.inventoryButton}
+            onPress={() => { setIsCollapsed(!isCollapsed) }}>
+            <Text style={{ color: 'black' }}>Inventory</Text>
+          </TouchableOpacity>
+
+
+          <Collapsible collapsed={isCollapsed}>
+            <View>
+              <View style={styles.button}>
+                <Text>Food   </Text>
+                <Text>{foodCount}</Text>
+              </View>
+
+              <View style={styles.button}>
+                <Text>Treat   </Text>
+                <Text>{treatCount}</Text>
+              </View>
+
+              <View style={styles.button}>
+                <Text>Water  </Text>
+                <Text>{waterCount}</Text>
+              </View>
             </View>
+          </Collapsible>
+        </View>
 
-            <View style={styles.button}>
-              <Text>Treat   </Text>
-              <Text>{treatCount}</Text>
-            </View>
-
-            <View style={styles.button}>
-              <Text>Water  </Text>
-              <Text>{waterCount}</Text>
-            </View>
-          </View>
-
+        <View style={styles.startActivityButtonContainer}>
+          <TouchableOpacity style={styles.startActivityButton}
+            onPress={() => { navigation.navigate("ActivitySelectionScreen") }}>
+            <Text style={{ color: 'white' }}>Start Activity</Text>
+          </TouchableOpacity>
         </View>
 
         {/*         
@@ -326,6 +334,26 @@ const PetComponent = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  inventoryContainer: {
+    marginTop: 5,
+    width: 320,
+    borderRadius: 4,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1
+    },
+    backgroundColor: 'white'
+  },
+  inventoryButton: {
+    justifyContent: 'left',
+    alignItems: 'left',
+    fontSize: 18,
+    width: 320,
+    padding: 15,
+  },
   startActivityButtonContainer: {
     marginTop: 30,
     width: 320,
