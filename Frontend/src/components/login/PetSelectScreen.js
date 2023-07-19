@@ -108,8 +108,8 @@ const PetSelectScreen = () => {
 
     return (
         <ScrollView>
-            <KeyboardAvoidingView>
-
+            <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={50} >
+                
                 <View style={styles.container}>
                     <Separator />
 
