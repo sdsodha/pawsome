@@ -5,17 +5,20 @@ import { useNavigation } from '@react-navigation/core'
 import { ButtonGroup } from "react-native-elements";
 //import styles from '../style';
 import { Activity } from '../../data/ActivityObject';
+import { Picker } from '@react-native-picker/picker';
 
 const Separator = () => <View style={styles.separator} />;
 
 const ActivitySelection = () => {
 
     const [selectedActivity, setSelectedActivity] = useState(0);
-    const [itemGoal, onItemNumberChange] = useState('5');
-    const [activityGoal, onActivityNumberChange] = useState('5');
+    const [itemGoal, setItemGoal] = useState();
+    const [activityGoal, setActivityGoal] = useState();
     const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(1);
     const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
+    const [selectedEarningGoal, setSelectedEarningGoal] = useState(3);
+    const [selectedActivityGoal, setSelectedActivityGoal] = useState(5);
 
     const navigation = useNavigation()
 
@@ -68,22 +71,48 @@ const ActivitySelection = () => {
             <View style={styles.goalsContainer}>
                 <View>
                     <Text>Earning Goal</Text>
-                    <TextInput
-                        onChangeText={onItemNumberChange}
-                        value={itemGoal}
-                        placeholder="0"
-                        keyboardType="numeric"
-                    />
+                    <Picker
+                        itemStyle={{ height: 120 }}
+                        selectedValue={selectedEarningGoal}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            setSelectedEarningGoal(itemValue);
+                            setItemGoal(itemValue);
+                        }
+                        }>
+                        <Picker.Item label="1" value={1} />
+                        <Picker.Item label="2" value={2} />
+                        <Picker.Item label="3" value={3} />
+                        <Picker.Item label="4" value={4} />
+                        <Picker.Item label="5" value={5} />
+                        <Picker.Item label="6" value={6} />
+                        <Picker.Item label="7" value={7} />
+                        <Picker.Item label="8" value={8} />
+                        <Picker.Item label="9" value={9} />
+                        <Picker.Item label="10" value={10} />
+                    </Picker>
                 </View>
 
                 <View>
                     <Text>Activity Goal</Text>
-                    <TextInput
-                        onChangeText={onActivityNumberChange}
-                        value={activityGoal}
-                        placeholder="0"
-                        keyboardType="numeric"
-                    />
+                    <Picker
+                        itemStyle={{ height: 120 }}
+                        selectedValue={selectedActivityGoal}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            setSelectedActivityGoal(itemValue);
+                            setActivityGoal(itemValue);
+                        }
+                        }>
+                        <Picker.Item label="1" value={1} />
+                        <Picker.Item label="2" value={2} />
+                        <Picker.Item label="3" value={3} />
+                        <Picker.Item label="4" value={4} />
+                        <Picker.Item label="5" value={5} />
+                        <Picker.Item label="6" value={6} />
+                        <Picker.Item label="7" value={7} />
+                        <Picker.Item label="8" value={8} />
+                        <Picker.Item label="9" value={9} />
+                        <Picker.Item label="10" value={10} />
+                    </Picker>
                 </View>
             </View>
 
@@ -129,7 +158,7 @@ const styles = StyleSheet.create({
         width: 250,
     },
     startActivityButtonContainer: {
-        marginTop: 30,
+        marginTop: 15,
         width: 150,
         borderRadius: 8,
         backgroundColor: '#37298A'
