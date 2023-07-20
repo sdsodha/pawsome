@@ -7,8 +7,6 @@ import { Pets } from '../../data/PetObject';
 import { ButtonGroup } from "react-native-elements";
 import Carousel from "react-native-reanimated-carousel";
 
-const Separator = () => <View style={styles.separator} />;
-
 const PetSelectScreen = () => {
     const navigation = useNavigation()
     const [difficulty, setDifficulty] = useState('');
@@ -127,29 +125,66 @@ const PetSelectScreen = () => {
 
                     <View style={styles.petContainer}>
                         <Text>Choose Pet</Text>
-                        <View>
-                            <Carousel
-                                loop
-                                width={width * .8}
-                                height={width * .8}
-                                data={images}
-                                pagingEnabled={true}
-                                ref={ref}
-                                scrollAnimationDuration={1000}
-                                onSnapToItem={(index) => setSelectedPet(index)}
-                                renderItem={({ item, index }) => (
-                                    <View
-                                        style={{
-                                            flex: 1,
-                                            justifyContent: 'center',
-                                            width: 100,
-                                            height: 100
-                                        }}>
-                                        <Image source={item} />
-                                    </View>
-                                )}
-                            />
+
+                        <View style={styles.imageContainer}>
+                            <View>
+                                <Button
+                                    title="<"
+                                    onPress={() => {
+                                        ref.current ?.scrollTo({ count: -1, animated: true });
+                                    }}
+                                />
+                            </View>
+
+                            <View style={{
+                                width: 250,
+                                height: 250,
+                            }}>
+                                <Carousel
+                                    loop
+                                    width={250}
+                                    height={250}
+                                    data={images}
+                                    pagingEnabled={true}
+                                    ref={ref}
+                                    scrollAnimationDuration={800}
+                                    onSnapToItem={(index) => setSelectedPet(index)}
+                                    renderItem={({ item, index }) => (
+                                        <Image style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }} source={item} />
+                                    )}
+                                />
+                            </View>
+
+                            <View>
+                                <Button
+                                    title=">"
+                                    onPress={() => {
+                                        ref.current ?.scrollTo({ count: 1, animated: true });
+                                    }}
+                                />
+                            </View>
+
                         </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            {Array(3)
+                                .fill({})
+                                .map((item, index) => {
+                                    return <Text key={index} style={
+                                        {
+                                            opacity: (index === selectedPet) ? .8 : .4,
+                                            fontSize: 32,
+                                        }}>•</Text>
+                                })}
+                        </View>
+
                     </View>
 
                     <View style={styles.nameContainer}>
@@ -181,11 +216,17 @@ const styles = StyleSheet.create({
         width: 300,
         gap: 8,
     },
+    imageContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+    },
     nameContainer: {
         flexDirection: 'row',
         gap: 10,
         width: 300,
-        marginTop: 15,
+        marginTop: 0,
         alignItems: 'baseline',
         borderBottomWidth: 1,
         borderColor: 'grey',
@@ -218,25 +259,10 @@ const styles = StyleSheet.create({
     },
     petContainer: {
         width: 300,
-        gap: 20,
         marginTop: 10,
     }
 
 });
-
-/* <Button
-                                        title="<"
-                                        onPress={() => {
-                                            ref.current ?.scrollTo({ count: -1, animated: true });
-                                        }}
-                                    />
-                                    <Button
-                                        title=">"
-                                        onPress={() => {
-                                            ref.current ?.scrollTo({ count: 1, animated: true });
-                                        }}
-                                    /> */
-
 
 // Shishupals Image Slider, Cause ViewProps Errors but perfect feature wise 
 {/* <View style={styles.container}>
