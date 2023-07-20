@@ -16,10 +16,16 @@ import ProgressBar from 'react-native-progress/Bar';
 import { auth } from '../../config/firebase';
 import axios from 'axios';
 import { BACKEND_API } from '../../config/backendlink';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const purpleColor = '#37298A';
+const greyColor = '#CEC9EE';
 
 
 const Leaderboard = () => {
   const navigation = useNavigation();
+
+  
 
   //-----------Variable for switch between 2 tabs---------------------
   const [activeTab, setActiveTab] = useState(1);
@@ -38,10 +44,6 @@ const Leaderboard = () => {
     fetchCurrentUserId();
     fetchUsers();
   }, []);
-
- 
-
-  
 
   const handleSearchQueryChange = (query) => {
     setSearchQuery(query);
@@ -73,8 +75,6 @@ const Leaderboard = () => {
 
   const [currentUserId, setCurrentUserId] = useState('');
 
- 
-
   const fetchCurrentUserId = async () => {
     try {
       const currentUser = auth.currentUser;
@@ -98,8 +98,6 @@ const Leaderboard = () => {
   // --------------------Fetch all users from the backend----------------------//
   const [users, setUsers] = useState([]);
 
-  
-
   const fetchUsers = async () => {
     try {
       const response = await fetch(`${BACKEND_API}/users`);
@@ -118,7 +116,7 @@ const Leaderboard = () => {
       setModalVisible(true);
     };
 
-    const isEmailMatch = item.email
+    const isEmailMatch = item.name
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
 
@@ -127,25 +125,32 @@ const Leaderboard = () => {
     }
 
     return (
-      <View style={styles.listItem}>
+      <View style={[styles.listItem, index % 2 !== 1 && styles.listItemOdd]}>
         <Text style={styles.number}>{index + 1}.</Text>
         <Image
-          source={{ uri: 'https://picsum.photos/536/354' }}
+          // source={{ uri: 'https://picsum.photos/536/354' }}
+          source={require('../../../assets/owl.png')}
           style={styles.profileImage}
         />
 
         <View style={styles.userInfoContainer}>
-          <Text style={styles.userName}>{item.email}</Text>
-          <Text style={styles.score}>Scores - 20 {item.score}</Text>
+          <Text style={styles.userName}>{item.name}</Text>
+          <Text style={styles.score}>Scores - {item.scores}</Text>
         </View>
-        <Button title={'View Details'} onPress={handleUserPress} />
+      
+       <TouchableOpacity
+       style={[styles.detailButton]}
+       onPress={handleUserPress}
+     >
+       <Text style={styles.buttonText}>{'>'}</Text>
+     </TouchableOpacity>
       </View>
     );
   };
 
   const handleSearch = () => {
     const filteredResults = users.filter((user) =>
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()),
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
     setFilteredUsers(filteredResults);
   };
@@ -175,8 +180,6 @@ const Leaderboard = () => {
         setSelectedUser(null);
         setApiSuccess((prev) => !prev);
         setModalVisible(false);
-        
-       
       } else {
         console.error('Failed to add user as a friend');
       }
@@ -262,16 +265,17 @@ const Leaderboard = () => {
         {activeTab === 1 && (
           <View>
             <View>
+            
+            <Icon style={styles.searchContainer} name="search" size={20}  />
+            
               <TextInput
                 style={styles.searchInput}
-                placeholder="Search..."
+                placeholder="       Search for friends..."
                 value={searchQuery}
                 onChangeText={handleSearchQueryChange}
               />
             </View>
-            <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-              <Text style={styles.buttonText}>Sign out</Text>
-            </TouchableOpacity>
+           
             <FlatList
               data={filteredUsers}
               renderItem={renderUserItem}
@@ -289,27 +293,33 @@ const Leaderboard = () => {
                   {selectedUser && (
                     <View style={styles.userDetailsContainer}>
                       <Text style={styles.userDetails}>
-                        {selectedUser.email}
+                        {selectedUser.name}
                       </Text>
-                      <Text style={styles.userDetails}>{selectedUser._id}</Text>
+
                       <Text style={styles.userDetails}>
-                        Scores - 20 {selectedUser.score}
+                        Scores - {selectedUser.scores}
                       </Text>
                       <Image
-                        source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                        // source={require('./petimage.JPG')}
+                        // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
+                         source={require('../../../assets/owl.png')}
                         style={styles.profileBigImage}
                       />
                       <Text> </Text>
-                      <View style={styles.modalButton}>
-                      <Button
-                        title="Add Friend"
+                      <View style={styles.modalButtonContainer}>
+                     
+                        <TouchableOpacity
+                        style={[styles.modalButton]}
                         onPress={() => handleAddFriend(selectedUser)}
-                      />
-                      <Button
-                        title="Close Tab"
+                      >
+                        <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
+                      </TouchableOpacity>
+                       
+                        <TouchableOpacity
+                        style={[styles.modalButton]}
                         onPress={() => setModalVisible(false)}
-                      />
+                      >
+                        <Text style={{ color: 'white' }}>{'Close Tab'}</Text>
+                      </TouchableOpacity>
                       </View>
                     </View>
                   )}
@@ -321,33 +331,42 @@ const Leaderboard = () => {
 
         {activeTab === 2 && (
           <View>
+          
+          <View>
+          <Icon style={styles.searchContainer} name="search" size={20} color="black" />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search..."
+              placeholder="       Search for friends..."
               value={searchQuery2}
               onChangeText={(text) => setSearchQuery2(text)}
+              
             />
+            </View>
             {registeredUsers
               .filter((user) => user.email.includes(searchQuery2))
               .map((user, index) => (
-                <View style={styles.listItem} key={user._id}>
+                <View style={[styles.listItem, index % 2 !== 1 && styles.listItemOdd]} key={user._id}>
                   <Text style={styles.number}>{index + 1}.</Text>
-                  
+
                   <Image
-                    source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
+                    // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
+                    source={require('../../../assets/owl.png')}
                     style={styles.profileImage}
                   />
 
                   <View style={styles.userInfoContainer}>
-                    <Text style={styles.userName}>{user.email}</Text>
-                    <Text style={styles.score}>Scores - 20 {user.score}</Text>
+                    <Text style={styles.userName}>{user.name}</Text>
+                    <Text style={styles.score}>Scores - {user.scores}</Text>
                   </View>
-                  <View style={styles.itemContentContainer}>
-                  <Button
-                    title={'View Details'}
+                  
+                    
+                    <TouchableOpacity
+                    style={[styles.detailButton]}
                     onPress={() => handleUserPress(user)}
-                  />
-                  </View>
+                  >
+                    <Text style={styles.buttonText}>{'>'}</Text>
+                  </TouchableOpacity>
+                  
                 </View>
               ))}
 
@@ -362,33 +381,44 @@ const Leaderboard = () => {
                   {selectedUser && (
                     <View style={styles.userDetailsContainer}>
                       <Text style={styles.userDetails}>
-                        {selectedUser.email}
+                        {selectedUser.name}
                       </Text>
-                   
-                     
+
                       <Image
-                      source={{ uri: 'https://picsum.photos/536/354' }}
-                      // source={require('./pet2image.JPG')} 
+                      source={require('../../../assets/owl.png')}
+                        // source={require('./pet2image.JPG')}
                         style={styles.profileBigImage}
                       />
                       <Text style={styles.rankDetails}> #3 </Text>
                       <View style={styles.modelBars}>
-                      <Text style={styles.label}>Pet's Mood:</Text>
-      <ProgressBar progress={moodProgress} width={200} height={20} />
+                        <Text style={styles.label}>Pet's Mood:</Text>
+                        <ProgressBar
+                          progress={moodProgress}
+                          width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD"
+                        />
 
-      <Text style={styles.label}>Pet's Health:</Text>
-      <ProgressBar progress={healthProgress} width={200} height={20} />
-      <Text></Text>
-      </View>
-      <View style={styles.modalButton}>
-                      <Button 
-                        title="Remove Friend"
+                        <Text style={styles.label}>Pet's Health:</Text>
+                        <ProgressBar
+                          progress={healthProgress}
+                          width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD"
+                        />
+                        <Text></Text>
+                      </View>
+                      <View style={styles.modalButtonContainer}>
+                       
+                        <TouchableOpacity
+                        style={[styles.modalButton]}
                         onPress={() => handleRemoveFriend(selectedUser)}
-                      />
-                      <Button 
-                        title="Close Tab"
+                      >
+                        <Text style={{ color: 'white' }}>{'Remove Friend'}</Text>
+                      </TouchableOpacity>
+                       
+                        <TouchableOpacity
+                        style={[styles.modalButton]}
                         onPress={() => setModalVisible(false)}
-                      />
+                      >
+                        <Text style={{ color: 'white' }}>{'Close Tab'}</Text>
+                      </TouchableOpacity>
                       </View>
                     </View>
                   )}
@@ -407,45 +437,62 @@ const Leaderboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+     backgroundColor: '#fff',
+  },
+  modalButtonContainer: {
+    marginTop: 30,
+    width: 320,
+    borderRadius: 8,
+    backgroundColor: '#37298A'
   },
   modalButton: {
-   borderRadius: 5,
-   gap: 5, 
-   marginTop: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#6A5ACD',
+    fontSize: 18,
+    width: 320,
+    border: '#9c92da 1px',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 4,
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#F2F2F2',
+    // backgroundColor: '#F2F2F2',
     marginBottom: 10,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
     paddingVertical: 10,
+    borderBottomWidth: 6,
+    borderBottomColor: greyColor,
   },
   activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#000000',
+    borderBottomWidth: 6,
+    borderBottomColor: purpleColor,
   },
   tabText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#000000',
+    color: greyColor,
   },
   activeTabText: {
-    color: '#000000',
+    color: purpleColor,
   },
   contentContainer: {
     flex: 1,
-    padding: 10,
+    // padding: 10,
   },
   listContainer: {
-    padding: 16,
+    // padding: 16,
   },
   listItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    width: '100%',
   },
   number: {
     fontSize: 16,
@@ -461,6 +508,11 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: purpleColor
+  },
+  score: {
+    fontSize: 16,
+    color: purpleColor
   },
   userDetailsContainer: {
     marginTop: 20,
@@ -470,6 +522,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: purpleColor,
   },
   rankDetails: {
     fontSize: 28,
@@ -487,25 +540,24 @@ const styles = StyleSheet.create({
     height: 170,
     borderRadius: 45,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
 
-  searchButton: {
-    backgroundColor: '#333',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
+  searchContainer: {
+    position: 'absolute', // Position the icon absolutely
+    left: 25, // Adjust the left position of the icon
+    
+    bottom: 18,
+    zIndex: 1, // Make sure the icon stays above the TextInput
+    color: purpleColor,
+  
   },
-  searchButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+ 
+
   searchInput: {
+    
     marginBottom: 10,
+    marginTop: 10,
+    marginRight: 15,
+    marginLeft: 15,
     padding: 10,
     borderWidth: 1,
     borderColor: 'gray',
@@ -525,6 +577,31 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     width: 350,
+  },
+  detailButton: {
+    position: 'absolute',
+    top: 4, // Adjust this value to control the vertical position from the bottom
+    right: 10 , // Adjust this value to control the horizontal position from the right
+    padding: 5,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: purpleColor,
+    fontSize: 28,
+  
+    textAlign: 'center',
+  },
+  cardButtonText: {
+    color: 'white',
+    backgroundColor: purpleColor,
+    fontSize: 20,
+    paddingVertical: 6, // Add top and bottom padding here
+    paddingHorizontal: 64, // Add left and right padding here
+    textAlign: 'center',
+  },
+  listItemOdd: {
+    backgroundColor: greyColor, 
+    width: '100%',// Grey background color for odd-numbered items
   },
 });
 

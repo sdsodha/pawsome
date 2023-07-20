@@ -6,7 +6,7 @@ import styles from '../style'
 // import TwoTabsComponent from '../homescreens/leaderboard'
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState('amberslim@gmail.com')
+  const [email, setEmail] = useState('amber@gmail.com')
   const [password, setPassword] = useState('123456')
 
   const navigation = useNavigation()

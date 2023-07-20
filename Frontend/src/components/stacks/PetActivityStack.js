@@ -13,8 +13,8 @@ const PetActivityStack = ({route, navigation}) => {
     return (
             <Stack.Navigator>
                 <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerShown: false }} initialParams={{ food: 0, water:0, treat:0 ,selectedPet: selectedPet, petName: petName}}/>
-                <Stack.Screen name="ActivitySelectionScreen" component={ActivitySelection} />
-                <Stack.Screen name="ActivityProgressScreen" component={ActivityProgress} />
+                <Stack.Screen name="ActivitySelectionScreen" options={{ headerShown: false }} component={ActivitySelection} />
+                <Stack.Screen name="ActivityProgressScreen" options={{ headerShown: false }} component={ActivityProgress} />
             </Stack.Navigator>
         
 

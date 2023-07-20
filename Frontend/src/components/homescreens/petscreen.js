@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   Modal,
@@ -16,9 +15,9 @@ import ProgressBar from 'react-native-progress/Bar';
 import { auth } from '../../config/firebase';
 import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
-import { Accelerometer } from 'expo-sensors';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Pets, PetPrompts } from '../../data/PetObject';
+import Collapsible from 'react-native-collapsible';
 
 const PetComponent = ({ route, navigation }) => {
 
@@ -42,7 +41,6 @@ const PetComponent = ({ route, navigation }) => {
 
   const [mood, setMood] = useState(40);
   const [health, setHealth] = useState(40);
-  const [textInputValue, setTextInputValue] = useState('');
   const [currentUserId, setCurrentUserId] = useState('');
   const [petFormData, setPetFormData] = useState(null);
 
@@ -57,6 +55,8 @@ const PetComponent = ({ route, navigation }) => {
 
   const [pet, setPet] = useState(selectedPet);
   const [prompt, setPrompt] = useState('');
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
@@ -116,29 +116,29 @@ const PetComponent = ({ route, navigation }) => {
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.sadStateText.replaceAll("NAME",petName));
+      setPrompt(PetPrompts.sadStateText.replaceAll("NAME", petName));
     }
     else if ((mood >= 25 && mood <= 50) && (health >= 25 && health <= 50)) {
       video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.okStateText.replaceAll("NAME",petName));
+      setPrompt(PetPrompts.okStateText.replaceAll("NAME", petName));
     }
     else if (mood > 50 && health > 50) {
       video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.happyStateText.replaceAll("NAME",petName));
+      setPrompt(PetPrompts.happyStateText.replaceAll("NAME", petName));
     }
 
-    if( mood <= 0 && health <=0 ){
+    if (mood <= 0 && health <= 0) {
       video.current.loadAsync(require("../../../assets/gif1.gif"))
         .then(() => {
           video.current.playAsync();
         })
-      setPrompt(PetPrompts.petLeftText.replaceAll("NAME",petName));
+      setPrompt(PetPrompts.petLeftText.replaceAll("NAME", petName));
     }
 
     setMoodProgress(mood / 100);
@@ -211,7 +211,7 @@ const PetComponent = ({ route, navigation }) => {
           onPlaybackStatusUpdate={status => setStatus(() => status)}
         />
 
-        <Text>{prompt}</Text>
+        <Text style={styles.propmtText}>{prompt}</Text>
 
         <View style={styles.button}>
           <TouchableOpacity
@@ -240,16 +240,12 @@ const PetComponent = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.label}>Mood: {mood}</Text>
-        <ProgressBar progress={moodProgress} width={200} height={20} />
+        <View style={styles.moodHealthContainer}>
+          <Text style={styles.label}>Mood</Text>
+          <ProgressBar progress={moodProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
 
-        <Text style={styles.label}>Health: {health}</Text>
-        <ProgressBar progress={healthProgress} width={200} height={20} />
-
-        <View style={{ marginTop: 10 }}>
-          <Button
-            title="Start Activity"
-            onPress={() => { navigation.navigate("ActivitySelectionScreen") }} />
+          <Text style={styles.label}>Health</Text>
+          <ProgressBar progress={healthProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
         </View>
 
         <View style={styles.centeredView}>
@@ -292,29 +288,44 @@ const PetComponent = ({ route, navigation }) => {
         {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
-        <View>
-          <Text>Bucket</Text>
+        <View style={styles.inventoryContainer}>
 
-          <View>
-            <View style={styles.button}>
-              <Text>Food   </Text>
-              <Text>{foodCount}</Text>
+          <TouchableOpacity style={styles.inventoryButton}
+            onPress={() => { setIsCollapsed(!isCollapsed) }}>
+            <Text style={{ color: 'black' }}>Inventory                                                        v</Text>
+          </TouchableOpacity>
+
+          <Collapsible collapsed={isCollapsed}>
+            <View>
+              <View style={styles.itemContainer}>
+                <Text>Food  {foodCount}</Text>
+                <ProgressBar progress={foodCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+              </View>
+
+              <View style={styles.itemContainer}>
+                <Text>Treat  {treatCount}</Text>
+                <ProgressBar progress={treatCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+              </View>
+
+              <View style={styles.itemContainer}>
+                <Text>Water {waterCount}</Text>
+                <ProgressBar progress={waterCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+              </View>
             </View>
-
-            <View style={styles.button}>
-              <Text>Treat   </Text>
-              <Text>{treatCount}</Text>
-            </View>
-
-            <View style={styles.button}>
-              <Text>Water  </Text>
-              <Text>{waterCount}</Text>
-            </View>
-          </View>
-
+          </Collapsible>
         </View>
+
+        <View style={styles.startActivityButtonContainer}>
+          <TouchableOpacity style={styles.startActivityButton}
+            onPress={() => { navigation.navigate("ActivitySelectionScreen") }}>
+            <Text style={{ color: 'white' }}>Start Activity</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/*         
         <Button title="1 Day Gone" onPress={onOneDayButtonPressed} />
-        <Button title="2 Days Gone" onPress={onTwoDayButtonPressed} />
+        <Button title="2 Days Gone" onPress={onTwoDayButtonPressed} /> 
+*/}
 
       </View>
     </ScrollView>
@@ -322,11 +333,65 @@ const PetComponent = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  inventoryContainer: {
+    marginTop: 5,
+    width: 320,
+    borderRadius: 4,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 1
+    },
+    backgroundColor: 'white'
+  },
+  itemContainer: {
+    marginLeft: 10,
+    gap: 5,
+    marginBottom: 10,
+  },
+  inventoryButton: {
+    justifyContent: 'left',
+    alignItems: 'left',
+    fontSize: 18,
+    width: 320,
+    padding: 15,
+  },
+  startActivityButtonContainer: {
+    marginTop: 30,
+    width: 320,
+    borderRadius: 8,
+    backgroundColor: '#37298A'
+  },
+  startActivityButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#6A5ACD',
+    fontSize: 18,
+    width: 320,
+    border: '#9c92da 1px',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 4,
+  },
+  moodHealthContainer: {
+    alignItems: 'left',
+    justifyContent: 'left',
+  },
+  moodHealthProgressBar: {
+    width: 320,
+    height: 15,
+  },
+  propmtText: {
+    marginTop: 16
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
+    backgroundColor: 'white'
   },
   image: {
     width: 100,
@@ -342,14 +407,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    marginBottom: 16,
+    marginBottom: 4,
+    marginTop: 6,
   },
   button: {
     flex: 0,

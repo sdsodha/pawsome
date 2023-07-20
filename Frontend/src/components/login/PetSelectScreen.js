@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar, KeyboardAvoidingView, TextInput, Button, Image, TouchableOpacity, Pressable, StyleSheet, SafeAreaView, ScrollView, FlatList, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/core'
 import { auth } from '../../config/firebase';
-import styles from '../style';
+//import styles from '../style';
 import { Pets } from '../../data/PetObject';
 import { ButtonGroup } from "react-native-elements";
 import Carousel from "react-native-reanimated-carousel";
-
-const Separator = () => <View style={styles.separator} />;
 
 const PetSelectScreen = () => {
     const navigation = useNavigation()
@@ -21,7 +19,7 @@ const PetSelectScreen = () => {
     const [currentUserId, setCurrentUserId] = useState('');
 
     const width = Dimensions.get('window').width;
-    
+
     const ref = React.useRef(null);
 
     const [images, setImages] = React.useState([
@@ -108,33 +106,166 @@ const PetSelectScreen = () => {
 
     return (
         <ScrollView>
-            <KeyboardAvoidingView>
-
+            <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={50} >
                 <View style={styles.container}>
-                    <Separator />
 
-                    <View style={styles.buttonContainer}>
-                        <Text style={styles.label}>Difficulty Level</Text>
+                    <View style={styles.difficultyContainer}>
+                        <Text>Difficulty Level</Text>
                         <ButtonGroup
                             buttons={['Easy', 'Medium', 'Hard']}
                             selectedIndex={selectedDifficultyIndex}
                             onPress={(value) => {
                                 setSelectedDifficultyIndex(value);
                             }}
-                            containerStyle={{ marginBottom: 20 }}
+                            containerStyle={{ height: 40, marginHorizontal: 0, backgroundColor: '#F5F5F5', padding: 5, borderRadius: 5, borderWidth: 0 }}
+                            selectedButtonStyle={{ backgroundColor: '#6A5ACD', borderRadius: 5 }}
+                            innerBorderStyle={{ width: 0 }}
                         />
-                        {/* <View style={styles.fixToText}>
-                            <Button style={styles.button} title="Easy" onPress={() => { }} />
-                            <Button style={styles.button} title="Medium" onPress={() => { }} />
-                            <Button style={styles.button} title="Hard" onPress={() => { }} />
-                        </View> */}
                     </View>
 
+                    <View style={styles.petContainer}>
+                        <Text>Choose Pet</Text>
 
-                    <Text style={styles.label}>Choose Pet</Text>
-                    <Separator />
+                        <View style={styles.imageContainer}>
+                            <View>
+                                <Button
+                                    title="<"
+                                    onPress={() => {
+                                        ref.current ?.scrollTo({ count: -1, animated: true });
+                                    }}
+                                />
+                            </View>
 
-                    {/* <View style={styles.container}>
+                            <View style={{
+                                width: 250,
+                                height: 250,
+                            }}>
+                                <Carousel
+                                    loop
+                                    width={250}
+                                    height={250}
+                                    data={images}
+                                    pagingEnabled={true}
+                                    ref={ref}
+                                    scrollAnimationDuration={800}
+                                    onSnapToItem={(index) => setSelectedPet(index)}
+                                    renderItem={({ item, index }) => (
+                                        <Image style={{
+                                            width: '100%',
+                                            height: '100%',
+                                        }} source={item} />
+                                    )}
+                                />
+                            </View>
+
+                            <View>
+                                <Button
+                                    title=">"
+                                    onPress={() => {
+                                        ref.current ?.scrollTo({ count: 1, animated: true });
+                                    }}
+                                />
+                            </View>
+
+                        </View>
+
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            {Array(3)
+                                .fill({})
+                                .map((item, index) => {
+                                    return <Text key={index} style={
+                                        {
+                                            opacity: (index === selectedPet) ? .8 : .4,
+                                            fontSize: 32,
+                                        }}>•</Text>
+                                })}
+                        </View>
+
+                    </View>
+
+                    <View style={styles.nameContainer}>
+                        <Text style={styles.label}>Name: </Text>
+                        <TextInput style={{
+                            width: 240,
+                            height: 25,
+                        }} value={name} onChangeText={(text) => setName(text)} />
+                    </View>
+
+                    <View style={styles.startActivityButtonContainer}>
+                        <TouchableOpacity style={styles.startActivityButton}
+                            onPress={() => handleSubmit(currentUserId)} >
+                            <Text style={{ color: 'white' }}>Confirm</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+
+            </KeyboardAvoidingView>
+        </ScrollView>
+
+    );
+};
+export default PetSelectScreen;
+
+const styles = StyleSheet.create({
+    difficultyContainer: {
+        width: 300,
+        gap: 8,
+    },
+    imageContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+    },
+    nameContainer: {
+        flexDirection: 'row',
+        gap: 10,
+        width: 300,
+        marginTop: 0,
+        alignItems: 'baseline',
+        borderBottomWidth: 1,
+        borderColor: 'grey',
+        paddingBottom: 5,
+    },
+    startActivityButtonContainer: {
+        marginTop: 35,
+        width: 150,
+        borderRadius: 8,
+        backgroundColor: '#37298A'
+    },
+    startActivityButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#6A5ACD',
+        fontSize: 18,
+        width: 150,
+        border: '#9c92da 1px',
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 4,
+    },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 16,
+        backgroundColor: 'white',
+        height: 720,
+    },
+    petContainer: {
+        width: 300,
+        marginTop: 10,
+    }
+
+});
+
+// Shishupals Image Slider, Cause ViewProps Errors but perfect feature wise 
+{/* <View style={styles.container}>
                         <SliderBox
                             images={images}
                             sliderBoxHeight={200}
@@ -148,61 +279,3 @@ const PetSelectScreen = () => {
                             resizeMode='center'
                         />
                     </View> */}
-
-                    <View>
-                        <Carousel
-                            loop
-                            width={width * .8}
-                            height={width * .8}
-                            data={images}
-                            pagingEnabled={true}
-                            ref={ref}
-                            scrollAnimationDuration={1000}
-                            onSnapToItem={(index) => setSelectedPet(index)}
-                            renderItem={({ item, index }) => (
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        justifyContent: 'center',
-                                        width: 100,
-                                        height: 100
-                                    }}
-                                >
-                                    <Image
-                                        source={item}
-                                    />
-                                </View>
-                                    
-                            )}
-                    />
-                    </View>
-
-                    <Separator />
-
-                    <View style={styles.fieldContainer}>
-                        <Text style={styles.label}>Name:</Text>
-                        <TextInput style={styles.input} value={name} onChangeText={(text) => setName(text)} />
-                    </View>
-
-                    <Button title="Submit" onPress={() => handleSubmit(currentUserId)} />
-                </View>
-
-            </KeyboardAvoidingView>
-        </ScrollView>
-
-    );
-};
-export default PetSelectScreen;
-
-/* <Button
-                                        title="<"
-                                        onPress={() => {
-                                            ref.current ?.scrollTo({ count: -1, animated: true });
-                                        }}
-                                    />
-                                    <Button
-                                        title=">"
-                                        onPress={() => {
-                                            ref.current ?.scrollTo({ count: 1, animated: true });
-                                        }}
-                                    /> */
