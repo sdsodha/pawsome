@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    width: '100',
+    width: '100%',
   },
   number: {
     fontSize: 16,
@@ -601,7 +601,7 @@ const styles = StyleSheet.create({
   },
   listItemOdd: {
     backgroundColor: greyColor, 
-    width: '100',// Grey background color for odd-numbered items
+    width: '100%',// Grey background color for odd-numbered items
   },
 });
 

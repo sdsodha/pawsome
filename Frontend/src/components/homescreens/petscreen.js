@@ -292,25 +292,24 @@ const PetComponent = ({ route, navigation }) => {
 
           <TouchableOpacity style={styles.inventoryButton}
             onPress={() => { setIsCollapsed(!isCollapsed) }}>
-            <Text style={{ color: 'black' }}>Inventory</Text>
+            <Text style={{ color: 'black' }}>Inventory                                                        v</Text>
           </TouchableOpacity>
-
 
           <Collapsible collapsed={isCollapsed}>
             <View>
-              <View style={styles.button}>
-                <Text>Food   </Text>
-                <Text>{foodCount}</Text>
+              <View style={styles.itemContainer}>
+                <Text>Food  {foodCount}</Text>
+                <ProgressBar progress={foodCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
               </View>
 
-              <View style={styles.button}>
-                <Text>Treat   </Text>
-                <Text>{treatCount}</Text>
+              <View style={styles.itemContainer}>
+                <Text>Treat  {treatCount}</Text>
+                <ProgressBar progress={treatCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
               </View>
 
-              <View style={styles.button}>
-                <Text>Water  </Text>
-                <Text>{waterCount}</Text>
+              <View style={styles.itemContainer}>
+                <Text>Water {waterCount}</Text>
+                <ProgressBar progress={waterCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
               </View>
             </View>
           </Collapsible>
@@ -346,6 +345,11 @@ const styles = StyleSheet.create({
       width: 1
     },
     backgroundColor: 'white'
+  },
+  itemContainer: {
+    marginLeft: 10,
+    gap: 5,
+    marginBottom: 10,
   },
   inventoryButton: {
     justifyContent: 'left',
