@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, Image, Modal } from 'react-native'
+import { View, Text, Button, StyleSheet, Image, Modal, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState, useEffect } from 'react';
 import { Accelerometer } from 'expo-sensors';
 import { Video, ResizeMode } from 'expo-av';
@@ -136,42 +136,62 @@ const ActivityProgress = ({ route, navigation }) => {
     }
 
     return (
-        <View>
-            <Button
-                title={"View Instructions"}
-                onPress={onViewInstructions}
-            />
+        <ScrollView>
+            <View style={styles.container}>
 
-            <Progress.Circle progress={counter / parseInt(activityGoal)} size={300} showsText={true} />
 
-            <Button
-                title="Pause"
-                onPress={onActivityDone} />
+                <Text style={styles.activityText}>Activity in Progress</Text>
 
-            <Button
-                title="End Activity"
-                onPress={onActivityDone} />
+                <TouchableOpacity style={styles.viewInstructionButton}
+                    onPress={onViewInstructions}>
+                    <Text style={{ color: '#6A5ACD' }} fontSize={12}>Instructions</Text>
+                </TouchableOpacity>
 
-            <Text>Movement:</Text>
-            <Progress.Bar progress={counter / parseInt(activityGoal)} width={200} height={20} />
+                <Progress.Circle style={styles.progressCircle} progress={counter / parseInt(activityGoal)} color='#CD4668' strokeCap='round' thickness={40} size={300} showsText={true} />
 
-            <Text>Item:</Text>
-            <Progress.Bar progress={(counter / parseInt(activityGoal))} width={200} height={20} />
+                <View style={styles.activityButtonContainer}>
+                    <TouchableOpacity style={styles.pauseButton}
+                        onPress={onActivityDone}>
+                        <Text style={{ color: 'white' }}>Pause</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.centeredView}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
-                    }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                <View style={styles.activityButtonContainer}>
+                    <TouchableOpacity style={styles.endActivityButton}
+                        onPress={onActivityDone}>
+                        <Text style={{ color: 'black' }}>End Activity</Text>
+                    </TouchableOpacity>
+                </View>
 
-                            <Text style={styles.modalText}>{Activity[activity].type}</Text>
-                            
+
+                <View style={styles.statusMainContainer}>
+                    <Text style={{fontSize:18}}>Status</Text>
+
+                    <View style={styles.statusInnerContainer}>
+                        <Text style={{ marginBottom: 5 }}>Movements</Text>
+                        <Progress.Bar progress={counter / parseInt(activityGoal)} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+                    </View>
+
+                    <View style={styles.statusInnerContainer}>
+                        <Text style={{ marginBottom: 5 }}>Item Gained</Text>
+                        <Progress.Bar progress={(counter / parseInt(activityGoal))} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+                    </View>
+                </View>
+
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert('Modal has been closed.');
+                            setModalVisible(!modalVisible);
+                        }}>
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+
+                                <Text style={styles.modalText}>{Activity[activity].type}</Text>
+
                                 <Video
                                     ref={video2}
                                     style={styles.video}
@@ -183,25 +203,25 @@ const ActivityProgress = ({ route, navigation }) => {
                                     shouldPlay={true}
                                     onPlaybackStatusUpdate={status => setStatus(() => status)}
                                 />
-                            
-                            <Text>Instructions: </Text>
-                            <Text>{Activity[activity].instructionText} </Text>
 
-                            <View style={styles.button}>
-                                <Button title='Close'
-                                    onPress={() => setModalVisible(!modalVisible)} />
-                            </View>
-                            {/* <Pressable
+                                <Text>Instructions: </Text>
+                                <Text>{Activity[activity].instructionText} </Text>
+
+                                <View style={styles.button}>
+                                    <Button title='Close'
+                                        onPress={() => setModalVisible(!modalVisible)} />
+                                </View>
+                                {/* <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}>
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable> */}
+                            </View>
                         </View>
-                    </View>
-                </Modal>
+                    </Modal>
+                </View>
             </View>
-
-        </View>
+        </ScrollView>
     )
 }
 
@@ -210,7 +230,57 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 16,
+        backgroundColor: 'white'
+    },
+    statusMainContainer: {
+        marginTop: 20,
+    },
+    statusInnerContainer: {
+        marginTop: 20,
+        backgroundColor: '#F6F5F5',
+        borderRadius: 10,
+        paddingVertical: 20,
+        paddingHorizontal: 5,
+    },
+    activityButtonContainer: {
+        marginTop: 30,
+        width: 320,
+        borderRadius: 8,
+        backgroundColor: '#37298A'
+    },
+    pauseButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#6A5ACD',
+        fontSize: 18,
+        width: 320,
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 4,
+    },
+    endActivityButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        fontSize: 18,
+        width: 320,
+        borderWidth: 2,
+        borderRadius: 8,
+        borderColor: '#6A5ACD',
+        padding: 10,
+        marginBottom: 4,
+    },
+    progressCircle: {
+        marginTop: 10,
+        marginBottom: 50,
+    },
+    activityText: {
+        fontSize: 20,
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    viewInstructionButton: {
+        marginBottom: 20,
     },
     image: {
         width: 100,
