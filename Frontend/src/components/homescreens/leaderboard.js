@@ -25,7 +25,7 @@ const greyColor = '#CEC9EE';
 const Leaderboard = () => {
   const navigation = useNavigation();
 
-  
+
 
   //-----------Variable for switch between 2 tabs---------------------
   const [activeTab, setActiveTab] = useState(1);
@@ -137,13 +137,13 @@ const Leaderboard = () => {
           <Text style={styles.userName}>{item.name}</Text>
           <Text style={styles.score}>Scores - {item.scores}</Text>
         </View>
-      
-       <TouchableOpacity
-       style={[styles.detailButton]}
-       onPress={handleUserPress}
-     >
-       <Text style={styles.buttonText}>{'>'}</Text>
-     </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.detailButton]}
+          onPress={handleUserPress}
+        >
+          <Text style={styles.buttonText}>{'>'}</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -265,9 +265,9 @@ const Leaderboard = () => {
         {activeTab === 1 && (
           <View>
             <View>
-            
-            <Icon style={styles.searchContainer} name="search" size={20}  />
-            
+
+              <Icon style={styles.searchContainer} name="search" size={20} />
+
               <TextInput
                 style={styles.searchInput}
                 placeholder="       Search for friends..."
@@ -275,7 +275,7 @@ const Leaderboard = () => {
                 onChangeText={handleSearchQueryChange}
               />
             </View>
-           
+
             <FlatList
               data={filteredUsers}
               renderItem={renderUserItem}
@@ -301,25 +301,27 @@ const Leaderboard = () => {
                       </Text>
                       <Image
                         // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                         source={require('../../../assets/owl.png')}
+                        source={require('../../../assets/owl.png')}
                         style={styles.profileBigImage}
                       />
                       <Text> </Text>
                       <View style={styles.modalButtonContainer}>
-                     
+
                         <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => handleAddFriend(selectedUser)}
-                      >
-                        <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
-                      </TouchableOpacity>
-                       
+                          style={[styles.modalButton]}
+                          onPress={() => handleAddFriend(selectedUser)}
+                        >
+                          <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.modalButtonContainer}>
+
                         <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => setModalVisible(false)}
-                      >
-                        <Text style={{ color: 'white' }}>{'Close Tab'}</Text>
-                      </TouchableOpacity>
+                          style={[styles.modalButton]}
+                          onPress={() => setModalVisible(false)}
+                        >
+                          <Text style={{ color: 'white' }}>{'Close Tab'}</Text>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   )}
@@ -331,16 +333,16 @@ const Leaderboard = () => {
 
         {activeTab === 2 && (
           <View>
-          
-          <View>
-          <Icon style={styles.searchContainer} name="search" size={20} color="black" />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="       Search for friends..."
-              value={searchQuery2}
-              onChangeText={(text) => setSearchQuery2(text)}
-              
-            />
+
+            <View>
+              <Icon style={styles.searchContainer} name="search" size={20} color="black" />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="       Search for friends..."
+                value={searchQuery2}
+                onChangeText={(text) => setSearchQuery2(text)}
+
+              />
             </View>
             {registeredUsers
               .filter((user) => user.email.includes(searchQuery2))
@@ -358,15 +360,15 @@ const Leaderboard = () => {
                     <Text style={styles.userName}>{user.name}</Text>
                     <Text style={styles.score}>Scores - {user.scores}</Text>
                   </View>
-                  
-                    
-                    <TouchableOpacity
+
+
+                  <TouchableOpacity
                     style={[styles.detailButton]}
                     onPress={() => handleUserPress(user)}
                   >
                     <Text style={styles.buttonText}>{'>'}</Text>
                   </TouchableOpacity>
-                  
+
                 </View>
               ))}
 
@@ -385,7 +387,7 @@ const Leaderboard = () => {
                       </Text>
 
                       <Image
-                      source={require('../../../assets/owl.png')}
+                        source={require('../../../assets/owl.png')}
                         // source={require('./pet2image.JPG')}
                         style={styles.profileBigImage}
                       />
@@ -405,20 +407,22 @@ const Leaderboard = () => {
                         <Text></Text>
                       </View>
                       <View style={styles.modalButtonContainer}>
-                       
+
                         <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => handleRemoveFriend(selectedUser)}
-                      >
-                        <Text style={{ color: 'white' }}>{'Remove Friend'}</Text>
-                      </TouchableOpacity>
-                       
+                          style={[styles.modalButton]}
+                          onPress={() => handleRemoveFriend(selectedUser)}
+                        >
+                          <Text style={{ color: 'white' }}>{'Remove Friend'}</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.modalButtonContainer}>
+
                         <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => setModalVisible(false)}
-                      >
-                        <Text style={{ color: 'white' }}>{'Close Tab'}</Text>
-                      </TouchableOpacity>
+                          style={[styles.modalButton]}
+                          onPress={() => setModalVisible(false)}
+                        >
+                          <Text style={{ color: 'white' }}>{'Close Tab'}</Text>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   )}
@@ -437,10 +441,10 @@ const Leaderboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-     backgroundColor: '#fff',
+    backgroundColor: '#fff',
   },
   modalButtonContainer: {
-    marginTop: 30,
+    marginTop: 15,
     width: 320,
     borderRadius: 8,
     backgroundColor: '#37298A'
@@ -544,16 +548,16 @@ const styles = StyleSheet.create({
   searchContainer: {
     position: 'absolute', // Position the icon absolutely
     left: 25, // Adjust the left position of the icon
-    
+
     bottom: 18,
     zIndex: 1, // Make sure the icon stays above the TextInput
     color: purpleColor,
-  
+
   },
- 
+
 
   searchInput: {
-    
+
     marginBottom: 10,
     marginTop: 10,
     marginRight: 15,
@@ -581,14 +585,14 @@ const styles = StyleSheet.create({
   detailButton: {
     position: 'absolute',
     top: 4, // Adjust this value to control the vertical position from the bottom
-    right: 10 , // Adjust this value to control the horizontal position from the right
+    right: 10, // Adjust this value to control the horizontal position from the right
     padding: 5,
     borderRadius: 5,
   },
   buttonText: {
     color: purpleColor,
     fontSize: 28,
-  
+
     textAlign: 'center',
   },
   cardButtonText: {
@@ -600,7 +604,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   listItemOdd: {
-    backgroundColor: greyColor, 
+    backgroundColor: greyColor,
     width: '100%',// Grey background color for odd-numbered items
   },
 });
