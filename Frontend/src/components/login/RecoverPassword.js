@@ -24,12 +24,12 @@ const RecoverPassword = () => {
 
         </View>
 
-        <View style={styles.buttonContainer}>
+        <View style={styles.recoverButtonContainer}>
 
         
         <TouchableOpacity
        
-          style={styles.button}
+          style={styles.recoverButton}
         >
           <Text style={styles.buttonText}>Recover Password</Text>
         </TouchableOpacity>
