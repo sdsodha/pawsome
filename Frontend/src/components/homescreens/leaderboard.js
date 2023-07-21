@@ -313,6 +313,8 @@ const Leaderboard = () => {
                       >
                         <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
                       </TouchableOpacity>
+</View>
+<View style={styles.modalButtonContainer}>
                        
                         <TouchableOpacity
                         style={[styles.modalButton]}
@@ -412,6 +414,8 @@ const Leaderboard = () => {
                       >
                         <Text style={{ color: 'white' }}>{'Remove Friend'}</Text>
                       </TouchableOpacity>
+                      </View>
+                      <View style={styles.modalButtonContainer}>
                        
                         <TouchableOpacity
                         style={[styles.modalButton]}
@@ -440,11 +444,12 @@ const styles = StyleSheet.create({
      backgroundColor: '#fff',
   },
   modalButtonContainer: {
-    marginTop: 30,
+    marginTop: 10,
     width: 320,
     borderRadius: 8,
-    backgroundColor: '#37298A'
+    backgroundColor: '#37298A',
   },
+ 
   modalButton: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -455,6 +460,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 4,
+    
   },
   tabContainer: {
     flexDirection: 'row',
@@ -492,7 +498,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    width: '100',
+    width: '100%',
   },
   number: {
     fontSize: 16,
@@ -601,7 +607,7 @@ const styles = StyleSheet.create({
   },
   listItemOdd: {
     backgroundColor: greyColor, 
-    width: '100',// Grey background color for odd-numbered items
+    width: '100%',// Grey background color for odd-numbered items
   },
 });
 
