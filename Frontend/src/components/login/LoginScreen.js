@@ -2,7 +2,8 @@ import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, Alert,Image,TouchableOpacity, View } from 'react-native'
 import { auth } from '../../config/firebase'
-import styles from '../style'
+ import styles from '../style'
+import{FcGoogle} from "react-icons/fc";
 // import TwoTabsComponent from '../homescreens/leaderboard'
 
 const LoginScreen = () => {
@@ -114,15 +115,15 @@ const LoginScreen = () => {
     //     </TouchableOpacity>
     //   </View>
     // </KeyboardAvoidingView>
-
-    <KeyboardAvoidingView>
+<KeyboardAvoidingView>
+      
       
       <Image  style={styles.logo} source={require('../../../assets/logo.png')} />
     
       <View style={styles.inputContainer}>
 
       
-      <Text style={styles.welc}>Welcome!</Text>
+      <Text style={styles.welc}>Welcome to Pawsome!</Text>
       
       </View>
       <View style={styles.inputContainer}>
@@ -148,29 +149,38 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.loginButtonContainer}>
         <TouchableOpacity
           onPress={handleLogin}
-          style={styles.loginbutton}
+          style={styles.loginButton}
         >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <Text>Or</Text>
+        </View>
+        <View style={styles.textcontainer}>
+        <Text style={styles.signtext}>Or</Text>
+        </View>
+       
+        <View style={styles.googleButtonContainer}>
         <TouchableOpacity
       
-          style={styles.googlebutton}
+          style={styles.googleButton}
         >
-          <Text style={styles.buttonText}>Login With Google</Text>
+          <Image  style={styles.google} source={require('../../../assets/google.jpeg')} />
+          <Text style={styles.buttonText}>Sign in With Google</Text>
         </TouchableOpacity>
+        </View>
         <TouchableOpacity
          // onPress={handleSignUp}
          onPress={() => navigation.navigate("CreateAccount")} >
           
-        
-          <Text>New to Pawsome? Sign Up!</Text>
+          <View style={styles.textcontainer}>
+        <Text style={styles.signtext}>New to Pawsome? Sign Up!</Text>
+        </View>
+          
         </TouchableOpacity>
-      </View>
-
+      
+        
       
     </KeyboardAvoidingView>
   )
