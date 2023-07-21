@@ -39,8 +39,8 @@ const PetComponent = ({ route, navigation }) => {
     }
   }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
 
-  const [mood, setMood] = useState(40);
-  const [health, setHealth] = useState(40);
+  const [mood, setMood] = useState(47);
+  const [health, setHealth] = useState(47);
   const [currentUserId, setCurrentUserId] = useState('');
   const [petFormData, setPetFormData] = useState(null);
 
@@ -114,21 +114,27 @@ const PetComponent = ({ route, navigation }) => {
     if (mood < 25 && health < 25) {
       video.current.loadAsync(Pets[selectedPet].animSrc.sadAnim)
         .then(() => {
-          video.current.playAsync();
+          video.current.playAsync().then(() => {
+            video.current.isLooping(true);
+          })
         })
       setPrompt(PetPrompts.sadStateText.replaceAll("NAME", petName));
     }
     else if ((mood >= 25 && mood <= 50) && (health >= 25 && health <= 50)) {
       video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
         .then(() => {
-          video.current.playAsync();
+          video.current.playAsync().then(() => {
+            video.current.isLooping(true);
+          })
         })
       setPrompt(PetPrompts.okStateText.replaceAll("NAME", petName));
     }
     else if (mood > 50 && health > 50) {
       video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
         .then(() => {
-          video.current.playAsync();
+          video.current.playAsync().then(() => {
+            video.current.isLooping(true);
+          })
         })
       setPrompt(PetPrompts.happyStateText.replaceAll("NAME", petName));
     }
@@ -136,7 +142,9 @@ const PetComponent = ({ route, navigation }) => {
     if (mood <= 0 && health <= 0) {
       video.current.loadAsync(require("../../../assets/gif1.gif"))
         .then(() => {
-          video.current.playAsync();
+          video.current.playAsync().then(() => {
+            video.current.isLooping(true);
+          })
         })
       setPrompt(PetPrompts.petLeftText.replaceAll("NAME", petName));
     }
@@ -206,8 +214,9 @@ const PetComponent = ({ route, navigation }) => {
             //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
             Pets[selectedPet].animSrc.okAnim
           }
+          isLooping={true}
           useNativeControls={false}
-          resizeMode={ResizeMode.CONTAIN}
+          resizeMode={ResizeMode.COVER}
           onPlaybackStatusUpdate={status => setStatus(() => status)}
         />
 
@@ -359,7 +368,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   startActivityButtonContainer: {
-    marginTop: 30,
+    marginVertical: 30,
     width: 320,
     borderRadius: 8,
     backgroundColor: '#37298A'
@@ -384,14 +393,14 @@ const styles = StyleSheet.create({
     height: 15,
   },
   propmtText: {
-    marginTop: 16
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
-    backgroundColor: 'white'
+    paddingHorizontal: 16,
+    backgroundColor: 'white',
+    height: '100%'
   },
   image: {
     width: 100,
@@ -418,8 +427,9 @@ const styles = StyleSheet.create({
   },
   video: {
     alignSelf: 'center',
+    justifyContent: 'center',
     width: 320,
-    height: 200,
+    height: 320,
   },
 
   centeredView: {

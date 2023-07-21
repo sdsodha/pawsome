@@ -31,18 +31,12 @@ const HomeTabs = ({route, navigation}) => {
         position: 'absolute', // Position the tab bar at the bottom of the screen
         left: 0,
         right: 0,
-        
-        
-        
-       
-         
-       
-        
       }
     }}
    >
       <Tab.Screen name="Homescreen" component={PetActivityStack} initialParams={{selectedPet : selectedPet, petName: petName}}
       options={{
+        headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Image
             source={focused ? require('../../../assets/homescreenIconFocused.png') : require('../../../assets/homescreenIcon.png')}

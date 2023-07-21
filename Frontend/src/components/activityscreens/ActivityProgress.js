@@ -230,7 +230,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        height: '100%',
+        paddingTop: 80,
     },
     statusMainContainer: {
         marginTop: 20,
