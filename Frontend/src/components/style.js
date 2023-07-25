@@ -52,11 +52,7 @@ const styles = StyleSheet.create({
 
   },
   welc: {
-    fontSize: 30,
-
-    justifyContent: 'center',
-    textAlign: 'center'
-
+    fontSize: 20,
   },
   label: {
     margin: 5,
@@ -264,8 +260,7 @@ const styles = StyleSheet.create({
 
   },
   logo: {
-
-    width:'50%',
+    width:'25%',
     resizeMode: 'contain',
     alignSelf: 'center',
     marginTop:50,

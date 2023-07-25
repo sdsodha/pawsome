@@ -23,7 +23,7 @@ const AppStack = () => {
 
          <Stack.Screen name="Leaderboard" component={Leaderboard} />
 
-        <Stack.Screen name="PetSelect" component={PetSelectScreen} options={{headerTitle: "",headerShown: true,headerBackTitleVisible: false}}/>
+        <Stack.Screen name="PetSelect" component={PetSelectScreen} options={{headerTitle: "Select Your Pet",headerShown: true,headerBackTitleVisible: false}}/>
         <Stack.Screen name="ForgotPassword" component={RecoverPassword} options={{headerTitle: "",headerShown: true,headerBackTitleVisible: false}} 
   />
         <Stack.Screen name="SetPassword" component={SetPassword} options={{headerTitle: "",headerShown: true,headerBackTitleVisible: false}}  />

@@ -5,9 +5,15 @@ import { NativeBaseProvider } from 'native-base'
 import AppStack from './src/components/stacks/AppStack';
 import {useCallback,useEffect,useState} from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import { LogBox } from 'react-native';
+
 
 //SplashScreen.preventAutoHideAsync();
 export default function App() {
+
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs();//Ignore all log notifications
+
   /*const [appIsReady,setAppIsReady] = useState(false);
   useEffect( () => {
     async function show_splash_screen(){

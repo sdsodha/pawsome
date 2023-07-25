@@ -139,7 +139,7 @@ export default ActivitySelection
 const styles = StyleSheet.create({
     activitySelectionContainer: {
         marginTop: 10,
-        width: 250,
+        width: 320,
         borderRadius: 4,
         shadowColor: 'black',
         shadowOpacity: 0.5,
@@ -155,11 +155,11 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         marginBottom: 5,
-        width: 250,
+        width: 320,
     },
     startActivityButtonContainer: {
         marginTop: 15,
-        width: 150,
+        width: 320,
         borderRadius: 8,
         backgroundColor: '#37298A'
     },
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#6A5ACD',
         fontSize: 18,
-        width: 150,
+        width: 320,
         border: '#9c92da 1px',
         borderRadius: 8,
         padding: 10,
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     },
     goalsContainer: {
         flexDirection: 'row',
-        gap: 70,
+        gap: 80,
     }
 
 });
