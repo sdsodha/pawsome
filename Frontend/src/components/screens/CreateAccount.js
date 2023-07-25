@@ -47,17 +47,26 @@ return (
             />
     </View>
 
-    <View style={styles.buttonContainer}>
+    <View style={styles.registerButtonContainer}>
        
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.registerButton}>
             <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
+        </View>
+        <View style={styles.textcontainer}>
+        <Text style={styles.signtext}>Or</Text>
+        </View>
         
-        <Text>Or</Text>
-        
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Login With Google</Text>
+        <View style={styles.googleButtonContainer}>
+        <TouchableOpacity
+      
+          style={styles.googleButton}
+        >
+          
+          <Text style={styles.buttonText}>Sign in With Google</Text>
         </TouchableOpacity>
+        
+        
         
     </View>
     {/* <View>

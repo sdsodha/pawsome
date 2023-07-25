@@ -12,8 +12,8 @@ const Separator = () => <View style={styles.separator} />;
 const ActivitySelection = () => {
 
     const [selectedActivity, setSelectedActivity] = useState(0);
-    const [itemGoal, setItemGoal] = useState();
-    const [activityGoal, setActivityGoal] = useState();
+    const [itemGoal, setItemGoal] = useState(3);
+    const [activityGoal, setActivityGoal] = useState(5);
     const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(1);
     const [selectedItemIndex, setSelectedItemIndex] = useState(0);
 
