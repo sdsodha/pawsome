@@ -17,20 +17,19 @@ import { auth } from '../../config/firebase';
 import axios from 'axios';
 import { BACKEND_API } from '../../config/backendlink';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import { BlurView } from '@react-native-community/blur';
 
 const purpleColor = '#37298A';
 const greyColor = '#CEC9EE';
 
-
 const Leaderboard = () => {
   const navigation = useNavigation();
-
-
 
   //-----------Variable for switch between 2 tabs---------------------
   const [activeTab, setActiveTab] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   //--------------Tab 1 Search Functionality-------------------
 
@@ -129,7 +128,8 @@ const Leaderboard = () => {
         <Text style={styles.number}>{index + 1}.</Text>
         <Image
           // source={{ uri: 'https://picsum.photos/536/354' }}
-          source={require('../../../assets/owl.png')}
+          source={require('../../../assets/userimages/karan.png')}
+          // source={require(`../../../assets/userimages/${item.imageUrl}.png`)}
           style={styles.profileImage}
         />
 
@@ -176,10 +176,12 @@ const Leaderboard = () => {
       });
 
       if (response.status === 200) {
-        alert('User added as a friend successfully');
+        // alert('User added as a friend successfully');
+
         setSelectedUser(null);
         setApiSuccess((prev) => !prev);
         setModalVisible(false);
+        setShowModal(true);
       } else {
         console.error('Failed to add user as a friend');
       }
@@ -220,10 +222,11 @@ const Leaderboard = () => {
 
       if (response.status === 200) {
         console.log('User removed as a friend successfully');
-        alert('User removed as a friend successfully');
+        // alert('User removed as a friend successfully');
         setSelectedUser(null);
         setApiSuccess((prev) => !prev);
         setModalVisible(false);
+        setShowModal(true);
       } else {
         console.error('Failed to remove user as a friend');
       }
@@ -265,7 +268,6 @@ const Leaderboard = () => {
         {activeTab === 1 && (
           <View>
             <View>
-
               <Icon style={styles.searchContainer} name="search" size={20} />
 
               <TextInput
@@ -282,10 +284,14 @@ const Leaderboard = () => {
               keyExtractor={(item) => item._id}
               contentContainerStyle={styles.listContainer}
             />
+
+            {modalVisible && <View style={styles.overlay} />} 
+            {showModal && <View style={styles.overlay} />} 
+
             <Modal
               visible={modalVisible}
               onRequestClose={() => setModalVisible(false)}
-              transparent
+              transparent="true"
               animationType="fade"
             >
               <View style={styles.modalContainer}>
@@ -301,21 +307,20 @@ const Leaderboard = () => {
                       </Text>
                       <Image
                         // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                        source={require('../../../assets/owl.png')}
+                        // source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
+                        source={require('../../../assets/userimages/karan.png')}
                         style={styles.profileBigImage}
                       />
                       <Text> </Text>
                       <View style={styles.modalButtonContainer}>
-
                         <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => handleAddFriend(selectedUser)}
-                      >
-                        <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
-                      </TouchableOpacity>
-</View>
-<View style={styles.modalButtonContainer}>
-                       
+                          style={[styles.modalButton]}
+                          onPress={() => handleAddFriend(selectedUser)}
+                        >
+                          <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.modalButtonContainer}>
                         <TouchableOpacity
                           style={[styles.modalButton]}
                           onPress={() => setModalVisible(false)}
@@ -328,31 +333,67 @@ const Leaderboard = () => {
                 </View>
               </View>
             </Modal>
+
+            <Modal
+              visible={showModal}
+              onRequestClose={() => setShowModal(false)}
+              transparent
+              animationType="fade"
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Icon name="check" size={60} color="green" />
+                  <Text style={styles.userDetails}>
+                    User added as a friend successfully
+                  </Text>
+                  <View style={styles.modalButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.modalButton}
+                    onPress={() => setShowModal(false)}
+                  >
+                    <Text>OK</Text>
+                  </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
           </View>
         )}
 
         {activeTab === 2 && (
           <View>
-
             <View>
-              <Icon style={styles.searchContainer} name="search" size={20} color="black" />
+              <Icon
+                style={styles.searchContainer}
+                name="search"
+                size={20}
+                color="black"
+              />
               <TextInput
                 style={styles.searchInput}
                 placeholder="       Search for friends..."
                 value={searchQuery2}
                 onChangeText={(text) => setSearchQuery2(text)}
-
               />
             </View>
             {registeredUsers
               .filter((user) => user.email.includes(searchQuery2))
               .map((user, index) => (
-                <View style={[styles.listItem, index % 2 !== 1 && styles.listItemOdd]} key={user._id}>
+                <View
+                  style={[
+                    styles.listItem,
+                    index % 2 !== 1 && styles.listItemOdd,
+                  ]}
+                  key={user._id}
+                >
                   <Text style={styles.number}>{index + 1}.</Text>
 
                   <Image
                     // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                    source={require('../../../assets/owl.png')}
+                    // source={require(`../../../assets/userimages/${user.imageUrl}.png`)}
+                    //  source={require(`../../../assets/${user.imageFileName}`)}
+                    // source={{ uri: user.imageUrl }}
+                    source={require('../../../assets/userimages/karan.png')}
                     style={styles.profileImage}
                   />
 
@@ -361,16 +402,17 @@ const Leaderboard = () => {
                     <Text style={styles.score}>Scores - {user.scores}</Text>
                   </View>
 
-
                   <TouchableOpacity
                     style={[styles.detailButton]}
                     onPress={() => handleUserPress(user)}
                   >
                     <Text style={styles.buttonText}>{'>'}</Text>
                   </TouchableOpacity>
-
                 </View>
               ))}
+
+              {modalVisible && <View style={styles.overlay} />} 
+              {showModal && <View style={styles.overlay} />} 
 
             <Modal
               visible={modalVisible}
@@ -387,8 +429,10 @@ const Leaderboard = () => {
                       </Text>
 
                       <Image
-                        source={require('../../../assets/owl.png')}
+                        // source={require('../../../assets/owl.png')}
+                        // source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
                         // source={require('./pet2image.JPG')}
+                        source={require('../../../assets/userimages/karan.png')}
                         style={styles.profileBigImage}
                       />
                       <Text style={styles.rankDetails}> #3 </Text>
@@ -396,27 +440,37 @@ const Leaderboard = () => {
                         <Text style={styles.label}>Pet's Mood:</Text>
                         <ProgressBar
                           progress={moodProgress}
-                          width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD"
+                          width={320}
+                          height={15}
+                          borderWidth={0}
+                          borderRadius={10}
+                          unfilledColor="#A298DD"
+                          color="#6A5ACD"
                         />
 
                         <Text style={styles.label}>Pet's Health:</Text>
                         <ProgressBar
                           progress={healthProgress}
-                          width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD"
+                          width={320}
+                          height={15}
+                          borderWidth={0}
+                          borderRadius={10}
+                          unfilledColor="#A298DD"
+                          color="#6A5ACD"
                         />
                         <Text></Text>
                       </View>
                       <View style={styles.modalButtonContainer}>
-
                         <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => handleRemoveFriend(selectedUser)}
-                      >
-                        <Text style={{ color: 'white' }}>{'Remove Friend'}</Text>
-                      </TouchableOpacity>
+                          style={[styles.modalButton]}
+                          onPress={() => handleRemoveFriend(selectedUser)}
+                        >
+                          <Text style={{ color: 'white' }}>
+                            {'Remove Friend'}
+                          </Text>
+                        </TouchableOpacity>
                       </View>
                       <View style={styles.modalButtonContainer}>
-                       
                         <TouchableOpacity
                           style={[styles.modalButton]}
                           onPress={() => setModalVisible(false)}
@@ -426,6 +480,30 @@ const Leaderboard = () => {
                       </View>
                     </View>
                   )}
+                </View>
+              </View>
+            </Modal>
+
+            <Modal
+              visible={showModal}
+              onRequestClose={() => setShowModal(false)}
+              transparent
+              animationType="fade"
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Icon name="check" size={60} color="green" />
+                  <Text style={styles.userDetails}>
+                    User removed as a friend successfully
+                  </Text>
+                  <View style={styles.modalButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.modalButton}
+                    onPress={() => setShowModal(false)}
+                  >
+                    <Text>OK</Text>
+                  </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </Modal>
@@ -449,7 +527,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#37298A',
   },
- 
+
   modalButton: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -460,7 +538,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 10,
     marginBottom: 4,
-    
   },
   tabContainer: {
     flexDirection: 'row',
@@ -514,11 +591,11 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: purpleColor
+    color: purpleColor,
   },
   score: {
     fontSize: 16,
-    color: purpleColor
+    color: purpleColor,
   },
   userDetailsContainer: {
     marginTop: 20,
@@ -540,11 +617,13 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 25,
+    resizeMode: 'contain',
   },
   profileBigImage: {
     width: 170,
     height: 170,
     borderRadius: 45,
+    resizeMode: 'contain',
   },
 
   searchContainer: {
@@ -554,12 +633,9 @@ const styles = StyleSheet.create({
     bottom: 18,
     zIndex: 1, // Make sure the icon stays above the TextInput
     color: purpleColor,
-
   },
 
-
   searchInput: {
-
     marginBottom: 10,
     marginTop: 10,
     marginRight: 15,
@@ -583,6 +659,8 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     width: 350,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   detailButton: {
     position: 'absolute',
@@ -607,7 +685,11 @@ const styles = StyleSheet.create({
   },
   listItemOdd: {
     backgroundColor: greyColor,
-    width: '100%',// Grey background color for odd-numbered items
+    width: '100%', // Grey background color for odd-numbered items
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Adjust the opacity as needed
   },
 });
 

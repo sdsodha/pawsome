@@ -4,10 +4,21 @@ import { Accelerometer } from 'expo-sensors';
 import { Video, ResizeMode } from 'expo-av';
 import * as Progress from 'react-native-progress';
 import { Activity } from '../../data/ActivityObject';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const ActivityProgress = ({ route, navigation }) => {
+    
 
     const { activity, item, activityDifficulty, itemGoal, activityGoal } = route.params;
+
+    const [showModal, setShowModal] = useState(false);
+    // const activityPercentGoal = 0;
+    const handleAnimationComplete = () => {
+        if (counter === 0) {
+          setShowModal(true);
+        }
+      };
 
     const [counter, setCounter] = useState(0);
 
@@ -147,8 +158,31 @@ const ActivityProgress = ({ route, navigation }) => {
                     <Text style={{ color: '#6A5ACD' }} fontSize={12}>Instructions</Text>
                 </TouchableOpacity>
 
-                <Progress.Circle style={styles.progressCircle} progress={counter / parseInt(activityGoal)} color='#CD4668' strokeCap='round' thickness={40} size={300} showsText={true} />
-
+                <Progress.Circle style={styles.progressCircle} progress={counter / parseInt(activityGoal)} color='#CD4668' strokeCap='round' thickness={40} size={300} showsText={true} onAnimationComplete={handleAnimationComplete}/>
+                {/* Modal */}
+                <Modal
+                visible={showModal}
+                onRequestClose={() => setShowModal(false)}
+                transparent
+                animationType="fade"
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Icon name="check" size={60} color="green" />
+                    <Text style={styles.userDetails}>Congratulations! You reached 100% progress.
+                      
+                    </Text>
+                    <View style={styles.modalButtonContainer}>
+                    <TouchableOpacity
+                      style={styles.modalButton}
+                      onPress={() => setShowModal(false)}
+                    >
+                      <Text>OK</Text>
+                    </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
                 <View style={styles.activityButtonContainer}>
                     <TouchableOpacity style={styles.pauseButton}
                         onPress={onActivityDone}>
@@ -234,6 +268,44 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingTop: 80,
     },
+    modalButtonContainer: {
+        marginTop: 10,
+        width: 320,
+        borderRadius: 8,
+        backgroundColor: '#37298A',
+      },
+    
+      modalButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#6A5ACD',
+        fontSize: 18,
+        width: 320,
+        border: '#9c92da 1px',
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 4,
+      },
+      modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#00000080',
+      },
+      modalContent: {
+        backgroundColor: '#fff',
+        padding: 16,
+        borderRadius: 8,
+        width: 350,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      userDetails: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: "black",
+      },
     statusMainContainer: {
         marginTop: 20,
     },
