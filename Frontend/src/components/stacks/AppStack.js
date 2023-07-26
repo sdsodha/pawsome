@@ -28,7 +28,7 @@ const AppStack = () => {
           component={LoginScreen}
         />
 
-         <Stack.Screen name="Leaderboard" options={{headerTitle: "Leaderboard",headerShown: true, headerBackTitleVisible: false}} component={Leaderboard} />
+        <Stack.Screen name="Leaderboard" options={{headerTitle: "Leaderboard",headerShown: true, headerBackTitleVisible: false}} component={Leaderboard} />
 
         <Stack.Screen name="PetSelect" component={PetSelectScreen} options={{ headerTitle: "Select Your Pet",headerShown: true,headerBackTitleVisible: false}}/>
         <Stack.Screen name="ForgotPassword" component={RecoverPassword} options={{headerTitle: "",headerShown: true,headerBackTitleVisible: false}} 

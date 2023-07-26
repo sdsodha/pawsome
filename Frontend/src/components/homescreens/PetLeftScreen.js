@@ -18,6 +18,7 @@ import { Video, ResizeMode } from 'expo-av';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Select } from 'native-base';
 import { Activity } from '../../data/ActivityObject';
+import TopNavComp from './TopNavComp';
 
 const PetLeftComponent = ({ route, navigation }) => {
 
@@ -25,16 +26,16 @@ const PetLeftComponent = ({ route, navigation }) => {
     const { food, water, treat, selectedPet, petName } = route.params;
 
     useEffect(() => {
-        if (route.params?.food) {
+        if (route.params ?.food) {
             setFood(foodCount + food);
         }
-        if (route.params?.water) {
+        if (route.params ?.water) {
             setWater(waterCount + water);
         }
-        if (route.params?.treat) {
+        if (route.params ?.treat) {
             setTreat(treatCount + treat);
         }
-    }, [route.params?.food, route.params?.water, route.params?.treat]);
+    }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
 
     const [mood, setMood] = useState(0);
     const [health, setHealth] = useState(0);
@@ -159,157 +160,168 @@ const PetLeftComponent = ({ route, navigation }) => {
     }
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
+        <View style={{
+            backgroundColor: 'white',
+        }
+        }>
 
-                <Image
-                    style={{
-                        width: 200,
-                        height: 200,
-                    }}
-                    resizeMode='contain'
-                    source={require("../../../assets/activityIcons/exclamationMark.png")}
-                />
+            <TopNavComp navigation={navigation} />
 
-                <Text style={styles.propmtText}>Your Pet has left you, but you can bring it back by doing any activity 50 times 3 days in a row.</Text>
+            <ScrollView style={{
+                marginTop: 50,
+            }}>
 
-                <View style={styles.dayContainer}>
-                    <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <Image
-                            style={{ width: 30, height: 30, marginBottom: 8 }}
-                            resizeMode='contain'
-                            source={require("../../../assets/activityIcons/okButton.png")}
-                        />
-                        <Text>Day 1</Text>
+                <View style={styles.container}>
+
+                    <Image
+                        style={{
+                            width: 200,
+                            height: 200,
+                        }}
+                        resizeMode='contain'
+                        source={require("../../../assets/activityIcons/exclamationMark.png")}
+                    />
+
+                    <Text style={styles.propmtText}>Your Pet has left you, but you can bring it back by doing any activity 50 times 3 days in a row.</Text>
+
+                    <View style={styles.dayContainer}>
+                        <View style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Image
+                                style={{ width: 30, height: 30, marginBottom: 8 }}
+                                resizeMode='contain'
+                                source={require("../../../assets/activityIcons/okButton.png")}
+                            />
+                            <Text>Day 1</Text>
+                        </View>
+                        <View style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Image
+                                style={{ width: 30, height: 30, marginBottom: 8 }}
+                                resizeMode='contain'
+                                source={require("../../../assets/activityIcons/okButton.png")}
+                            />
+                            <Text>Day 2</Text>
+                        </View>
+                        <View style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Image
+                                style={{ width: 30, height: 30, marginBottom: 8, opacity: .5 }}
+                                resizeMode='contain'
+                                source={require("../../../assets/activityIcons/okButton.png")}
+                            />
+                            <Text>Day 3</Text>
+                        </View>
                     </View>
-                    <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <Image
-                            style={{ width: 30, height: 30, marginBottom: 8 }}
-                            resizeMode='contain'
-                            source={require("../../../assets/activityIcons/okButton.png")}
-                        />
-                        <Text>Day 2</Text>
+
+                    <View style={styles.button}>
+                        <TouchableOpacity
+                            onPress={onFoodPress}
+                        >
+                            <Image
+                                style={styles.buttonIcon}
+                                source={require("../../../assets/activityIcons/emptyFood.png")}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={onTreatPress}
+                        >
+                            <Image
+                                style={styles.buttonIcon}
+                                source={require("../../../assets/activityIcons/emptyTreat.png")}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={onWaterPress}
+                        >
+                            <Image
+                                style={styles.buttonIcon}
+                                source={require("../../../assets/activityIcons/emptyWater.png")}
+                            />
+                        </TouchableOpacity>
                     </View>
-                    <View style={{ alignItems: "center", justifyContent: "center" }}>
-                        <Image
-                            style={{ width: 30, height: 30, marginBottom: 8, opacity: .5 }}
-                            resizeMode='contain'
-                            source={require("../../../assets/activityIcons/okButton.png")}
-                        />
-                        <Text>Day 3</Text>
+
+                    <View style={styles.moodHealthContainer}>
+                        <Text style={styles.label}>Mood</Text>
+                        <ProgressBar progress={moodProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#B9B9B9' color="#6A5ACD" />
+
+                        <Text style={styles.label}>Health</Text>
+                        <ProgressBar progress={healthProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#B9B9B9' color="#6A5ACD" />
                     </View>
-                </View>
 
-                <View style={styles.button}>
-                    <TouchableOpacity
-                        onPress={onFoodPress}
-                    >
-                        <Image
-                            style={styles.buttonIcon}
-                            source={require("../../../assets/activityIcons/emptyFood.png")}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={onTreatPress}
-                    >
-                        <Image
-                            style={styles.buttonIcon}
-                            source={require("../../../assets/activityIcons/emptyTreat.png")}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={onWaterPress}
-                    >
-                        <Image
-                            style={styles.buttonIcon}
-                            source={require("../../../assets/activityIcons/emptyWater.png")}
-                        />
-                    </TouchableOpacity>
-                </View>
+                    <View style={styles.centeredView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                //                            Alert.alert('Modal has been closed.');
+                                setModalVisible(!modalVisible);
+                            }}>
+                            <View style={styles.centeredView}>
+                                <View style={styles.modalView}>
+                                    <Image
+                                        style={styles.image}
+                                        source={require("../../../assets/activityIcons/Food.png")}
+                                    ></Image>
+                                    <Text style={styles.modalText}>You dont have enough</Text>
+                                    <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
 
-                <View style={styles.moodHealthContainer}>
-                    <Text style={styles.label}>Mood</Text>
-                    <ProgressBar progress={moodProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#B9B9B9' color="#6A5ACD" />
-
-                    <Text style={styles.label}>Health</Text>
-                    <ProgressBar progress={healthProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#B9B9B9' color="#6A5ACD" />
-                </View>
-
-                <View style={styles.centeredView}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            //                            Alert.alert('Modal has been closed.');
-                            setModalVisible(!modalVisible);
-                        }}>
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Image
-                                    style={styles.image}
-                                    source={require("../../../assets/activityIcons/Food.png")}
-                                ></Image>
-                                <Text style={styles.modalText}>You dont have enough</Text>
-                                <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
-
-                                <View style={styles.button}>
-                                    <Button title='Start'
-                                        onPress={() => {
-                                            setModalVisible(!modalVisible)
-                                            navigation.navigate("ActivitySelectionScreen")
-                                        }
-                                        } />
-                                    <Button title='Cancel'
-                                        onPress={() => setModalVisible(!modalVisible)} />
-                                </View>
-                                {/* <Pressable
+                                    <View style={styles.button}>
+                                        <Button title='Start'
+                                            onPress={() => {
+                                                setModalVisible(!modalVisible)
+                                                navigation.navigate("ActivitySelectionScreen")
+                                            }
+                                            } />
+                                        <Button title='Cancel'
+                                            onPress={() => setModalVisible(!modalVisible)} />
+                                    </View>
+                                    {/* <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}>
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable> */}
+                                </View>
                             </View>
-                        </View>
-                    </Modal>
-                </View>
-                {/* 
+                        </Modal>
+                    </View>
+                    {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
-                <View style={styles.activityContainer}>
-                    <View style={styles.activitySelectionContainer}>
-                        <Select
-                            selectedValue={selectedActivity}
-                            onValueChange={(value) => setSelectedActivity(value)}
-                        >
-                            <Select.Item label={Activity[0].type} value={0} />
-                            <Select.Item label={Activity[1].type} value={1} />
-                            <Select.Item label={Activity[2].type} value={2} />
-                        </Select>
+                    <View style={styles.activityContainer}>
+                        <View style={styles.activitySelectionContainer}>
+                            <Select
+                                selectedValue={selectedActivity}
+                                onValueChange={(value) => setSelectedActivity(value)}
+                            >
+                                <Select.Item label={Activity[0].type} value={0} />
+                                <Select.Item label={Activity[1].type} value={1} />
+                                <Select.Item label={Activity[2].type} value={2} />
+                            </Select>
+                        </View>
                     </View>
-                </View>
 
-                <View style={styles.startActivityButtonContainer}>
-                    <TouchableOpacity style={styles.startActivityButton}
-                        onPress={() => {
-                            navigation.navigate("PetLeftActivityProgressScreen", {
-                                activity: selectedActivity,
-                                item: 0,
-                                activityDifficulty: 0,
-                                itemGoal: 10,
-                                activityGoal: 50
-                            })
-                        }}>
-                        <Text style={{ color: 'white' }}>Start Activity</Text>
-                    </TouchableOpacity>
-                </View>
+                    <View style={styles.startActivityButtonContainer}>
+                        <TouchableOpacity style={styles.startActivityButton}
+                            onPress={() => {
+                                navigation.navigate("PetLeftActivityProgressScreen", {
+                                    activity: selectedActivity,
+                                    item: 0,
+                                    activityDifficulty: 0,
+                                    itemGoal: 10,
+                                    activityGoal: 50
+                                })
+                            }}>
+                            <Text style={{ color: 'white' }}>Start Activity</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                {/*         
+                    {/*         
         <Button title="1 Day Gone" onPress={onOneDayButtonPressed} />
         <Button title="2 Days Gone" onPress={onTwoDayButtonPressed} /> 
 */}
 
-            </View>
-        </ScrollView>
+                </View>
+            </ScrollView>
+        </View>
     );
 };
 

@@ -120,7 +120,7 @@ const LoginScreen = () => {
     //   </View>
     // </KeyboardAvoidingView>
 
-    <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={50}
+    <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={0}
       style={{
         backgroundColor: 'white',
         height: '100%',

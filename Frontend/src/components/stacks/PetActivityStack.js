@@ -4,6 +4,7 @@ import ActivitySelection from '../activityscreens/ActivitySelection';
 import ActivityProgress from '../activityscreens/ActivityProgress';
 import PetLeftComponent from '../homescreens/PetLeftScreen';
 import PetLeftActivityProgress from '../activityscreens/PetLeftActivityProgress';
+import ProfileMenu from '../homescreens/ProfileMenu';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,18 +18,20 @@ const PetActivityStack = ({ route, navigation }) => {
             {petName === "LEFT" ?
                 (
                     <Stack.Group>
-                        <Stack.Screen name="PetLeftScreen" component={PetLeftComponent} options={{ headerTitle: "Home", headerShown: true }} initialParams={{ food: 0, water: 0, treat: 0, selectedPet: selectedPet, petName: petName }}/>
+                        <Stack.Screen name="PetLeftScreen" component={PetLeftComponent} options={{ headerShown: false }} initialParams={{ food: 0, water: 0, treat: 0, selectedPet: selectedPet, petName: petName }}/>
                         <Stack.Screen name="PetLeftActivityProgressScreen" options={{ headerShown: false }} component={PetLeftActivityProgress} />
-                        <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerTitle: "Home", headerShown: true, headerBackVisible: false, }} initialParams={{ food: 0, water: 0, treat: 0, selectedPet: 1, petName: "Shady" }} />
+                        <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerShown: false }} initialParams={{ food: 0, water: 0, treat: 0, selectedPet: 1, petName: "Shady" }} />
                         <Stack.Screen name="ActivitySelectionScreen" options={{ headerShown: false }} component={ActivitySelection} />
                         <Stack.Screen name="ActivityProgressScreen" options={{ headerShown: false }} component={ActivityProgress} />
+                        <Stack.Screen name="ProfileMenuScreen" options={{ headerShown: true, headerTitle: "" }} component={ProfileMenu} />
                     </Stack.Group>
                 ) :
                 (
                     <Stack.Group>
-                        <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerTitle: "Home", headerShown: true }} initialParams={{ food: 0, water: 0, treat: 0, selectedPet: selectedPet, petName: petName }} />
+                        <Stack.Screen name="PetHomeScreen" component={PetComponent} options={{ headerShown: false }} initialParams={{ food: 0, water: 0, treat: 0, selectedPet: selectedPet, petName: petName }} />
                         <Stack.Screen name="ActivitySelectionScreen" options={{ headerShown: false }} component={ActivitySelection} />
                         <Stack.Screen name="ActivityProgressScreen" options={{ headerShown: false }} component={ActivityProgress} />
+                        <Stack.Screen name="ProfileMenuScreen" options={{ headerShown: true, headerTitle: "" }} component={ProfileMenu} />
                     </Stack.Group>
                 )
             }
