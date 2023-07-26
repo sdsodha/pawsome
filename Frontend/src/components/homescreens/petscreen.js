@@ -19,6 +19,7 @@ import { Video, ResizeMode } from 'expo-av';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Pets, PetPrompts } from '../../data/PetObject';
 import Collapsible from 'react-native-collapsible';
+import TopNavComp from './TopNavComp';
 
 const PetComponent = ({ route, navigation }) => {
   //Anim vars
@@ -209,176 +210,125 @@ const PetComponent = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {/* 
-      <Text>X movement : {xCounter}</Text>
-      <Text>Y movement : {yCounter}</Text>
-      <Text>Z movement : {zCounter}</Text>
-       */}
+    <View style={{
+      backgroundColor: 'white',
+    }
+    }>
 
-        <Video
-          ref={video}
-          style={styles.video}
-          source={
-            //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
-            Pets[selectedPet].animSrc.okAnim
-          }
-          isLooping={true}
-          useNativeControls={false}
-          resizeMode={ResizeMode.COVER}
-          onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-        />
+      <TopNavComp navigation={navigation}/>
 
-        <Text style={styles.propmtText}>{prompt}</Text>
+      <ScrollView style={{
+        marginTop: 50,
+      }}>
 
-        <View style={styles.button}>
-          <TouchableOpacity onPress={onFoodPress}>
-            <Image
-              style={styles.buttonIcon}
-              source={require('../../../assets/activityIcons/Food.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onTreatPress}>
-            <Image
-              style={styles.buttonIcon}
-              source={require('../../../assets/activityIcons/Treat.png')}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onWaterPress}>
-            <Image
-              style={styles.buttonIcon}
-              source={require('../../../assets/activityIcons/Water.png')}
-            />
-          </TouchableOpacity>
-        </View>
+        <View style={styles.container}>
 
-        <View style={styles.moodHealthContainer}>
-          <Text style={styles.label}>Mood</Text>
-          <ProgressBar
-            progress={moodProgress}
-            width={320}
-            height={15}
-            borderWidth={0}
-            borderRadius={10}
-            unfilledColor="#A298DD"
-            color="#6A5ACD"
+          <Video
+            ref={video}
+            style={styles.video}
+            source={
+              //uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+              Pets[selectedPet].animSrc.okAnim
+            }
+            isLooping={true}
+            useNativeControls={false}
+            resizeMode={ResizeMode.COVER}
+            onPlaybackStatusUpdate={status => setStatus(() => status)}
           />
 
-          <Text style={styles.label}>Health</Text>
-          <ProgressBar
-            progress={healthProgress}
-            width={320}
-            height={15}
-            borderWidth={0}
-            borderRadius={10}
-            unfilledColor="#A298DD"
-            color="#6A5ACD"
-          />
-        </View>
+          <Text style={styles.propmtText}>{prompt}</Text>
 
-        <View style={styles.centeredView}>
-          {/* Modal */}
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible1}
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-              setModalVisible1(!modalVisible1);
-            }}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalView}>
-                <Image
-                  style={styles.image}
-                  source={require('../../../assets/activityIcons/Food.png')}
-                ></Image>
-                <Text style={styles.modalText}>You dont have enough</Text>
-                <Text style={styles.modalText}>
-                  Start an activity to earn food and take care of your pet.
-                </Text>
+          <View style={styles.button}>
+            <TouchableOpacity
+              onPress={onFoodPress}
+            >
+              <Image
+                style={styles.buttonIcon}
+                source={require("../../../assets/activityIcons/Food.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onTreatPress}
+            >
+              <Image
+                style={styles.buttonIcon}
+                source={require("../../../assets/activityIcons/Treat.png")}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onWaterPress}
+            >
+              <Image
+                style={styles.buttonIcon}
+                source={require("../../../assets/activityIcons/Water.png")}
+              />
+            </TouchableOpacity>
+          </View>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
+          <View style={styles.moodHealthContainer}>
+            <Text style={styles.label}>Mood</Text>
+            <ProgressBar progress={moodProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
 
-                    justifyContent: 'center',
-                    alignItems: 'centre',
-                    marginBottom: 20,
-                    gap: 20,
-                  }}
-                >
-                  <View
-                    style={{
-                      width: 130,
-                      borderRadius: 8,
-                      backgroundColor: '#37298A',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'white',
-                        fontSize: 18,
-                        width: 127,
-                        height: 38,
-                        border: '#9c92da 1px',
-                        borderRadius: 8,
-                        padding: 10,
-                        marginBottom: 4,
-                        
-                      }}
-                      onPress={() => {
-                        setModalVisible1(!modalVisible1);
-                        navigation.navigate('ActivitySelectionScreen');
-                      }}
-                    >
-                      <Text style={{ color: 'black' }}>{'Cancel'}</Text>
-                    </TouchableOpacity>
+            <Text style={styles.label}>Health</Text>
+            <ProgressBar progress={healthProgress} width={320} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+          </View>
+
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible1}
+              onRequestClose={() => {
+                //              Alert.alert('Modal has been closed.');
+                setModalVisible1(!modalVisible1);
+              }}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Image
+                    style={styles.image}
+                    source={require("../../../assets/activityIcons/Food.png")}
+                  ></Image>
+                  <Text style={styles.modalText}>You dont have enough</Text>
+                  <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
+
+                  <View style={styles.button}>
+                    <View style={styles.modalButtonContainer}>
+                      <TouchableOpacity
+                        style={[styles.modalButton]}
+                        onPress={() => {
+                          setModalVisible1(!modalVisible1)
+                          navigation.navigate("ActivitySelectionScreen")
+                        }}
+                      >
+                        <Text style={styles.buttonText}>{'Start'}</Text>
+                      </TouchableOpacity>
+
+                    </View>
+
+                    <View style={styles.modalButtonContainer}>
+                      <TouchableOpacity
+                        style={[styles.modalButton]}
+                        onPress={() => {
+                          setModalVisible1(!modalVisible1)
+                        }}
+                      >
+                        <Text style={styles.buttonText}>{'Cancel'}</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
 
-                  <View
-                    style={{
-                      width: 130,
-                      borderRadius: 8,
-                      backgroundColor: '#37298A',
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: '#6A5ACD',
-                        fontSize: 18,
-                        width: 130,
-                        border: '#9c92da 1px',
-                        borderRadius: 8,
-                        padding: 10,
-                        marginBottom: 4,
-                      }}
-                      onPress={() => {
-                        setModalVisible1(!modalVisible1);
-                      }}
-                    >
-                      <Text style={styles.buttonText}>{'Continue'}</Text>
-                    </TouchableOpacity>
-                  </View>
+
+
+                  {/* <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable> */}
                 </View>
-
-                {/* <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Cancel</Text>
-            </Pressable> */}
               </View>
-            </View>
-          </Modal>
-        </View>
-        {/* 
+            </Modal>
+          </View>
+          {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
         <View style={styles.inventoryContainer}>
@@ -432,53 +382,26 @@ const PetComponent = ({ route, navigation }) => {
                   color="#6A5ACD"
                 />
               </View>
-
-              <View style={styles.itemContainer}>
-                <Text>Treat {treatCount}</Text>
-                <ProgressBar
-                  progress={treatCount / 100}
-                  width={290}
-                  height={15}
-                  borderWidth={0}
-                  borderRadius={10}
-                  unfilledColor="#A298DD"
-                  color="#6A5ACD"
-                />
               </View>
+            </Collapsible>
+            
+          </View>
 
-              <View style={styles.itemContainer}>
-                <Text>Water {waterCount}</Text>
-                <ProgressBar
-                  progress={waterCount / 100}
-                  width={290}
-                  height={15}
-                  borderWidth={0}
-                  borderRadius={10}
-                  unfilledColor="#A298DD"
-                  color="#6A5ACD"
-                />
-              </View>
-            </View>
-          </Collapsible>
-        </View>
+          <View style={styles.startActivityButtonContainer}>
+            <TouchableOpacity style={styles.startActivityButton}
+              onPress={() => { navigation.navigate("ActivitySelectionScreen") }}>
+              <Text style={{ color: 'white' }}>Start Activity</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.startActivityButtonContainer}>
-          <TouchableOpacity
-            style={styles.startActivityButton}
-            onPress={() => {
-              navigation.navigate('ActivitySelectionScreen');
-            }}
-          >
-            <Text style={{ color: 'white' }}>Start Activity</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/*         
+          {/*         
         <Button title="1 Day Gone" onPress={onOneDayButtonPressed} />
         <Button title="2 Days Gone" onPress={onTwoDayButtonPressed} /> 
 */}
-      </View>
-    </ScrollView>
+
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -637,8 +560,8 @@ const styles = StyleSheet.create({
   video: {
     alignSelf: 'center',
     justifyContent: 'center',
-    width: 320,
-    height: 320,
+    width: 300,
+    height: 300,
   },
 
   centeredView: {
