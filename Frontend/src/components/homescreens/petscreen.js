@@ -276,15 +276,30 @@ const PetComponent = ({ route, navigation }) => {
                 <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
 
                 <View style={styles.button}>
-                  <Button title='Start'
-                    onPress={() => {
-                      setModalVisible(!modalVisible)
-                      navigation.navigate("ActivitySelectionScreen")
-                    }
-                    } />
-                  <Button title='Cancel'
-                    onPress={() => setModalVisible(!modalVisible)} />
-                </View>
+                <View style={styles.modalButtonContainer}>
+                    <TouchableOpacity
+                    style={[styles.modalButton]}
+                    onPress={() => { setModalVisible(!modalVisible)
+                      navigation.navigate("ActivitySelectionScreen")}}
+                  >
+                    <Text style={styles.buttonText}>{'Start'}</Text>
+                  </TouchableOpacity>
+
+                 </View>
+               
+                  <View style={styles.modalButtonContainer}>
+                <TouchableOpacity
+                style={[styles.modalButton]}
+                    onPress={() => { setModalVisible(!modalVisible)
+                      }}
+                  >
+                    <Text style={styles.buttonText}>{'Cancel'}</Text>
+                  </TouchableOpacity>
+                  </View>
+                  </View>
+
+                
+
                 {/* <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}>
@@ -301,7 +316,7 @@ const PetComponent = ({ route, navigation }) => {
 
           <TouchableOpacity style={styles.inventoryButton}
             onPress={() => { setIsCollapsed(!isCollapsed) }}>
-            <Text style={{ color: 'black' }}>Inventory                                                        v</Text>
+            <Text style={{ color: 'black', fontWeight: "bold" }}>Inventory                                                     V</Text>
           </TouchableOpacity>
 
           <Collapsible collapsed={isCollapsed}>
@@ -424,6 +439,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 60,
     padding: 10
+  },
+  modalButtonContainer: {
+    width: 200,
+    borderRadius: 8,
+    backgroundColor: '#37298A',
+  },
+  modalButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#6A5ACD',
+    fontSize: 18,
+    width: 200,
+    border: '#9c92da 1px',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 4,
   },
   video: {
     alignSelf: 'center',
