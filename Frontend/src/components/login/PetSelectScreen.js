@@ -37,7 +37,7 @@ const PetSelectScreen = () => {
   const width = Dimensions.get('window').width;
 
   const ref = React.useRef(null);
-//   const purpleColor = '#37298A';
+  //   const purpleColor = '#37298A';
 
   const [images, setImages] = React.useState([
     Pets[0].imageSrc,
@@ -176,8 +176,8 @@ const PetSelectScreen = () => {
                   renderItem={({ item, index }) => (
                     <Image
                       style={{
-                        width: "100%",
-                        height: "80%",
+                        width: '100%',
+                        height: '80%',
                         resizeMode: 'contain',
                       }}
                       source={item}
@@ -186,17 +186,16 @@ const PetSelectScreen = () => {
                 />
               </View>
 
-             
               <View>
-              <TouchableOpacity
-                style={[styles.detailButton]}
-                onPress={() => {
-                  ref.current?.scrollTo({ count: 1, animated: true });
-                }}
-              >
-                <Text style={styles.buttonText}>{'>'}</Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  style={[styles.detailButton]}
+                  onPress={() => {
+                    ref.current?.scrollTo({ count: 1, animated: true });
+                  }}
+                >
+                  <Text style={styles.buttonText}>{'>'}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View
@@ -224,13 +223,15 @@ const PetSelectScreen = () => {
             </View>
           </View>
 
-          <View style={styles.nameContainer}>
-            <Text style={styles.label}>Name: </Text>
-            <TextInput
-            style={styles.input}
-              value={name}
-              onChangeText={(text) => setName(text)}
-            />
+          <View style={styles.labelContainer}>
+            <View style={styles.nameContainer}>
+              <Text style={styles.label}>Name: </Text>
+              <TextInput
+                style={styles.input}
+                value={name}
+                onChangeText={(text) => setName(text)}
+              />
+            </View>
           </View>
 
           <View style={styles.startActivityButtonContainer}>
@@ -241,7 +242,6 @@ const PetSelectScreen = () => {
               <Text style={{ color: 'white' }}>Confirm</Text>
             </TouchableOpacity>
           </View>
-          
         </View>
       </KeyboardAvoidingView>
     </ScrollView>
@@ -259,29 +259,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    resizeMode: "contain",
+    resizeMode: 'contain',
+  },
+
+  labelContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // width: "100%",
   },
   nameContainer: {
+    width: 280,
     flexDirection: 'row',
-    // gap: 10,
-    width: 300,
-    marginTop: 0,
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: 'grey',
-    paddingBottom: 5,
+    borderBottomWidth: 1, // Add a bottom border
+    borderBottomColor: 'black', // Border color (you can customize this)
   },
   label: {
-    // flex: 1, // Allow the label to expand to occupy available space
     fontSize: 16,
     // fontWeight: 'bold',
+    marginRight: 10, // Add spacing between the label and input
   },
   input: {
-    flex: 1, // Allow the input field to expand to occupy available space
+    flex: 1,
     height: 40,
-    // borderColor: 'gray',
-    // borderWidth: 1,
     paddingLeft: 10,
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   startActivityButtonContainer: {
     marginTop: 35,
@@ -313,7 +317,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
-    color: "#37298A",
+    color: '#37298A',
     fontSize: 36,
 
     textAlign: 'center',
@@ -322,7 +326,8 @@ const styles = StyleSheet.create({
 
 //  Shishupals Image Slider, Cause ViewProps Errors but perfect feature wise
 
-{/* <View style={styles.container}>
+{
+  /* <View style={styles.container}>
                         <SliderBox
                             images={images}
                             sliderBoxHeight={200}

@@ -128,8 +128,8 @@ const Leaderboard = () => {
         <Text style={styles.number}>{index + 1}.</Text>
         <Image
           // source={{ uri: 'https://picsum.photos/536/354' }}
-          source={require('../../../assets/userimages/karan.png')}
-          // source={require(`../../../assets/userimages/${item.imageUrl}.png`)}
+          // source={require('../../../assets/userimages/karan.png')}
+          source={require(`../../../assets/userimages/${item.imageUrl}.png`)}
           style={styles.profileImage}
         />
 
@@ -307,8 +307,8 @@ const Leaderboard = () => {
                       </Text>
                       <Image
                         // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                        // source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
-                        source={require('../../../assets/userimages/karan.png')}
+                        source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
+                        // source={require('../../../assets/userimages/karan.png')}
                         style={styles.profileBigImage}
                       />
                       <Text> </Text>
@@ -390,10 +390,10 @@ const Leaderboard = () => {
 
                   <Image
                     // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                    // source={require(`../../../assets/userimages/${user.imageUrl}.png`)}
+                    source={require(`../../../assets/userimages/${user.imageUrl}.png`)}
                     //  source={require(`../../../assets/${user.imageFileName}`)}
                     // source={{ uri: user.imageUrl }}
-                    source={require('../../../assets/userimages/karan.png')}
+                    // source={require('../../../assets/userimages/karan.png')}
                     style={styles.profileImage}
                   />
 
@@ -430,12 +430,12 @@ const Leaderboard = () => {
 
                       <Image
                         // source={require('../../../assets/owl.png')}
-                        // source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
+                        source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
                         // source={require('./pet2image.JPG')}
-                        source={require('../../../assets/userimages/karan.png')}
+                        // source={require('../../../assets/userimages/karan.png')}
                         style={styles.profileBigImage}
                       />
-                      <Text style={styles.rankDetails}> #3 </Text>
+                      <Text style={styles.rankDetails}>#{selectedUser.rank} </Text>
                       <View style={styles.modelBars}>
                         <Text style={styles.label}>Pet's Mood:</Text>
                         <ProgressBar
@@ -587,6 +587,7 @@ const styles = StyleSheet.create({
   },
   modelBars: {
     marginBottom: 15,
+    gap: 3,
   },
   userName: {
     fontSize: 16,
@@ -614,16 +615,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   profileImage: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
     borderRadius: 25,
-    resizeMode: 'contain',
+   
+    objectFit: 'cover',
   },
   profileBigImage: {
     width: 170,
     height: 170,
-    borderRadius: 45,
-    resizeMode: 'contain',
+    borderRadius: 25,
+    objectFit: 'cover',
   },
 
   searchContainer: {

@@ -44,6 +44,7 @@ const ActivitySelection = () => {
               <Select.Item label={Activity[2].type} value={2} />
             </Select>
           </View>
+          
         </View>
 
         <View style={styles.itemContainer}>

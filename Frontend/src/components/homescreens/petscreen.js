@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 //import { useNavigation } from '@react-navigation/core';
 import ProgressBar from 'react-native-progress/Bar';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { auth } from '../../config/firebase';
 import axios from 'axios';
 import { Video, ResizeMode } from 'expo-av';
@@ -21,24 +22,37 @@ import Collapsible from 'react-native-collapsible';
 import TopNavComp from './TopNavComp';
 
 const PetComponent = ({ route, navigation }) => {
-
   //Anim vars
+
+  const [showInventory, setShowInventory] = useState(false);
+
+  // Function to toggle the arrow direction and show/hide inventory
+  const toggleInventory = () => {
+    setShowInventory(!showInventory);
+  };
+
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
   const { food, water, treat, selectedPet, petName } = route.params;
 
+  // const food = 1;
+  // const water = 1;
+  // const treat = 1;
+  // const petName = "karan";
+  //  const selectedPet = "img";
+
   useEffect(() => {
-    if (route.params ?.food) {
+    if (route.params?.food) {
       setFood(foodCount + food);
     }
-    if (route.params ?.water) {
+    if (route.params?.water) {
       setWater(waterCount + water);
     }
-    if (route.params ?.treat) {
+    if (route.params?.treat) {
       setTreat(treatCount + treat);
     }
-  }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
+  }, [route.params?.food, route.params?.water, route.params?.treat]);
 
   const [mood, setMood] = useState(47);
   const [health, setHealth] = useState(47);
@@ -48,7 +62,7 @@ const PetComponent = ({ route, navigation }) => {
   const [moodProgress, setMoodProgress] = useState(0.5);
   const [healthProgress, setHealthProgress] = useState(0.5);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(true);
 
   const [foodCount, setFood] = useState(food);
   const [waterCount, setWater] = useState(water);
@@ -57,15 +71,19 @@ const PetComponent = ({ route, navigation }) => {
   const [pet, setPet] = useState(selectedPet);
   const [prompt, setPrompt] = useState('');
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const handleMoodProgress = (x, y, z) => {
-    setMoodProgress((prevProgress) => prevProgress + z * 0.2 - x * .1 - y * 0.1);
-    console.log("Mood", moodProgress);
+    setMoodProgress(
+      (prevProgress) => prevProgress + z * 0.2 - x * 0.1 - y * 0.1,
+    );
+    console.log('Mood', moodProgress);
   };
 
   const handleHealthProgress = (x, y, z) => {
-    setHealthProgress((prevProgress) => prevProgress + x * 0.1 + y * 0.1 - z * 0.2);
+    setHealthProgress(
+      (prevProgress) => prevProgress + x * 0.1 + y * 0.1 - z * 0.2,
+    );
   };
 
   // useEffect(() => {
@@ -113,90 +131,83 @@ const PetComponent = ({ route, navigation }) => {
   // Pet States //////////////////////////////////////////////////////////////////
   useEffect(() => {
     if (mood < 25 && health < 25) {
-      video.current.loadAsync(Pets[selectedPet].animSrc.sadAnim)
-        .then(() => {
-          video.current.playAsync().then(() => {
-            video.current.isLooping(true);
-          })
-        })
-      setPrompt(PetPrompts.sadStateText.replaceAll("NAME", petName));
-    }
-    else if ((mood >= 25 && mood <= 50) && (health >= 25 && health <= 50)) {
-      video.current.loadAsync(Pets[selectedPet].animSrc.okAnim)
-        .then(() => {
-          video.current.playAsync().then(() => {
-            video.current.isLooping(true);
-          })
-        })
-      setPrompt(PetPrompts.okStateText.replaceAll("NAME", petName));
-    }
-    else if (mood > 50 && health > 50) {
-      video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim)
-        .then(() => {
-          video.current.playAsync().then(() => {
-            video.current.isLooping(true);
-          })
-        })
-      setPrompt(PetPrompts.happyStateText.replaceAll("NAME", petName));
+      video.current.loadAsync(Pets[selectedPet].animSrc.sadAnim).then(() => {
+        video.current.playAsync().then(() => {
+          video.current.isLooping(true);
+        });
+      });
+      setPrompt(PetPrompts.sadStateText.replaceAll('NAME', petName));
+    } else if (mood >= 25 && mood <= 50 && health >= 25 && health <= 50) {
+      video.current.loadAsync(Pets[selectedPet].animSrc.okAnim).then(() => {
+        video.current.playAsync().then(() => {
+          video.current.isLooping(true);
+        });
+      });
+      setPrompt(PetPrompts.okStateText.replaceAll('NAME', petName));
+    } else if (mood > 50 && health > 50) {
+      video.current.loadAsync(Pets[selectedPet].animSrc.happyAnim).then(() => {
+        video.current.playAsync().then(() => {
+          video.current.isLooping(true);
+        });
+      });
+      setPrompt(PetPrompts.happyStateText.replaceAll('NAME', petName));
     }
 
     if (mood <= 0 && health <= 0) {
-      video.current.loadAsync(require("../../../assets/gif1.gif"))
-        .then(() => {
-          video.current.playAsync().then(() => {
-            video.current.isLooping(true);
-          })
-        })
-      setPrompt(PetPrompts.petLeftText.replaceAll("NAME", petName));
+      video.current.loadAsync(require('../../../assets/gif1.gif')).then(() => {
+        video.current.playAsync().then(() => {
+          video.current.isLooping(true);
+        });
+      });
+      setPrompt(PetPrompts.petLeftText.replaceAll('NAME', petName));
     }
 
     setMoodProgress(mood / 100);
     setHealthProgress(health / 100);
-
   }, [mood, health]);
 
   const onFoodPress = () => {
     if (foodCount <= 0) {
-      setModalVisible(!modalVisible);
+      setModalVisible1(!modalVisible1);
       return;
     }
 
     setFood(foodCount - 1);
     setHealth(health + 5);
     setMood(mood + 1);
-  }
+  };
 
   const onWaterPress = () => {
     if (waterCount <= 0) {
-      setModalVisible(!modalVisible);
+      setModalVisible1(!modalVisible1);
       return;
     }
 
     setWater(waterCount - 1);
     setHealth(health + 3);
     setMood(mood + 1);
-  }
+  };
 
   const onTreatPress = () => {
     if (treatCount <= 0) {
-      setModalVisible(!modalVisible);
+      setModalVisible1(!modalVisible1);
       return;
     }
 
     setTreat(treatCount - 1);
     setHealth(health + 1);
     setMood(mood + 5);
-  }
+  };
 
   const onOneDayButtonPressed = () => {
     setHealth(20);
     setMood(20);
-  }
+  };
 
   const onTwoDayButtonPressed = () => {
     setHealth(0);
     setMood(0);
-  }
+  };
 
   return (
     <View style={{
@@ -266,10 +277,10 @@ const PetComponent = ({ route, navigation }) => {
             <Modal
               animationType="slide"
               transparent={true}
-              visible={modalVisible}
+              visible={modalVisible1}
               onRequestClose={() => {
                 //              Alert.alert('Modal has been closed.');
-                setModalVisible(!modalVisible);
+                setModalVisible1(!modalVisible1);
               }}>
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
@@ -285,7 +296,7 @@ const PetComponent = ({ route, navigation }) => {
                       <TouchableOpacity
                         style={[styles.modalButton]}
                         onPress={() => {
-                          setModalVisible(!modalVisible)
+                          setModalVisible1(!modalVisible1)
                           navigation.navigate("ActivitySelectionScreen")
                         }}
                       >
@@ -298,7 +309,7 @@ const PetComponent = ({ route, navigation }) => {
                       <TouchableOpacity
                         style={[styles.modalButton]}
                         onPress={() => {
-                          setModalVisible(!modalVisible)
+                          setModalVisible1(!modalVisible1)
                         }}
                       >
                         <Text style={styles.buttonText}>{'Cancel'}</Text>
@@ -320,31 +331,60 @@ const PetComponent = ({ route, navigation }) => {
           {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
-          <View style={styles.inventoryContainer}>
-
-            <TouchableOpacity style={styles.inventoryButton}
-              onPress={() => { setIsCollapsed(!isCollapsed) }}>
-              <Text style={{ color: 'black', fontWeight: "bold" }}>Inventory                                                     V</Text>
+        <View style={styles.inventoryContainer}>
+          <TouchableOpacity style={styles.inventoryButton}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsCollapsed(!isCollapsed), toggleInventory();
+              }}
+            >
+              {showInventory ? (
+                <View style={styles.inventoryRow}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontWeight: 'bold',
+                      marginRight: 10,
+                    }}
+                  >
+                    Inventory
+                  </Text>
+                  <Icon name="chevron-up" size={20} color="black" />
+                </View>
+              ) : (
+                <View style={styles.inventoryRow}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontWeight: 'bold',
+                      marginRight: 10,
+                    }}
+                  >
+                    Inventory
+                  </Text>
+                  <Icon name="chevron-down" size={20} color="black" />
+                </View>
+              )}
             </TouchableOpacity>
+          </TouchableOpacity>
 
-            <Collapsible collapsed={isCollapsed}>
-              <View>
-                <View style={styles.itemContainer}>
-                  <Text>Food  {foodCount}</Text>
-                  <ProgressBar progress={foodCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
-                </View>
-
-                <View style={styles.itemContainer}>
-                  <Text>Treat  {treatCount}</Text>
-                  <ProgressBar progress={treatCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
-                </View>
-
-                <View style={styles.itemContainer}>
-                  <Text>Water {waterCount}</Text>
-                  <ProgressBar progress={waterCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
-                </View>
+          <Collapsible collapsed={isCollapsed}>
+            <View>
+              <View style={styles.itemContainer}>
+                <Text>Food {foodCount}</Text>
+                <ProgressBar
+                  progress={foodCount / 100}
+                  width={290}
+                  height={15}
+                  borderWidth={0}
+                  borderRadius={10}
+                  unfilledColor="#A298DD"
+                  color="#6A5ACD"
+                />
+              </View>
               </View>
             </Collapsible>
+            
           </View>
 
           <View style={styles.startActivityButtonContainer}>
@@ -375,14 +415,67 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: {
       height: 1,
-      width: 1
+      width: 1,
     },
-    backgroundColor: 'white'
+    modalButtonContainer: {
+      marginTop: 10,
+      width: 130,
+      borderRadius: 8,
+      backgroundColor: '#37298A',
+    },
+    modalButton: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#6A5ACD',
+      fontSize: 18,
+      width: 130,
+      border: '#9c92da 1px',
+      borderRadius: 8,
+      padding: 10,
+      marginBottom: 4,
+    },
+    rowPromptContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'centre',
+      marginBottom: 20,
+      gap: 60,
+    },
+    modalContent: {
+      backgroundColor: '#fff',
+      padding: 16,
+      borderRadius: 8,
+      width: 350,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    modalText: {
+      marginBottom: 15,
+      textAlign: 'center',
+    },
+    backgroundColor: 'white',
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000080',
   },
   itemContainer: {
     marginLeft: 10,
     gap: 5,
     marginBottom: 10,
+  },
+  inventoryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 200,
+  },
+
+  icon: {
+    marginLeft: 100,
   },
   inventoryButton: {
     justifyContent: 'left',
@@ -395,7 +488,7 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     width: 320,
     borderRadius: 8,
-    backgroundColor: '#37298A'
+    backgroundColor: '#37298A',
   },
   startActivityButton: {
     justifyContent: 'center',
@@ -416,15 +509,14 @@ const styles = StyleSheet.create({
     width: 320,
     height: 15,
   },
-  propmtText: {
-  },
+  propmtText: {},
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 16,
     backgroundColor: 'white',
-    height: '100%'
+    height: '100%',
   },
   image: {
     width: 100,
@@ -447,7 +539,7 @@ const styles = StyleSheet.create({
     flex: 0,
     flexDirection: 'row',
     gap: 60,
-    padding: 10
+    padding: 10,
   },
   modalButtonContainer: {
     width: 200,
@@ -492,6 +584,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    width: 330,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
