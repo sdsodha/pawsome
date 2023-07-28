@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 16,
         backgroundColor: 'white',
-        height: '100%'
+        height: 680,
     },
     image: {
         width: 100,

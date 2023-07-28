@@ -171,6 +171,7 @@ const PetComponent = ({ route, navigation }) => {
       setModalVisible1(!modalVisible1);
       return;
     }
+    video.current.playAsync();
 
     setFood(foodCount - 1);
     setHealth(health + 5);
@@ -182,6 +183,7 @@ const PetComponent = ({ route, navigation }) => {
       setModalVisible1(!modalVisible1);
       return;
     }
+    video.current.playAsync();
 
     setWater(waterCount - 1);
     setHealth(health + 3);
@@ -193,6 +195,7 @@ const PetComponent = ({ route, navigation }) => {
       setModalVisible1(!modalVisible1);
       return;
     }
+    video.current.playAsync();
 
     setTreat(treatCount - 1);
     setHealth(health + 1);
@@ -507,7 +510,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 16,
     backgroundColor: 'white',
-    height: '100%',
+    height: 680,
   },
   image: {
     width: 100,

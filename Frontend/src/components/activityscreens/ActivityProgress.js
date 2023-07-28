@@ -16,13 +16,13 @@ import { Activity } from '../../data/ActivityObject';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ActivityProgress = ({ route, navigation }) => {
-  // const { activity, item, activityDifficulty, itemGoal, activityGoal } = route.params;
+  const { activity, item, activityDifficulty, itemGoal, activityGoal } = route.params;
 
-  const activity = 1;
-  const item = 'Food';
-  const activityDifficulty = 'Easy';
-  const itemGoal = 3;
-  const activityGoal = 5;
+  // const activity = 1;
+  // const item = 'Food';
+  // const activityDifficulty = 'Easy';
+  // const itemGoal = 3;
+  // const activityGoal = 5;
 
   const [showModal, setShowModal] = useState(false);
   // const [showModal1, setShowModal1] = useState(true);
