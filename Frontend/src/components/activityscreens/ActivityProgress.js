@@ -24,7 +24,7 @@ const ActivityProgress = ({ route, navigation }) => {
   const itemGoal = 3;
   const activityGoal = 5;
 
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   // const [showModal1, setShowModal1] = useState(true);
   // const activityPercentGoal = 0;
   const handleAnimationComplete = () => {
@@ -178,7 +178,6 @@ const ActivityProgress = ({ route, navigation }) => {
           thickness={40}
           size={300}
           showsText={true}
-          onAnimationComplete={handleAnimationComplete}
         />
        
         <Modal

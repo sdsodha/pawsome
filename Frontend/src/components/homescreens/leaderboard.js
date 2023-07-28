@@ -109,6 +109,41 @@ const Leaderboard = () => {
   };
   //---------------------------------Display all users in Public section-----------------
 
+  const getProfileImagePath = (name) => {
+    switch (name) {
+      case 'amber':
+        return require('../../../assets/userimages/amber.png');
+        break;
+
+      case 'karan':
+        return require('../../../assets/userimages/karan.png');
+        break;
+
+      case 'jaskaran':
+        return require('../../../assets/userimages/jaskaran.png');
+        break;
+      case 'sai':
+        return require('../../../assets/userimages/sai.png');
+        break;
+
+      case 'ozge':
+        return require('../../../assets/userimages/ozge.png');
+        break;
+
+      case 'shishupal':
+        return require('../../../assets/userimages/shishupal.png');
+        break;
+
+      case 'simran':
+        return require('../../../assets/userimages/simran.png');
+        break;
+
+      case 'alen':
+        return require('../../../assets/userimages/alen.png');
+        break;
+    }
+  }
+
   const renderUserItem = ({ item, index }) => {
     const handleUserPress = () => {
       setSelectedUser(item);
@@ -129,7 +164,7 @@ const Leaderboard = () => {
         <Image
           // source={{ uri: 'https://picsum.photos/536/354' }}
           // source={require('../../../assets/userimages/karan.png')}
-          source={require(`../../../assets/userimages/${item.imageUrl}.png`)}
+          source={getProfileImagePath(item.imageUrl)}
           style={styles.profileImage}
         />
 
@@ -260,7 +295,7 @@ const Leaderboard = () => {
           <Text
             style={[styles.tabText, activeTab === 2 && styles.activeTabText]}
           >
-            Friends
+            Followers
           </Text>
         </TouchableOpacity>
       </View>
@@ -272,7 +307,7 @@ const Leaderboard = () => {
 
               <TextInput
                 style={styles.searchInput}
-                placeholder="       Search for friends..."
+                placeholder="       Search for followers..."
                 value={searchQuery}
                 onChangeText={handleSearchQueryChange}
               />
@@ -285,8 +320,8 @@ const Leaderboard = () => {
               contentContainerStyle={styles.listContainer}
             />
 
-            {modalVisible && <View style={styles.overlay} />} 
-            {showModal && <View style={styles.overlay} />} 
+            {modalVisible && <View style={styles.overlay} />}
+            {showModal && <View style={styles.overlay} />}
 
             <Modal
               visible={modalVisible}
@@ -307,7 +342,7 @@ const Leaderboard = () => {
                       </Text>
                       <Image
                         // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                        source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
+                        source={getProfileImagePath(selectedUser.imageUrl)}
                         // source={require('../../../assets/userimages/karan.png')}
                         style={styles.profileBigImage}
                       />
@@ -317,7 +352,7 @@ const Leaderboard = () => {
                           style={[styles.modalButton]}
                           onPress={() => handleAddFriend(selectedUser)}
                         >
-                          <Text style={{ color: 'white' }}>{'Add Friend'}</Text>
+                          <Text style={{ color: 'white' }}>{'Follow'}</Text>
                         </TouchableOpacity>
                       </View>
                       <View style={styles.modalButtonContainer}>
@@ -344,15 +379,15 @@ const Leaderboard = () => {
                 <View style={styles.modalContent}>
                   <Icon name="check" size={60} color="green" />
                   <Text style={styles.userDetails}>
-                    User added as a friend successfully
+                    Followed
                   </Text>
                   <View style={styles.modalButtonContainer}>
-                  <TouchableOpacity
-                    style={styles.modalButton}
-                    onPress={() => setShowModal(false)}
-                  >
-                    <Text>OK</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.modalButton}
+                      onPress={() => setShowModal(false)}
+                    >
+                      <Text>OK</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -371,7 +406,7 @@ const Leaderboard = () => {
               />
               <TextInput
                 style={styles.searchInput}
-                placeholder="       Search for friends..."
+                placeholder="       Search for followers..."
                 value={searchQuery2}
                 onChangeText={(text) => setSearchQuery2(text)}
               />
@@ -390,7 +425,7 @@ const Leaderboard = () => {
 
                   <Image
                     // source={{ uri: 'https://picsum.photos/536/354' }} // Replace with the actual image URL
-                    source={require(`../../../assets/userimages/${user.imageUrl}.png`)}
+                    source={getProfileImagePath(user.imageUrl)}
                     //  source={require(`../../../assets/${user.imageFileName}`)}
                     // source={{ uri: user.imageUrl }}
                     // source={require('../../../assets/userimages/karan.png')}
@@ -411,8 +446,8 @@ const Leaderboard = () => {
                 </View>
               ))}
 
-              {modalVisible && <View style={styles.overlay} />} 
-              {showModal && <View style={styles.overlay} />} 
+            {modalVisible && <View style={styles.overlay} />}
+            {showModal && <View style={styles.overlay} />}
 
             <Modal
               visible={modalVisible}
@@ -430,7 +465,7 @@ const Leaderboard = () => {
 
                       <Image
                         // source={require('../../../assets/owl.png')}
-                        source={require(`../../../assets/userimages/${selectedUser.imageUrl}.png`)}
+                        source={getProfileImagePath(selectedUser.imageUrl)}
                         // source={require('./pet2image.JPG')}
                         // source={require('../../../assets/userimages/karan.png')}
                         style={styles.profileBigImage}
@@ -466,7 +501,7 @@ const Leaderboard = () => {
                           onPress={() => handleRemoveFriend(selectedUser)}
                         >
                           <Text style={{ color: 'white' }}>
-                            {'Remove Friend'}
+                            {'Unfollow'}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -494,15 +529,15 @@ const Leaderboard = () => {
                 <View style={styles.modalContent}>
                   <Icon name="check" size={60} color="green" />
                   <Text style={styles.userDetails}>
-                    User removed as a friend successfully
+                    Unfollowed
                   </Text>
                   <View style={styles.modalButtonContainer}>
-                  <TouchableOpacity
-                    style={styles.modalButton}
-                    onPress={() => setShowModal(false)}
-                  >
-                    <Text>OK</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.modalButton}
+                      onPress={() => setShowModal(false)}
+                    >
+                      <Text>OK</Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -618,7 +653,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 25,
-   
+
     objectFit: 'cover',
   },
   profileBigImage: {

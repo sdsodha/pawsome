@@ -285,7 +285,6 @@ const styles = StyleSheet.create({
     height: 40,
     paddingLeft: 10,
     fontSize: 16,
-    fontWeight: 'bold'
   },
   startActivityButtonContainer: {
     marginTop: 35,

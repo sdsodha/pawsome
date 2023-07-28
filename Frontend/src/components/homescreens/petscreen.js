@@ -43,16 +43,16 @@ const PetComponent = ({ route, navigation }) => {
   //  const selectedPet = "img";
 
   useEffect(() => {
-    if (route.params?.food) {
+    if (route.params ?.food) {
       setFood(foodCount + food);
     }
-    if (route.params?.water) {
+    if (route.params ?.water) {
       setWater(waterCount + water);
     }
-    if (route.params?.treat) {
+    if (route.params ?.treat) {
       setTreat(treatCount + treat);
     }
-  }, [route.params?.food, route.params?.water, route.params?.treat]);
+  }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
 
   const [mood, setMood] = useState(47);
   const [health, setHealth] = useState(47);
@@ -62,7 +62,7 @@ const PetComponent = ({ route, navigation }) => {
   const [moodProgress, setMoodProgress] = useState(0.5);
   const [healthProgress, setHealthProgress] = useState(0.5);
 
-  const [modalVisible1, setModalVisible1] = useState(true);
+  const [modalVisible1, setModalVisible1] = useState(false);
 
   const [foodCount, setFood] = useState(food);
   const [waterCount, setWater] = useState(water);
@@ -71,7 +71,7 @@ const PetComponent = ({ route, navigation }) => {
   const [pet, setPet] = useState(selectedPet);
   const [prompt, setPrompt] = useState('');
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const handleMoodProgress = (x, y, z) => {
     setMoodProgress(
@@ -215,7 +215,7 @@ const PetComponent = ({ route, navigation }) => {
     }
     }>
 
-      <TopNavComp navigation={navigation}/>
+      <TopNavComp navigation={navigation} />
 
       <ScrollView style={{
         marginTop: 50,
@@ -331,60 +331,69 @@ const PetComponent = ({ route, navigation }) => {
           {/* 
       <Text> Params - {food} {water} {treat}</Text> */}
 
-        <View style={styles.inventoryContainer}>
-          <TouchableOpacity style={styles.inventoryButton}>
-            <TouchableOpacity
-              onPress={() => {
-                setIsCollapsed(!isCollapsed), toggleInventory();
-              }}
-            >
-              {showInventory ? (
-                <View style={styles.inventoryRow}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontWeight: 'bold',
-                      marginRight: 10,
-                    }}
-                  >
-                    Inventory
+          <View style={styles.inventoryContainer}>
+            <TouchableOpacity style={styles.inventoryButton}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsCollapsed(!isCollapsed), toggleInventory();
+                }}
+              >
+                {showInventory ? (
+                  <View style={styles.inventoryRow}>
+                    <Text
+                      style={{
+                        color: 'black',
+                        marginRight: 10,
+                      }}
+                    >
+                      Inventory
                   </Text>
-                  <Icon name="chevron-up" size={20} color="black" />
-                </View>
-              ) : (
-                <View style={styles.inventoryRow}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontWeight: 'bold',
-                      marginRight: 10,
-                    }}
-                  >
-                    Inventory
+                    <Icon name="chevron-up" size={20} color="black" />
+                  </View>
+                ) : (
+                    <View style={styles.inventoryRow}>
+                      <Text
+                        style={{
+                          color: 'black',
+                          marginRight: 10,
+                        }}
+                      >
+                        Inventory
                   </Text>
-                  <Icon name="chevron-down" size={20} color="black" />
-                </View>
-              )}
+                      <Icon name="chevron-down" size={20} color="black" />
+                    </View>
+                  )}
+              </TouchableOpacity>
             </TouchableOpacity>
-          </TouchableOpacity>
 
-          <Collapsible collapsed={isCollapsed}>
-            <View>
-              <View style={styles.itemContainer}>
-                <Text>Food {foodCount}</Text>
-                <ProgressBar
-                  progress={foodCount / 100}
-                  width={290}
-                  height={15}
-                  borderWidth={0}
-                  borderRadius={10}
-                  unfilledColor="#A298DD"
-                  color="#6A5ACD"
-                />
-              </View>
+            <Collapsible collapsed={isCollapsed}>
+              <View>
+                <View style={styles.itemContainer}>
+                  <Text>Food {foodCount}</Text>
+                  <ProgressBar
+                    progress={foodCount / 100}
+                    width={290}
+                    height={15}
+                    borderWidth={0}
+                    borderRadius={10}
+                    unfilledColor="#A298DD"
+                    color="#6A5ACD"
+                  />
+                </View>
+
+                <View style={styles.itemContainer}>
+                  <Text>Treat  {treatCount}</Text>
+                  <ProgressBar progress={treatCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+                </View>
+
+                <View style={styles.itemContainer}>
+                  <Text>Water {waterCount}</Text>
+                  <ProgressBar progress={waterCount / 100} width={290} height={15} borderWidth={0} borderRadius={10} unfilledColor='#A298DD' color="#6A5ACD" />
+                </View>
+
               </View>
             </Collapsible>
-            
+
           </View>
 
           <View style={styles.startActivityButtonContainer}>
