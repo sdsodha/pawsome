@@ -18,16 +18,28 @@ const HomeTabs = ({route, navigation}) => {
   return (
     
     <Tab.Navigator 
-    tabBarOptions={{ //try screenOptions instead of tabBarOptions
+    //tabBarOptions
+    screenOptions={{ //try screenOptions instead of tabBarOptions
       inactiveTintColor: 'blue',
       activeTintColor: 'red',
       headerShown: true,
       showIcon:true,
       showLabel: false,
-      
+      tabBarShowLabel: false,
+      tabBarStyle: {
+        backgroundColor: '#EEEDFA',
+        height:60,
+        borderTopLeftRadius: 20, // Set the desired border radius for the top-left corner
+        borderTopRightRadius: 20, // Set the desired border radius for the top-right corner
+           
+          borderTopWidth: 5, // Add a border to the top of the tab bar
+          borderTopColor: '#EEEDFA', // Set the color of the border
+          borderBottomWidth: 1,
+        
+      },
       // tabBarActiveBackgroundColor:'pink',
       style: {
-        backgroundColor: 'transparent', // Make the tab bar background transparent
+        backgroundColor: 'red', // Make the tab bar background transparent
         position: 'absolute', // Position the tab bar at the bottom of the screen
         left: 0,
         right: 0,
@@ -39,8 +51,8 @@ const HomeTabs = ({route, navigation}) => {
         headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Image
-          source={focused ? require('../../../assets/leaderboardIconFocused.png') : require('../../../assets/leaderboardIcon.png')}
-            style={{ width: 100, height: 60, /*tintColor: focused ? null : 'gray'*/ }}
+            source={focused ? require('../../../assets/homescreenIconFocused.png') : require('../../../assets/homescreenIcon.png')}
+            style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           />
         ),
         // tabBarIcon: ({ color }) => (
@@ -52,9 +64,8 @@ const HomeTabs = ({route, navigation}) => {
       options={{
         tabBarIcon: ({ focused }) => (
           <Image
-          source={focused ? require('../../../assets/dashboardIconFocused.png') : require('../../../assets/dashboardIcon.png')}
-            
-            style={{ width: 100, height: 60, /*tintColor: focused ? null : 'gray'*/ }}
+            source={focused ? require('../../../assets/leaderboardIconFocused.png') : require('../../../assets/leaderboardIcon.png')}
+            style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           />
         ),
         // tabBarIcon: ({ color }) => (
@@ -65,9 +76,8 @@ const HomeTabs = ({route, navigation}) => {
       options={{
         tabBarIcon: ({ focused }) => (
           <Image
-          source={focused ? require('../../../assets/homescreenIconFocused.png') : require('../../../assets/homescreenIcon.png')}
-           
-            style={{ width: 100, height: 60, /*tintColor: focused ? null : 'gray'*/ }}
+            source={focused ? require('../../../assets/dashboardIconFocused.png') : require('../../../assets/dashboardIcon.png')}
+            style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           /> 
         ),
         // tabBarIcon: ({ color }) => (
