@@ -12,8 +12,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20
+    marginTop: 20,
+    
 
+  },
+ 
+  horizontalLine: {
+    borderBottomWidth: '4',
+    width: '90%',
+    marginBottom:30,
+    marginTop:10,
+    borderColor: '#8E9095', // Change this to your desired color
+    minHeight:1,
+    color:'white',
+    fontSize:'16px'
+    
+ // Change this to your desired color
   },
   fixToText: {
     flexDirection: 'row',
@@ -355,6 +369,54 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
+  activitySelectionContainer: {
+    marginTop: 10,
+    width: 320,
+    borderRadius: 4,
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    shadowOffset: {
+        height: 1,
+        width: 1
+    },
+    backgroundColor: 'white'
+},
+activityContainer: {
+    marginBottom: 15,
+},
+itemContainer: {
+    marginBottom: 5,
+    width: 320,
+},
+startActivityButtonContainer: {
+    marginTop: 15,
+    width: 320,
+    borderRadius: 8,
+    backgroundColor: '#37298A'
+},
+startActivityButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#6A5ACD',
+    fontSize: 18,
+    width: 320,
+    border: '#9c92da 1px',
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 4,
+},
+container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: 'white'
+},
+goalsContainer: {
+    flexDirection: 'row',
+    gap: 80,
+}
 
 
 
