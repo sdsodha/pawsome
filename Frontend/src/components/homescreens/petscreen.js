@@ -291,7 +291,24 @@ const PetComponent = ({ route, navigation }) => {
                   <Text style={styles.modalText}>You dont have enough</Text>
                   <Text style={styles.modalText}>Start an activity to earn food and take care of your pet.</Text>
 
-                  <View style={styles.button}>
+                  <View style={{
+                    width: 280,
+                    flexDirection: 'row',
+                    height: 40,
+                    gap: 40
+                  }}>
+
+                    <View style={styles.modalCancelButtonContainer}>
+                      <TouchableOpacity
+                        style={[styles.modalCancelButton]}
+                        onPress={() => {
+                          setModalVisible1(!modalVisible1)
+                        }}
+                      >
+                        <Text style={{}}>{'Cancel'}</Text>
+                      </TouchableOpacity>
+                    </View>
+
                     <View style={styles.modalButtonContainer}>
                       <TouchableOpacity
                         style={[styles.modalButton]}
@@ -300,30 +317,12 @@ const PetComponent = ({ route, navigation }) => {
                           navigation.navigate("ActivitySelectionScreen")
                         }}
                       >
-                        <Text style={styles.buttonText}>{'Start'}</Text>
-                      </TouchableOpacity>
-
-                    </View>
-
-                    <View style={styles.modalButtonContainer}>
-                      <TouchableOpacity
-                        style={[styles.modalButton]}
-                        onPress={() => {
-                          setModalVisible1(!modalVisible1)
-                        }}
-                      >
-                        <Text style={styles.buttonText}>{'Cancel'}</Text>
+                        <Text style={{color: 'white'}}>{'Start'}</Text>
                       </TouchableOpacity>
                     </View>
+
                   </View>
 
-
-
-                  {/* <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable> */}
                 </View>
               </View>
             </Modal>
@@ -425,23 +424,6 @@ const styles = StyleSheet.create({
     shadowOffset: {
       height: 1,
       width: 1,
-    },
-    modalButtonContainer: {
-      marginTop: 10,
-      width: 130,
-      borderRadius: 8,
-      backgroundColor: '#37298A',
-    },
-    modalButton: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#6A5ACD',
-      fontSize: 18,
-      width: 130,
-      border: '#9c92da 1px',
-      borderRadius: 8,
-      padding: 10,
-      marginBottom: 4,
     },
     rowPromptContainer: {
       flexDirection: 'row',
@@ -551,7 +533,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   modalButtonContainer: {
-    width: 200,
+    width: 120,
     borderRadius: 8,
     backgroundColor: '#37298A',
   },
@@ -560,11 +542,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#6A5ACD',
     fontSize: 18,
-    width: 200,
+    width: 120,
     border: '#9c92da 1px',
     borderRadius: 8,
     padding: 10,
     marginBottom: 4,
+  },
+  modalCancelButtonContainer: {
+    width: 120,
+    borderRadius: 8,
+    backgroundColor: '#37298A',
+  },
+  modalCancelButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    fontSize: 18,
+    width: 120,
+    padding: 10,
+    marginBottom: 4,
+    color: 'white',
+    backgroundColor: 'white',
+    width: '100%',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#6A5ACD',
   },
   video: {
     alignSelf: 'center',

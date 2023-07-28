@@ -38,7 +38,6 @@ const ActivitySelection = () => {
               selectedValue={selectedActivity}
               onValueChange={(value) => setSelectedActivity(value)}
             >
-              <Select.Item label="Select Activity" value="" />
               <Select.Item label={Activity[0].type} value={0} />
               <Select.Item label={Activity[1].type} value={1} />
               <Select.Item label={Activity[2].type} value={2} />

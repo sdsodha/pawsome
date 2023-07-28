@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/core';
 import { auth } from '../../config/firebase';
 //import styles from '../style';
 import { Pets } from '../../data/PetObject';
-import { ButtonGroup } from 'react-native-elements';
+import { ButtonGroup, withTheme } from 'react-native-elements';
 import Carousel from 'react-native-reanimated-carousel';
 
 const PetSelectScreen = () => {
@@ -118,129 +118,142 @@ const PetSelectScreen = () => {
   return (
     <ScrollView>
       <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={50}>
-        <View style={styles.container}>
-          <View style={styles.difficultyContainer}>
-            <Text>Difficulty Level</Text>
-            <ButtonGroup
-              buttons={['Easy', 'Medium', 'Hard']}
-              selectedIndex={selectedDifficultyIndex}
-              onPress={(value) => {
-                setSelectedDifficultyIndex(value);
-              }}
-              containerStyle={{
-                height: 40,
-                marginHorizontal: 0,
-                backgroundColor: '#F5F5F5',
-                padding: 5,
-                borderRadius: 5,
-                borderWidth: 0,
-              }}
-              selectedButtonStyle={{
-                backgroundColor: '#6A5ACD',
-                borderRadius: 5,
-              }}
-              innerBorderStyle={{ width: 0 }}
-            />
-          </View>
+        <View
+          style={
+            {
+              flex: 1,
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 750,
+              marginVertical: 0,
+            }}>
 
-          <View style={styles.petContainer}>
-            <Text>Choose Pet</Text>
+          <View style={styles.container}>
 
-            <View style={styles.imageContainer}>
-              <View>
-                <TouchableOpacity
-                  style={[styles.detailButton]}
-                  onPress={() => {
-                    ref.current?.scrollTo({ count: -1, animated: true });
+            <View style={styles.difficultyContainer}>
+              <Text>Difficulty Level</Text>
+              <ButtonGroup
+                buttons={['Easy', 'Medium', 'Hard']}
+                selectedIndex={selectedDifficultyIndex}
+                onPress={(value) => {
+                  setSelectedDifficultyIndex(value);
+                }}
+                containerStyle={{
+                  height: 40,
+                  marginHorizontal: 0,
+                  backgroundColor: '#F5F5F5',
+                  padding: 5,
+                  borderRadius: 5,
+                  borderWidth: 0,
+                }}
+                selectedButtonStyle={{
+                  backgroundColor: '#6A5ACD',
+                  borderRadius: 5,
+                }}
+                innerBorderStyle={{ width: 0 }}
+              />
+            </View>
+
+            <View style={styles.petContainer}>
+              <Text>Choose Pet</Text>
+
+              <View style={styles.imageContainer}>
+                <View>
+                  <TouchableOpacity
+                    style={[styles.detailButton]}
+                    onPress={() => {
+                      ref.current ?.scrollTo({ count: -1, animated: true });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>{'<'}</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    width: 250,
+                    height: 250,
                   }}
                 >
-                  <Text style={styles.buttonText}>{'<'}</Text>
-                </TouchableOpacity>
+                  <Carousel
+                    loop
+                    width={280}
+                    height={300}
+                    data={images}
+                    pagingEnabled={true}
+                    ref={ref}
+                    scrollAnimationDuration={800}
+                    onSnapToItem={(index) => setSelectedPet(index)}
+                    renderItem={({ item, index }) => (
+                      <Image
+                        style={{
+                          width: '100%',
+                          height: '80%',
+                          resizeMode: 'contain',
+                        }}
+                        source={item}
+                      />
+                    )}
+                  />
+                </View>
+
+                <View>
+                  <TouchableOpacity
+                    style={[styles.detailButton]}
+                    onPress={() => {
+                      ref.current ?.scrollTo({ count: 1, animated: true });
+                    }}
+                  >
+                    <Text style={styles.buttonText}>{'>'}</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
 
               <View
                 style={{
-                  width: 250,
-                  height: 250,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                <Carousel
-                  loop
-                  width={280}
-                  height={300}
-                  data={images}
-                  pagingEnabled={true}
-                  ref={ref}
-                  scrollAnimationDuration={800}
-                  onSnapToItem={(index) => setSelectedPet(index)}
-                  renderItem={({ item, index }) => (
-                    <Image
-                      style={{
-                        width: '100%',
-                        height: '80%',
-                        resizeMode: 'contain',
-                      }}
-                      source={item}
-                    />
-                  )}
+                {Array(3)
+                  .fill({})
+                  .map((item, index) => {
+                    return (
+                      <Text
+                        key={index}
+                        style={{
+                          opacity: index === selectedPet ? 0.8 : 0.4,
+                          fontSize: 32,
+                        }}
+                      >
+                        •
+                    </Text>
+                    );
+                  })}
+              </View>
+            </View>
+
+            <View style={styles.labelContainer}>
+              <View style={styles.nameContainer}>
+                <Text style={styles.label}>Name: </Text>
+                <TextInput
+                  style={styles.input}
+                  value={name}
+                  onChangeText={(text) => setName(text)}
                 />
               </View>
-
-              <View>
-                <TouchableOpacity
-                  style={[styles.detailButton]}
-                  onPress={() => {
-                    ref.current?.scrollTo({ count: 1, animated: true });
-                  }}
-                >
-                  <Text style={styles.buttonText}>{'>'}</Text>
-                </TouchableOpacity>
-              </View>
             </View>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {Array(3)
-                .fill({})
-                .map((item, index) => {
-                  return (
-                    <Text
-                      key={index}
-                      style={{
-                        opacity: index === selectedPet ? 0.8 : 0.4,
-                        fontSize: 32,
-                      }}
-                    >
-                      •
-                    </Text>
-                  );
-                })}
+            <View style={styles.startActivityButtonContainer}>
+              <TouchableOpacity
+                style={styles.startActivityButton}
+                onPress={() => handleSubmit(currentUserId)}
+              >
+                <Text style={{ color: 'white' }}>Confirm</Text>
+              </TouchableOpacity>
             </View>
-          </View>
-
-          <View style={styles.labelContainer}>
-            <View style={styles.nameContainer}>
-              <Text style={styles.label}>Name: </Text>
-              <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={(text) => setName(text)}
-              />
-            </View>
-          </View>
-
-          <View style={styles.startActivityButtonContainer}>
-            <TouchableOpacity
-              style={styles.startActivityButton}
-              onPress={() => handleSubmit(currentUserId)}
-            >
-              <Text style={{ color: 'white' }}>Confirm</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -304,12 +317,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
     backgroundColor: 'white',
-    height: 720,
+    height: 600,
   },
   petContainer: {
     width: 300,
