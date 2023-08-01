@@ -25,13 +25,7 @@ const ActivityProgress = ({ route, navigation }) => {
   // const activityGoal = 5;
 
   const [showModal, setShowModal] = useState(false);
-  // const [showModal1, setShowModal1] = useState(true);
-  // const activityPercentGoal = 0;
-  const handleAnimationComplete = () => {
-    if (counter === 0) {
-      setShowModal(true);
-    }
-  };
+
 
   const [counter, setCounter] = useState(0);
 
@@ -54,7 +48,7 @@ const ActivityProgress = ({ route, navigation }) => {
   const [activityProgress, setMoodProgress] = useState(0);
   const [itemProgress, setHealthProgress] = useState(0);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const [modalVisible1, setModalVisible1] = useState(false);
 
   //Anim vars
@@ -128,6 +122,10 @@ const ActivityProgress = ({ route, navigation }) => {
       console.log('Z count - ', zCounter);
       updateCount();
     }
+
+    if (counter === parseInt(activityGoal)) {
+      setShowModal(true);
+    }
   };
 
   const onActivityDone = () => {
@@ -179,46 +177,59 @@ const ActivityProgress = ({ route, navigation }) => {
           size={300}
           showsText={true}
         />
-       
-        <Modal
-          visible={showModal}
-          onRequestClose={() => setShowModal(false)}
-          transparent
-          animationType="fade"
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.userDetails}>Activity Finished</Text>
-              <Icon name="check" size={100} color="black" />
-              <View style={styles.rowContainer}>
-                <View style={styles.rowContentContainer}>
-                  <Image
-                    source={require('../../../assets/move.png')}
-                    style={styles.rowImage}
-                  />
-                  <Text>Movements</Text>
-                  <Text>21</Text>
+
+        <View style={styles.centeredView}>
+
+          <Modal
+            visible={showModal}
+            onRequestClose={() => setShowModal(false)}
+            transparent
+            animationType="fade"
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={{
+                  marginVertical: 20,
+                  fontWeight: '500',
+                }}>Activity Finished</Text>
+
+                <Image
+                  resizeMode='contain'
+                  source={require('../../../assets/activityIcons/okayButton.png')}
+                  style={{ width: 80, height: 80, marginVertical: 20 }}
+                />
+
+                <View style={styles.rowContainer}>
+                  <View style={styles.rowContentContainer}>
+                    <Image
+                      source={require('../../../assets/move.png')}
+                      style={styles.rowImage}
+                    />
+                    <Text style={{ justifyContent: 'center', alignItems: 'center' }}>Movements</Text>
+                    <Text style={{ justifyContent: 'center', alignItems: 'center' }}>{activityGoal}</Text>
+                  </View>
+                  <View style={styles.rowContentContainer}>
+                    <Image
+                      source={require('../../../assets/goal.png')}
+                      style={styles.rowImage}
+                    />
+                    <Text>Item Earned</Text>
+                    <Text>{itemGoal}</Text>
+                  </View>
                 </View>
-                <View style={styles.rowContentContainer}>
-                  <Image
-                    source={require('../../../assets/goal.png')}
-                    style={styles.rowImage}
-                  />
-                  <Text>Earn</Text>
-                  <Text>3</Text>
+                <View style={styles.instructionButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.instructionButton}
+                    onPress={onActivityDone}
+                  >
+                    <Text style={{ color: 'white' }}>Home</Text>
+                  </TouchableOpacity>
                 </View>
-              </View>
-              <View style={styles.modalButtonContainer}>
-                <TouchableOpacity
-                  style={styles.rowButton}
-                  onPress={() => setShowModal(false)}
-                >
-                  <Text>Home</Text>
-                </TouchableOpacity>
               </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </View>
+
         <View style={styles.activityButtonContainer}>
           <TouchableOpacity style={styles.pauseButton} onPress={onActivityDone}>
             <Text style={{ color: 'white' }}>Pause</Text>
@@ -270,7 +281,7 @@ const ActivityProgress = ({ route, navigation }) => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
+              //Alert.alert('Modal has been closed.');
               setModalVisible(!modalVisible);
             }}
           >
@@ -290,20 +301,23 @@ const ActivityProgress = ({ route, navigation }) => {
                   onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                 />
 
-                <Text>Instructions: </Text>
-                <Text>{Activity[activity].instructionText} </Text>
-
-                <View style={styles.button}>
-                  <Button
-                    title="Close"
-                    onPress={() => setModalVisible(!modalVisible)}
-                  />
+                <View style={{
+                  marginVertical: 10,
+                  gap: 8,
+                }}>
+                  <Text style={{ fontWeight: '500' }}>Instructions </Text>
+                  <Text>{Activity[activity].instructionText} </Text>
                 </View>
-                {/* <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable> */}
+
+                <View style={styles.instructionButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.instructionButton}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={{ color: 'white' }}>Continue</Text>
+                  </TouchableOpacity>
+                </View>
+
               </View>
             </View>
           </Modal>
@@ -329,21 +343,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#37298A',
   },
   rowImage: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     marginBottom: 8,
     marginTop: 8,
-  },
-  rowButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#6A5ACD',
-    fontSize: 18,
-    width: 320,
-    border: '#9c92da 1px',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 4,
   },
   modalButton: {
     justifyContent: 'center',
@@ -374,13 +377,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'centre',
     marginBottom: 20,
-    gap: 100,
+    gap: 50,
   },
   rowContentContainer: {
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'centre',
-    textAlign: 'center',
-    gap: 10,
+    alignItems: 'center'
   },
   modalContent: {
     backgroundColor: '#fff',
@@ -471,21 +473,22 @@ const styles = StyleSheet.create({
   },
   video: {
     alignSelf: 'center',
-    width: 320,
-    height: 200,
+    width: 281,
+    height: 158,
   },
 
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    marginTop: 0,
+    //backgroundColor: '#00000010',
   },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 25,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -495,6 +498,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    width: 330,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',
@@ -508,8 +512,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    marginBottom: 15,
+    marginVertical: 20,
     textAlign: 'center',
+    fontWeight: '500'
+  },
+  instructionButtonContainer: {
+    marginTop: 20,
+    width: 120,
+    borderRadius: 8,
+    backgroundColor: '#37298A',
+    marginBottom: 10,
+  },
+  instructionButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#6A5ACD',
+    fontSize: 18,
+    width: 120,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 4,
   },
 });
 

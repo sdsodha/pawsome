@@ -31,6 +31,8 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
     const [itemProgress, setHealthProgress] = useState(0);
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showActFinisherModalOnce, setShowActFinisherModalOnce] = useState(true);
 
     //Anim vars
     const video2 = React.useRef(null);
@@ -106,6 +108,11 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
             updateCount();
         }
 
+        if (showActFinisherModalOnce && (counter === parseInt(activityGoal))) {
+            setShowModal(true);
+            setShowActFinisherModalOnce(false);
+        }
+
     }
 
     const onActivityDone = () => {
@@ -123,7 +130,9 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
                 param = { food: 0, water: 0, treat: 10 };
                 break;
         }
-        console.log("NAv to home");
+
+        setShowModal(false);
+
         navigation.navigate({
             name: 'PetHomeScreen',
             params: { food: 5, water: 5, treat: 5 },
@@ -147,7 +156,7 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
                     <Text style={{ color: '#6A5ACD' }} fontSize={12}>Instructions</Text>
                 </TouchableOpacity>
 
-                <Progress.Circle style={styles.progressCircle} progress={counter / parseInt(activityGoal)} formatText={(no) => no === 0 ? "90%" : parseInt(no * 100) + "%" } color='#CD4668' strokeCap='round' thickness={40} size={300} showsText={true} />
+                <Progress.Circle style={styles.progressCircle} progress={counter / parseInt(activityGoal)} formatText={(no) => no === 0 ? "90%" : parseInt(no * 100) + "%"} color='#CD4668' strokeCap='round' thickness={40} size={300} showsText={true} />
 
                 <View style={styles.activityButtonContainer}>
                     <TouchableOpacity style={styles.pauseButton}
@@ -165,7 +174,7 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
 
 
                 <View style={styles.statusMainContainer}>
-                    <Text style={{fontSize:18}}>Status</Text>
+                    <Text style={{ fontSize: 18 }}>Status</Text>
 
                     <View style={styles.statusInnerContainer}>
                         <Text style={{ marginBottom: 5 }}>Movements</Text>
@@ -184,12 +193,12 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
                         transparent={true}
                         visible={modalVisible}
                         onRequestClose={() => {
-                            Alert.alert('Modal has been closed.');
+                            //Alert.alert('Modal has been closed.');
                             setModalVisible(!modalVisible);
-                        }}>
+                        }}
+                    >
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-
                                 <Text style={styles.modalText}>{Activity[activity].type}</Text>
 
                                 <Video
@@ -201,25 +210,74 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
                                     isLooping
                                     useNativeControls
                                     shouldPlay={true}
-                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
+                                    onPlaybackStatusUpdate={(status) => setStatus(() => status)}
                                 />
 
-                                <Text>Instructions: </Text>
-                                <Text>{Activity[activity].instructionText} </Text>
-
-                                <View style={styles.button}>
-                                    <Button title='Close'
-                                        onPress={() => setModalVisible(!modalVisible)} />
+                                <View style={{
+                                    marginVertical: 10,
+                                    gap: 8,
+                                }}>
+                                    <Text style={{ fontWeight: '500' }}>Instructions </Text>
+                                    <Text>{Activity[activity].instructionText} </Text>
                                 </View>
-                                {/* <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable> */}
+
+                                <View style={styles.instructionButtonContainer}>
+                                    <TouchableOpacity
+                                        style={styles.instructionButton}
+                                        onPress={() => setModalVisible(!modalVisible)}
+                                    >
+                                        <Text style={{ color: 'white' }}>Continue</Text>
+                                    </TouchableOpacity>
+                                </View>
+
                             </View>
                         </View>
                     </Modal>
                 </View>
+
+                <View style={styles.centeredView}>
+                    <Modal
+                        visible={showModal}
+                        onRequestClose={() => setShowModal(false)}
+                        transparent
+                        animationType="fade"
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <Text style={{
+                                    marginVertical: 20,
+                                    fontWeight: '500',
+                                }}>Activity Finished</Text>
+
+                                <Image
+                                    resizeMode='contain'
+                                    source={require('../../../assets/activityIcons/okayButton.png')}
+                                    style={{ width: 80, height: 80, marginVertical: 20 }}
+                                />
+
+                                <View style={styles.rowContainer}>
+                                    <View style={styles.rowContentContainer}>
+                                        <Image
+                                            source={require('../../../assets/move.png')}
+                                            style={styles.rowImage}
+                                        />
+                                        <Text style={{ justifyContent: 'center', alignItems: 'center' }}>Movements</Text>
+                                        <Text style={{ justifyContent: 'center', alignItems: 'center' }}>{activityGoal}</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.instructionButtonContainer}>
+                                    <TouchableOpacity
+                                        style={styles.instructionButton}
+                                        onPress={onActivityDone}
+                                    >
+                                        <Text style={{ color: 'white' }}>Home</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
+
             </View>
         </ScrollView>
     )
@@ -309,21 +367,20 @@ const styles = StyleSheet.create({
     },
     video: {
         alignSelf: 'center',
-        width: 320,
-        height: 200,
+        width: 281,
+        height: 158,
     },
 
     centeredView: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
     },
     modalView: {
         margin: 20,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 25,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -333,6 +390,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        width: 330,
     },
     buttonOpen: {
         backgroundColor: '#F194FF',
@@ -347,7 +405,45 @@ const styles = StyleSheet.create({
     },
     modalText: {
         marginBottom: 15,
+        marginVertical: 20,
         textAlign: 'center',
+        fontWeight: '500'
+    },
+    instructionButtonContainer: {
+        marginTop: 20,
+        width: 120,
+        borderRadius: 8,
+        backgroundColor: '#37298A',
+        marginBottom: 10,
+    },
+    instructionButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#6A5ACD',
+        fontSize: 18,
+        width: 120,
+        borderRadius: 8,
+        padding: 10,
+        marginBottom: 4,
+    },
+    rowImage: {
+        width: 60,
+        height: 60,
+        marginBottom: 8,
+        marginTop: 8,
+    },
+    rowContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'centre',
+        marginBottom: 20,
+        marginTop: 20,
+        gap: 50,
+    },
+    rowContentContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
 
