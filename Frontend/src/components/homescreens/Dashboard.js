@@ -111,7 +111,7 @@ const Dashboard = () => {
   return (
     <ScrollView >
      <View style={styles.container}>
-     <VictoryChart height={250}>
+     <VictoryChart height={250} animate={{ duration: 500, easing: "bounceIn" }}>
      <VictoryLegend
         x={25}
         y={-5}
@@ -266,7 +266,7 @@ const Dashboard = () => {
 
 
     
-      <VictoryChart domainPadding={{ x: 25 }} padding={40} height={250} >
+      <VictoryChart domainPadding={{ x: 25 }} padding={40} height={250} animate={{ duration: 500, easing: "bounceIn" }}>
       <VictoryLegend
         x={40}
         y={-5}
@@ -322,10 +322,10 @@ const Dashboard = () => {
 
     <SolidHorizontalLine/>
 
-    <VictoryChart domainPadding={{ x: 10 }} padding={35}  height={250}  // Adjust padding for the chart
+    <VictoryChart animate={{ duration: 500, easing: "bounceIn" }} domainPadding={{ x: 10 }} padding={35}  height={250}  // Adjust padding for the chart
       >
     <VictoryAxis dependentAxis 
-    //tickValues={[0,250,500]*/ >
+    tickValues={[0,5,10,15,20]}
      style={{
       axis: { stroke: 'black', strokeWidth: 2 },
     }} />
@@ -363,7 +363,7 @@ const Dashboard = () => {
           data={Monthdata}
           x="x"
           cornerRadius={barRadius}
-          barWidth={barWidth} 
+          barWidth='10' 
           
           y="y"
           // Customize bar style if needed

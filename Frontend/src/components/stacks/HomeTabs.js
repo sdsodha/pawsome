@@ -51,7 +51,7 @@ const HomeTabs = ({route, navigation}) => {
         headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Image
-            source={focused ? require('../../../assets/homescreenIconFocused.png') : require('../../../assets/homescreenIcon.png')}
+            source={focused ? require('../../../assets/homeIconFocused.png') : require('../../../assets/homeIcon.png')}
             style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           />
         ),
@@ -64,7 +64,7 @@ const HomeTabs = ({route, navigation}) => {
       options={{
         tabBarIcon: ({ focused }) => (
           <Image
-            source={focused ? require('../../../assets/leaderboardIconFocused.png') : require('../../../assets/leaderboardIcon.png')}
+            source={focused ? require('../../../assets/leaderIconFocused.png') : require('../../../assets/leaderIcon.png')}
             style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           />
         ),
@@ -76,7 +76,7 @@ const HomeTabs = ({route, navigation}) => {
       options={{
         tabBarIcon: ({ focused }) => (
           <Image
-            source={focused ? require('../../../assets/dashboardIconFocused.png') : require('../../../assets/dashboardIcon.png')}
+            source={focused ? require('../../../assets/dashIconFocused.png') : require('../../../assets/dashIcon.png')}
             style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           /> 
         ),
