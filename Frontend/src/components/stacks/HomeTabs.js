@@ -28,10 +28,10 @@ const HomeTabs = ({route, navigation}) => {
       tabBarShowLabel: false,
       tabBarStyle: {
         backgroundColor: '#EEEDFA',
-        height:60,
+        height:70,
         borderTopLeftRadius: 20, // Set the desired border radius for the top-left corner
         borderTopRightRadius: 20, // Set the desired border radius for the top-right corner
-           
+           paddingTop:15,
           borderTopWidth: 5, // Add a border to the top of the tab bar
           borderTopColor: '#EEEDFA', // Set the color of the border
           borderBottomWidth: 1,
@@ -50,9 +50,10 @@ const HomeTabs = ({route, navigation}) => {
       options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => (
-          <Image
+          <Image resizeMode='contain'
             source={focused ? require('../../../assets/homeIconFocused.png') : require('../../../assets/homeIcon.png')}
-            style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
+            //source={focused ? require('../../../assets/leaderIconNew.png') : require('../../../assets/leaderIcon.png')}
+            style={{ width: 100, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           />
         ),
         // tabBarIcon: ({ color }) => (
@@ -63,9 +64,9 @@ const HomeTabs = ({route, navigation}) => {
       <Tab.Screen name="Leaderboard" component={Leaderboard} 
       options={{
         tabBarIcon: ({ focused }) => (
-          <Image
-            source={focused ? require('../../../assets/leaderIconFocused.png') : require('../../../assets/leaderIcon.png')}
-            style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
+          <Image resizeMode='contain'
+            source={focused ? require('../../../assets/leaderIconNew.png') : require('../../../assets/leaderIcon.png')}
+            style={{ width: 100, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           />
         ),
         // tabBarIcon: ({ color }) => (
@@ -75,9 +76,9 @@ const HomeTabs = ({route, navigation}) => {
       <Tab.Screen name="Dashboard" component={Dashboard}
       options={{
         tabBarIcon: ({ focused }) => (
-          <Image
+          <Image resizeMode='contain'
             source={focused ? require('../../../assets/dashIconFocused.png') : require('../../../assets/dashIcon.png')}
-            style={{ width: 80, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
+            style={{ width: 100, height: 59, /*tintColor: focused ? null : 'gray'*/ }}
           /> 
         ),
         // tabBarIcon: ({ color }) => (

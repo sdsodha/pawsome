@@ -113,7 +113,7 @@ const Dashboard = () => {
      <View style={styles.container}>
      <VictoryChart height={250} animate={{ duration: 500, easing: "bounceIn" }}>
      <VictoryLegend
-        x={25}
+        x={10}
         y={-5}
         orientation="horizontal"
         gutter={15}

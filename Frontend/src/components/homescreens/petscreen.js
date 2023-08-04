@@ -345,8 +345,8 @@ const PetComponent = ({ route, navigation }) => {
       <Text> Params - {food} {water} {treat}</Text> */}
 
           <View style={styles.inventoryContainer}>
-            <TouchableOpacity style={styles.inventoryButton}>
               <TouchableOpacity
+                style={styles.inventoryButton}
                 onPress={() => {
                   setIsCollapsed(!isCollapsed), toggleInventory();
                 }}
@@ -376,7 +376,6 @@ const PetComponent = ({ route, navigation }) => {
                       <Icon name="chevron-down" size={20} color="black" />
                     </View>
                   )}
-              </TouchableOpacity>
             </TouchableOpacity>
 
             <Collapsible collapsed={isCollapsed}>
