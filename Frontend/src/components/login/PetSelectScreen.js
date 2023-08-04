@@ -30,7 +30,7 @@ const PetSelectScreen = () => {
   const [breed, setBreed] = useState('');
   const [sex, setSex] = useState('');
   const [selectedPet, setSelectedPet] = useState(0);
-  const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(0);
+  const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(1);
 
   const [currentUserId, setCurrentUserId] = useState('');
 

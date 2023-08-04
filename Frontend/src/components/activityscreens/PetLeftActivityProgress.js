@@ -135,7 +135,7 @@ const PetLeftActivityProgress = ({ route, navigation }) => {
 
         navigation.navigate({
             name: 'PetHomeScreen',
-            params: { food: 5, water: 5, treat: 5 },
+            params: { food: 2, water: 2, treat: 2, healthParam: 15, moodParam: 15, selectedPet: 2, petName: 'Sara' },
             merge: true,
         })
     }

@@ -34,7 +34,7 @@ const PetComponent = ({ route, navigation }) => {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
 
-  const { food, water, treat, selectedPet, petName } = route.params;
+  const { food, water, treat, selectedPet, petName, moodParam, healthParam } = route.params;
 
   // const food = 1;
   // const water = 1;
@@ -44,15 +44,21 @@ const PetComponent = ({ route, navigation }) => {
 
   useEffect(() => {
     if (route.params ?.food) {
-      setFood(foodCount + food);
+      setFood(food);
     }
     if (route.params ?.water) {
-      setWater(waterCount + water);
+      setWater(water);
     }
     if (route.params ?.treat) {
-      setTreat(treatCount + treat);
+      setTreat(treat);
     }
-  }, [route.params ?.food, route.params ?.water, route.params ?.treat]);
+    if (route.params ?.moodParam) {
+      setMood(moodParam);
+    }
+    if (route.params ?.healthParam) {
+      setHealth(healthParam);
+    }
+  }, [route.params ?.food, route.params ?.water, route.params ?.treat, route.params ?.moodParam, route.params ?.healthParam]);
 
   const [mood, setMood] = useState(47);
   const [health, setHealth] = useState(47);
@@ -215,6 +221,7 @@ const PetComponent = ({ route, navigation }) => {
   return (
     <View style={{
       backgroundColor: 'white',
+      height: '100%'
     }
     }>
 
@@ -246,6 +253,7 @@ const PetComponent = ({ route, navigation }) => {
               onPress={onFoodPress}
             >
               <Image
+                resizeMode='contain'
                 style={styles.buttonIcon}
                 source={require("../../../assets/activityIcons/Food.png")}
               />
@@ -254,6 +262,8 @@ const PetComponent = ({ route, navigation }) => {
               onPress={onTreatPress}
             >
               <Image
+                resizeMode='contain'
+
                 style={styles.buttonIcon}
                 source={require("../../../assets/activityIcons/Treat.png")}
               />
@@ -262,6 +272,7 @@ const PetComponent = ({ route, navigation }) => {
               onPress={onWaterPress}
             >
               <Image
+                resizeMode='contain'
                 style={styles.buttonIcon}
                 source={require("../../../assets/activityIcons/Water.png")}
               />
@@ -320,7 +331,7 @@ const PetComponent = ({ route, navigation }) => {
                           navigation.navigate("ActivitySelectionScreen")
                         }}
                       >
-                        <Text style={{color: 'white'}}>{'Start'}</Text>
+                        <Text style={{ color: 'white' }}>{'Start'}</Text>
                       </TouchableOpacity>
                     </View>
 
@@ -510,7 +521,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 16,
     backgroundColor: 'white',
-    height: 680,
+    height: '100%',
   },
   image: {
     width: 100,
@@ -519,10 +530,10 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   buttonIcon: {
-    width: 50,
-    height: 50,
-    marginBottom: 8,
-    marginTop: 8,
+    width: 65,
+    height: 65,
+    marginBottom: 0,
+    marginTop: 0,
   },
   label: {
     fontSize: 16,
@@ -532,7 +543,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 0,
     flexDirection: 'row',
-    gap: 60,
+    gap: 50,
     padding: 10,
   },
   modalButtonContainer: {
