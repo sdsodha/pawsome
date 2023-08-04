@@ -17,16 +17,37 @@ import { Picker } from '@react-native-picker/picker';
 const Separator = () => <View style={styles.separator} />;
 
 const ActivitySelection = () => {
-  const [selectedActivity, setSelectedActivity] = useState(0);
+  const [selectedActivity, setSelectedActivity] = useState(2);
   const [itemGoal, setItemGoal] = useState(3);
   const [activityGoal, setActivityGoal] = useState(5);
   const [selectedDifficultyIndex, setSelectedDifficultyIndex] = useState(1);
-  const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(2);
 
-  const [selectedEarningGoal, setSelectedEarningGoal] = useState(3);
-  const [selectedActivityGoal, setSelectedActivityGoal] = useState(5);
+  const [selectedEarningGoal, setSelectedEarningGoal] = useState(5);
+  const [selectedActivityGoal, setSelectedActivityGoal] = useState(10);
 
   const navigation = useNavigation();
+
+  const updateDifficulty = (selectedValue) => {
+    setSelectedDifficultyIndex(selectedValue);
+    switch (selectedValue) {
+      // Easy
+      case 0:
+        setSelectedEarningGoal(3);
+        setSelectedActivityGoal(5);
+        break;
+      // Medium
+      case 1:
+        setSelectedEarningGoal(5);
+        setSelectedActivityGoal(10);
+        break;
+      // Hard
+      case 2:
+        setSelectedEarningGoal(8);
+        setSelectedActivityGoal(15);
+        break;
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -43,7 +64,7 @@ const ActivitySelection = () => {
               <Select.Item label={Activity[2].type} value={2} />
             </Select>
           </View>
-          
+
         </View>
 
         <View style={styles.itemContainer}>
@@ -78,7 +99,7 @@ const ActivitySelection = () => {
             buttons={['Easy', 'Medium', 'Hard']}
             selectedIndex={selectedDifficultyIndex}
             onPress={(value) => {
-              setSelectedDifficultyIndex(value);
+              updateDifficulty(value);
             }}
             containerStyle={{
               height: 40,
@@ -100,7 +121,7 @@ const ActivitySelection = () => {
 
         <View style={styles.goalsContainer}>
           <View>
-            <Text style={{marginBottom: 6}}>Earning Goal</Text>
+            <Text style={{ marginBottom: 6 }}>Earning Goal</Text>
             <Picker
               itemStyle={{ height: 120 }}
               selectedValue={selectedEarningGoal}
@@ -119,11 +140,21 @@ const ActivitySelection = () => {
               <Picker.Item label="8" value={8} />
               <Picker.Item label="9" value={9} />
               <Picker.Item label="10" value={10} />
+              <Picker.Item label="11" value={11} />
+              <Picker.Item label="12" value={12} />
+              <Picker.Item label="13" value={13} />
+              <Picker.Item label="14" value={14} />
+              <Picker.Item label="15" value={15} />
+              <Picker.Item label="16" value={16} />
+              <Picker.Item label="17" value={17} />
+              <Picker.Item label="18" value={18} />
+              <Picker.Item label="19" value={19} />
+              <Picker.Item label="20" value={20} />
             </Picker>
           </View>
 
           <View>
-            <Text style={{marginBottom: 6}}>Activity Goal</Text>
+            <Text style={{ marginBottom: 6 }}>Activity Goal</Text>
             <Picker
               itemStyle={{ height: 120 }}
               selectedValue={selectedActivityGoal}
@@ -142,6 +173,16 @@ const ActivitySelection = () => {
               <Picker.Item label="8" value={8} />
               <Picker.Item label="9" value={9} />
               <Picker.Item label="10" value={10} />
+              <Picker.Item label="11" value={11} />
+              <Picker.Item label="12" value={12} />
+              <Picker.Item label="13" value={13} />
+              <Picker.Item label="14" value={14} />
+              <Picker.Item label="15" value={15} />
+              <Picker.Item label="16" value={16} />
+              <Picker.Item label="17" value={17} />
+              <Picker.Item label="18" value={18} />
+              <Picker.Item label="19" value={19} />
+              <Picker.Item label="20" value={20} />
             </Picker>
           </View>
         </View>
@@ -223,7 +264,7 @@ const styles = StyleSheet.create({
   goalsContainer: {
     flexDirection: 'row',
     gap: 80,
-   
+
 
   },
 });
